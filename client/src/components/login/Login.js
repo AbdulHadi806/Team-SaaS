@@ -1,6 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Login.css";
+import { useLoginAdminMutation } from "../../redux/apiCalls/apiSlice";
+import { Link } from "react-router-dom";
 const Login = () => {
+  const [inputValue, setInput] = useState({
+    userName: "",
+    password: "",
+  });
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    try {
+      await loginAdmin(inputValue);
+      console.log("data saved", inputValue);
+      setInput("");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const [loginAdmin] = useLoginAdminMutation();
+  const handleChange = (e) => {
+    setInput({ [e.target.name]: e.target.value });
+    console.log("input data", inputValue);
+  };
+
   return (
     <>
       <div className="background-1">
@@ -12,11 +35,15 @@ const Login = () => {
             <span className="text-center block mb-6  text-[17px] font-bold">
               Sign in to continue to WebkitX.
             </span>
-            <form className="w-[100%] mb-6">
+            <form className="w-[100%] mb-6" onSubmit={submitHandler}>
               <div className="flex items-center mb-6 ">
                 <i className="fa-regular fa-user border  border-[#86a4c3]  p-4 rounded rounded-r-none  "></i>
                 <input
                   type="text"
+                  name="userName"
+                  id="userName"
+                  value={inputValue.userName}
+                  onChange={handleChange}
                   placeholder="Username"
                   className="border  border-[#86a4c3]  w-[100%] p-3 border-l-0 rounded rounded-l-none outline-none"
                 />
@@ -25,7 +52,11 @@ const Login = () => {
               <div className="flex items-center mb-6 ">
                 <i className="fa-solid fa-lock border border  border-[#86a4c3]  p-4 rounded rounded-r-none  "></i>
                 <input
-                  type="text"
+                  type="password"
+                  name="password"
+                  id="password"
+                  value={inputValue.password}
+                  onChange={handleChange}
                   placeholder="Password"
                   className="border  border-[#86a4c3]  w-[100%] p-3 border-l-0 rounded rounded-l-none outline-none"
                 />
@@ -46,7 +77,10 @@ const Login = () => {
                 </div>
               </div>
               <div className="flex justify-center ">
-                <button className="bg-[#FF6C6C] text-white font-semibold py-2 hover:bg-[#000] hover:transition-all  px-6 rounded">
+                <button
+                  type="submit"
+                  className="bg-[#FF6C6C] text-white font-semibold py-2 hover:bg-[#000] hover:transition-all  px-6 rounded"
+                >
                   LOG IN
                 </button>
               </div>
@@ -55,9 +89,12 @@ const Login = () => {
               <label className="text-[17px] ">
                 {" "}
                 Don't have an account?
-                <span className="text-[#D97706] hover:text-[#FF6C6C] font-bold">
+                <Link
+                  to="/signUp"
+                  className="text-[#D97706] hover:text-[#FF6C6C] font-bold"
+                >
                   Sign Up
-                </span>
+                </Link>
               </label>
             </div>
           </div>
@@ -69,19 +106,19 @@ const Login = () => {
               href="/"
               className=" h-[50px] w-[50px] bg-[#3b5998] rounded-[100%] box-border inline-block text-[#fff] flex items-center justify-center text-[20px]"
             >
-              <i class="fa-brands fa-facebook-f"></i>
+              <i className="fa-brands fa-facebook-f"></i>
             </a>
             <a
               href="/"
               className=" mx-2 h-[50px] w-[50px] bg-[#1da1f2] rounded-[100%] box-border inline-block text-[#fff] flex items-center justify-center text-[20px]"
             >
-              <i class="fa-brands fa-twitter"></i>
+              <i className="fa-brands fa-twitter"></i>
             </a>
             <a
               href="/"
               className=" h-[50px] w-[50px] bg-[#e1306c] rounded-[100%] box-border inline-block text-[#fff] flex items-center justify-center text-[20px]"
             >
-              <i class="fa-brands fa-instagram"></i>
+              <i className="fa-brands fa-instagram"></i>
             </a>
           </div>
         </div>

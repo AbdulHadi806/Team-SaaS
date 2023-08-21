@@ -1,6 +1,8 @@
 import React from "react";
 import "./SignUp.css";
-const SignUp = () => {
+import { Link } from "react-router-dom";
+const SignUp = ({ handleChange, inputValue, submitHandler }) => {
+  // const navigate = useNavigation();
   return (
     <>
       <div className="background">
@@ -12,11 +14,16 @@ const SignUp = () => {
             <span className="text-center block mb-6  text-[17px] font-bold">
               Register a new membership
             </span>
-            <form className="w-[100%] mb-6">
+            <form className="w-[100%] mb-6" onSubmit={submitHandler}>
               <div className="flex items-center mb-6 ">
                 <i className="fa-regular fa-user border  border-[#86a4c3]  p-4 rounded rounded-r-none  "></i>
                 <input
                   type="text"
+                  name="name"
+                  id="name"
+                  onChange={handleChange}
+                  value={inputValue.name}
+                  required
                   placeholder="Full Name"
                   className="border  border-[#86a4c3]  w-[100%] p-3 border-l-0 rounded rounded-l-none outline-none"
                 />
@@ -24,8 +31,27 @@ const SignUp = () => {
               <div className="flex items-center mb-6 ">
                 <i className="fa-regular fa-envelope border  border-[#86a4c3]  p-4 rounded rounded-r-none  "></i>
                 <input
-                  type="text"
+                  type="email"
+                  name="email"
+                  id="email"
+                  required
+                  onChange={handleChange}
+                  value={inputValue.email}
                   placeholder="Email"
+                  className="border  border-[#86a4c3]  w-[100%] p-3 border-l-0 rounded rounded-l-none outline-none"
+                />
+              </div>
+
+              <div className="flex items-center mb-6 ">
+                <i className="fa-solid fa-lock border border  border-[#86a4c3]  p-4 rounded rounded-r-none  "></i>
+                <input
+                  type="text"
+                  required
+                  name="userName"
+                  id="userName"
+                  onChange={handleChange}
+                  value={inputValue.userName}
+                  placeholder=" User Name"
                   className="border  border-[#86a4c3]  w-[100%] p-3 border-l-0 rounded rounded-l-none outline-none"
                 />
               </div>
@@ -33,16 +59,11 @@ const SignUp = () => {
                 <i className="fa-solid fa-lock border  border-[#86a4c3]  p-4 rounded rounded-r-none  "></i>
                 <input
                   type="text"
+                  name="password"
                   placeholder="Password"
+                  onChange={handleChange}
+                  value={inputValue.password}
                   className="border border-[#86a4c3] w-[100%] p-3 border-l-0 rounded rounded-l-none outline-none"
-                />
-              </div>
-              <div className="flex items-center mb-6 ">
-                <i className="fa-solid fa-lock border border  border-[#86a4c3]  p-4 rounded rounded-r-none  "></i>
-                <input
-                  type="text"
-                  placeholder="ReTyype Password"
-                  className="border  border-[#86a4c3]  w-[100%] p-3 border-l-0 rounded rounded-l-none outline-none"
                 />
               </div>
               <div className="flex items-center  mb-[40px] gap-[40px] ">
@@ -54,7 +75,10 @@ const SignUp = () => {
                 </label>
               </div>
               <div className="flex justify-center ">
-                <button className="bg-[#00abea] text-white font-semibold py-4 px-6 rounded">
+                <button
+                  type="submit"
+                  className="bg-[#00abea] text-white font-semibold py-4 px-6 rounded"
+                >
                   SIGN UP
                 </button>
               </div>
@@ -63,9 +87,9 @@ const SignUp = () => {
               <label className="text-[17px] ">
                 {" "}
                 Already have an account?{" "}
-                <a href="/" className="text-[#D97706] font-bold">
+                <Link to="/" className="text-[#D97706] font-bold">
                   sign In
-                </a>
+                </Link>
               </label>
             </div>
             <span className="block text-center pt-3 text-[#fff] text-[20px]">
@@ -76,19 +100,19 @@ const SignUp = () => {
                 href="/"
                 className=" h-[50px] w-[50px] bg-[#3b5998] rounded-[100%] box-border inline-block text-[#fff] flex items-center justify-center text-[20px]"
               >
-                <i class="fa-brands fa-facebook-f"></i>
+                <i className="fa-brands fa-facebook-f"></i>
               </a>
               <a
                 href="/"
                 className=" mx-2 h-[50px] w-[50px] bg-[#1da1f2] rounded-[100%] box-border inline-block text-[#fff] flex items-center justify-center text-[20px]"
               >
-                <i class="fa-brands fa-twitter"></i>
+                <i className="fa-brands fa-twitter"></i>
               </a>
               <a
                 href="/"
                 className=" h-[50px] w-[50px] bg-[#e1306c] rounded-[100%] box-border inline-block text-[#fff] flex items-center justify-center text-[20px]"
               >
-                <i class="fa-brands fa-instagram"></i>
+                <i className="fa-brands fa-instagram"></i>
               </a>
             </div>
           </div>
