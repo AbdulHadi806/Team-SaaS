@@ -1,0 +1,99 @@
+const User = require("../model/userModal");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+
+const createUser = async (req, res) => {
+    if (!req.body.userName || !req.body.role || !req.body.password) {
+        return res.status(400).json({ message: "Something is missing.", status: false })
+    }
+    try {
+        const userExists = await User.findOne({ userName: req.body.userName });
+        if (userExists !== null) {
+            return res.status(409).json({ message: "User Already Exists", status: false })
+        }
+        const salt = await bcrypt.genSalt(10);
+        const password = req.body.password
+        const hashedPassword = await bcrypt.hash(password, salt)
+        const newUser = await new User({
+            userName: req.body.userName,
+            password: hashedPassword,
+            role: req.body.role,
+            created_by: req.user._id
+        });
+        await newUser.save()
+        res.status(200).json({ message: "User Successfully created", status: true });
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({ message: "Unsuccessful in creating a user.", status: false, err })
+    }
+}
+
+const loginUser = async (req, res) => {
+    if (!req.body.userName || !req.body.password) {
+        return res.status(400).json({ message: "Something is missing.", status: false })
+    }
+    try {
+        const user = await User.findOne({
+            userName: req.body.userName,
+        })
+        const passwordChecker = await bcrypt.compare(req.body.password, user.password)
+        if (user && passwordChecker) {
+            const token = jwt.sign({
+                userName: user.userName,
+                password: user.password,
+                _id: user._id
+            }, 'secret_is_a_secret_for_user', {
+                expiresIn: '1d'
+            })
+            res.set('Authorization', `Bearer ${token}`).status(200).json({ user, token })
+        }
+        else {
+            res.status(300).json({ message: "Password or user not correct or found", status: false })
+        }
+
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({ message: "Unsuccessfull in creating User. Please Try Again...", status: false })
+    }
+}
+
+const deleteUser = async (req, res) => {
+    try {
+        const _id = req.params.id;
+        const existingUser = await User.findById(_id)
+        if(!existingUser) {
+            res.status(404).json({message: "User does'nt exist or it is already deleted.", status: false})
+        }
+        const deleteUser = await User.findByIdAndDelete(_id)
+        res.status(200).json({ message: "User deleted Successfully", status: true, deleteUser })
+    } catch (err) {
+        res.status(500).json({ message: "Failed to delete User", status: false })
+    }
+}
+
+const updateUserInfo = async (req, res) => {
+    try {
+        const _id = req.params.id;
+        const existingUser = await User.findById(_id);
+        existingUser.userName = req.body.userName
+        if (!existingUser) {
+            return res.status(404).json({ message: "User not found", status: false });
+        }
+        if (req.body.userName !== existingUser.userName) {
+            const userNameExists = await User.findOne({ userName: req.body.userName });
+            if (userNameExists) {
+                return res.status(409).json({ message: "UserName already exists", status: false });
+            }
+        }
+        const updatedUser = await existingUser.save();
+
+        res.status(200).json({message: "User info Updated", status: true, updatedUser})
+    } catch (err) {
+        res.status(500).json({ message: "Something went wrong. Failed to update info", status: false })
+    }
+}
+
+exports.updateUserInfo = updateUserInfo;
+exports.deleteUser = deleteUser;
+exports.createUser = createUser;
+exports.loginUser = loginUser;
