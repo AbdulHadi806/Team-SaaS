@@ -9,7 +9,7 @@ const signUpAdmin = async(req, res) => {
     try {
         const userNameExists = await Admin.findOne({ userName: req.body.userName });
         if(userNameExists !== null) {
-            return res.status(500).json({message: "User Already Exists", status: false})
+            return res.status(409).json({message: "User Already Exists", status: false})
         }
         const salt = await bcrypt.genSalt(10);
         const password = req.body.password

@@ -1,5 +1,4 @@
 const Admin = require("../model/adminModal")
-const User = require("../model/userModal")
 
 const getAdminInfo = async(req, res) => {
     try {
