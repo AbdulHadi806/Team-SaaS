@@ -93,6 +93,21 @@ const updateUserInfo = async (req, res) => {
     }
 }
 
+const getAllUsers = async(req, res) => {
+    try {
+        const _id = req.user._id;
+        const users = await User.find({_id})
+        if(!users) {
+            return res.status(204).json({message: "No users available.", status: false})
+        }
+        console.log(users)
+        res.status(200).json({message: "All users fetched successfully.", status: true})
+    } catch(err) {
+        res.status(404).json({message: "Failed to fetch users", status: false})
+    }
+}
+
+exports.getAllUsers = getAllUsers;
 exports.updateUserInfo = updateUserInfo;
 exports.deleteUser = deleteUser;
 exports.createUser = createUser;

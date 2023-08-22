@@ -12,7 +12,6 @@ const Login = () => {
     e.preventDefault();
     try {
       await loginAdmin(inputValue);
-      console.log("data saved", inputValue);
       setInput("");
     } catch (err) {
       console.log(err);
@@ -20,7 +19,7 @@ const Login = () => {
   };
   const [loginAdmin] = useLoginAdminMutation();
   const handleChange = (e) => {
-    setInput({ [e.target.name]: e.target.value });
+    setInput({ ...inputValue, [e.target.name]: e.target.value });
     console.log("input data", inputValue);
   };
 

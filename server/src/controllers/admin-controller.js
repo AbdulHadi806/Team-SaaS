@@ -31,6 +31,9 @@ const signUpAdmin = async(req, res) => {
 }
 
 const loginAdmin = async(req, res) => {
+    if(!req.body.userName || !req.body.password){
+        return res.status(400).json({message: "Something is missing.", status: false})
+    }
     try {
         const user = await Admin.findOne({
             userName: req.body.userName,
@@ -54,7 +57,6 @@ const loginAdmin = async(req, res) => {
         res.status(500).json({message: "Login Unsuccessfull. Please Try Again...", err: err})
     }
 }
-
 
 
 exports.loginAdmin = loginAdmin;
