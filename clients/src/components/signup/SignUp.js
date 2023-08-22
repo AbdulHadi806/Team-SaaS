@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import "./SignUp.css";
 import { Link } from "react-router-dom";
 const SignUp = ({ handleChange, inputValue, submitHandler }) => {
-  // const navigate = useNavigation();
+  const [showPassword, setShowPassword] = useState(false);
+  const togglePassword = () => {
+    setShowPassword(!showPassword);
+  };
   return (
     <>
       <div className="background">
@@ -55,16 +58,27 @@ const SignUp = ({ handleChange, inputValue, submitHandler }) => {
                   className="border  border-[#86a4c3]  w-[100%] p-3 border-l-0 rounded rounded-l-none outline-none"
                 />
               </div>
-              <div className="flex items-center mb-6 ">
+              <div className="flex items-center mb-6  relative">
                 <i className="fa-solid fa-lock border  border-[#86a4c3]  p-4 rounded rounded-r-none  "></i>
                 <input
-                  type="text"
+                  type={showPassword ? "text" : "password"}
                   name="password"
                   placeholder="Password"
                   onChange={handleChange}
                   value={inputValue.password}
                   className="border border-[#86a4c3] w-[100%] p-3 border-l-0 rounded rounded-l-none outline-none"
                 />
+                {showPassword ? (
+                  <i
+                    className="fa-solid fa-eye absolute right-[10px]"
+                    onClick={togglePassword}
+                  ></i>
+                ) : (
+                  <i
+                    class="fa-solid fa-eye-slash absolute right-[10px]"
+                    onClick={togglePassword}
+                  ></i>
+                )}
               </div>
               <div className="flex items-center  mb-[40px] gap-[40px] ">
                 <input type="checkbox" className="h-6 w-6 text-indigo-600" />

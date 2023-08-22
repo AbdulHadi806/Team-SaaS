@@ -3,26 +3,33 @@ import "./Login.css";
 import { useLoginAdminMutation } from "../../redux/apiCalls/apiSlice";
 import { Link } from "react-router-dom";
 const Login = () => {
+  const [showPassword, setShowPassword] = useState(false);
+  const [loginAdmin] = useLoginAdminMutation();
+  const togglePassword = () => {
+    setShowPassword(!showPassword);
+  };
   const [inputValue, setInput] = useState({
     userName: "",
     password: "",
   });
-
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      await loginAdmin(inputValue);
+      const response = await loginAdmin(inputValue);
+      console.log("data saved", response);
+      console.log("user token", response.data.token);
+      const token = response.data.token;
+      localStorage.setItem("token", token);
+      console.log("token", token);
       setInput("");
     } catch (err) {
       console.log(err);
     }
   };
-  const [loginAdmin] = useLoginAdminMutation();
   const handleChange = (e) => {
     setInput({ ...inputValue, [e.target.name]: e.target.value });
     console.log("input data", inputValue);
   };
-
   return (
     <>
       <div className="background-1">
@@ -48,17 +55,28 @@ const Login = () => {
                 />
               </div>
 
-              <div className="flex items-center mb-6 ">
+              <div className="flex items-center mb-6 relative">
                 <i className="fa-solid fa-lock border border  border-[#86a4c3]  p-4 rounded rounded-r-none  "></i>
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   name="password"
                   id="password"
                   value={inputValue.password}
                   onChange={handleChange}
                   placeholder="Password"
-                  className="border  border-[#86a4c3]  w-[100%] p-3 border-l-0 rounded rounded-l-none outline-none"
+                  className="border  border-[#86a4c3]  w-[100%] p-3 border-l-0 rounded rounded-l-none outline-none "
                 />
+                {showPassword ? (
+                  <i
+                    className="fa-solid fa-eye absolute right-[10px]"
+                    onClick={togglePassword}
+                  ></i>
+                ) : (
+                  <i
+                    class="fa-solid fa-eye-slash absolute right-[10px]"
+                    onClick={togglePassword}
+                  ></i>
+                )}
               </div>
 
               <div className="flex  justify-between ">
