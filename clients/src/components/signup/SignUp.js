@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import "./SignUp.css";
 import { Link } from "react-router-dom";
+import InputFields from "../login/InputFields";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser, faLock, faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import { socialIcons } from "../login/SocialIcons";
 const SignUp = ({ handleChange, inputValue, submitHandler }) => {
   const [showPassword, setShowPassword] = useState(false);
   const togglePassword = () => {
@@ -18,70 +22,53 @@ const SignUp = ({ handleChange, inputValue, submitHandler }) => {
               Register a new membership
             </span>
             <form className="w-[100%] mb-6" onSubmit={submitHandler}>
-              <div className="flex items-center mb-6 ">
-                <i className="fa-regular fa-user border  border-[#86a4c3]  p-4 rounded rounded-r-none  "></i>
-                <input
-                  type="text"
-                  name="name"
-                  id="name"
-                  onChange={handleChange}
-                  value={inputValue.name}
-                  required
-                  placeholder="Full Name"
-                  className="border  border-[#86a4c3]  w-[100%] p-3 border-l-0 rounded rounded-l-none outline-none"
-                />
-              </div>
-              <div className="flex items-center mb-6 ">
-                <i className="fa-regular fa-envelope border  border-[#86a4c3]  p-4 rounded rounded-r-none  "></i>
-                <input
-                  type="email"
-                  name="email"
-                  id="email"
-                  required
-                  onChange={handleChange}
-                  value={inputValue.email}
-                  placeholder="Email"
-                  className="border  border-[#86a4c3]  w-[100%] p-3 border-l-0 rounded rounded-l-none outline-none"
-                />
-              </div>
-
-              <div className="flex items-center mb-6 ">
-                <i className="fa-solid fa-lock border border  border-[#86a4c3]  p-4 rounded rounded-r-none  "></i>
-                <input
-                  type="text"
-                  required
-                  name="userName"
-                  id="userName"
-                  onChange={handleChange}
-                  value={inputValue.userName}
-                  placeholder=" User Name"
-                  className="border  border-[#86a4c3]  w-[100%] p-3 border-l-0 rounded rounded-l-none outline-none"
-                />
-              </div>
-              <div className="flex items-center mb-6  relative">
-                <i className="fa-solid fa-lock border  border-[#86a4c3]  p-4 rounded rounded-r-none  "></i>
-                <input
-                  type={showPassword ? "text" : "password"}
-                  name="password"
-                  placeholder="Password"
-                  onChange={handleChange}
-                  value={inputValue.password}
-                  className="border border-[#86a4c3] w-[100%] p-3 border-l-0 rounded rounded-l-none outline-none"
-                />
-                {showPassword ? (
-                  <i
-                    className="fa-solid fa-eye absolute right-[10px]"
-                    onClick={togglePassword}
-                  ></i>
-                ) : (
-                  <i
-                    class="fa-solid fa-eye-slash absolute right-[10px]"
-                    onClick={togglePassword}
-                  ></i>
-                )}
-              </div>
-              <div className="flex items-center  mb-[40px] gap-[40px] ">
-                <input type="checkbox" className="h-6 w-6 text-indigo-600" />
+              <InputFields
+                iconName={faUser}
+                type="text"
+                name="name"
+                id="name"
+                onChange={handleChange}
+                value={inputValue.name}
+                required
+                placeholder="Full Name"
+                className="border  border-[#86a4c3]  w-[100%] p-3 border-l-0 rounded rounded-l-none outline-none"
+              />
+              <InputFields
+                iconName={faEnvelope}
+                type="email"
+                name="email"
+                id="email"
+                required
+                onChange={handleChange}
+                value={inputValue.email}
+                placeholder="Email"
+                className="border  border-[#86a4c3]  w-[100%] p-3 border-l-0 rounded rounded-l-none outline-none"
+              />
+              <InputFields
+                iconName={faLock}
+                type="text"
+                required
+                name="userName"
+                id="userName"
+                onChange={handleChange}
+                value={inputValue.userName}
+                placeholder=" User Name"
+                className="border  border-[#86a4c3]  w-[100%] p-3 border-l-0 rounded rounded-l-none outline-none"
+              />
+              <InputFields
+                iconName={faLock}
+                type={showPassword ? "text" : "password"}
+                name="password"
+                placeholder="Password"
+                onChange={handleChange}
+                variant="pass"
+                value={inputValue.password}
+                className="border border-[#86a4c3] w-[100%] p-3 border-l-0 rounded rounded-l-none outline-none"
+                togglePassword={togglePassword}
+                showPassword={showPassword}
+              />
+              <div className="flex items-center  mb-[40px] gap-[40px] mt-[30px]">
+                <input type="checkbox" className="h-6 w-6 text-indigo-600 " />
                 <label className="text-[17px] ">
                   {" "}
                   I agree to the{" "}
@@ -91,7 +78,7 @@ const SignUp = ({ handleChange, inputValue, submitHandler }) => {
               <div className="flex justify-center ">
                 <button
                   type="submit"
-                  className="bg-[#00abea] text-white font-semibold py-4 px-6 rounded"
+                  className="bg-[#00abea]  text-white font-semibold py-2 hover:bg-[#000] hover:transition-all  px-6 rounded"
                 >
                   SIGN UP
                 </button>
@@ -110,24 +97,16 @@ const SignUp = ({ handleChange, inputValue, submitHandler }) => {
               -Register with-
             </span>
             <div className="flex items-center justify-center mt-3">
-              <a
-                href="/"
-                className=" h-[50px] w-[50px] bg-[#3b5998] rounded-[100%] box-border inline-block text-[#fff] flex items-center justify-center text-[20px]"
-              >
-                <i className="fa-brands fa-facebook-f"></i>
-              </a>
-              <a
-                href="/"
-                className=" mx-2 h-[50px] w-[50px] bg-[#1da1f2] rounded-[100%] box-border inline-block text-[#fff] flex items-center justify-center text-[20px]"
-              >
-                <i className="fa-brands fa-twitter"></i>
-              </a>
-              <a
-                href="/"
-                className=" h-[50px] w-[50px] bg-[#e1306c] rounded-[100%] box-border inline-block text-[#fff] flex items-center justify-center text-[20px]"
-              >
-                <i className="fa-brands fa-instagram"></i>
-              </a>
+              {socialIcons.map((icons, index) => (
+                <a
+                  key={index}
+                  href={icons.link}
+                  className={`mx-2 h-[50px] w-[50px] bg-[${icons.color}] rounded-[100%] box-border inline-block text-[#fff] flex items-center justify-center text-[20px]`}
+                  style={{ backgroundColor: icons.color }}
+                >
+                  <FontAwesomeIcon icon={icons.icon} />
+                </a>
+              ))}
             </div>
           </div>
         </div>

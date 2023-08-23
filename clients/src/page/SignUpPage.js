@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import SignUp from "../components/signup/SignUp";
+import Login from "../components/login/Login";
+import { useNavigate } from "react-router-dom";
 import { useCreateAdminMutation } from "../redux/apiCalls/apiSlice";
 
 const SignUpPage = () => {
@@ -9,11 +11,13 @@ const SignUpPage = () => {
     userName: "",
     password: "",
   });
+  const navigate = useNavigate();
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
       await createAdmin(inputValue);
       console.log("data saved", inputValue);
+      navigate("/");
       setInput("");
     } catch (err) {
       console.log(err);
