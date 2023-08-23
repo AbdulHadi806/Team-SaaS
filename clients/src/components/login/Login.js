@@ -32,7 +32,7 @@ const Login = () => {
         localStorage.setItem("access_token_admin", token);
         alertify.set("notifier", "position", "top-center");
         alertify.success(response.data.message);
-        navigate("/dashboard");
+       await navigate("/dashboard");
       }
       if (response.data.status === false) {
         alertify.set("notifier", "position", "top-center");
