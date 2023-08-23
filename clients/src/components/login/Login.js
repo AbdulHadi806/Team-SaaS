@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import alertify from "alertifyjs";
 import "alertifyjs/build/css/alertify.css";
 import "./Login.css";
+
 import { faUser, faLock } from "@fortawesome/free-solid-svg-icons";
 import { useLoginAdminMutation } from "../../redux/apiCalls/apiSlice";
 import InputFields from "./InputFields";
@@ -28,10 +29,10 @@ const Login = () => {
       const response = await loginAdmin(inputValue);
       const token = response.data.token;
       if (response.data.status === true && token) {
-        localStorage.setItem("token", token);
+        localStorage.setItem("access_token_admin", token);
         alertify.set("notifier", "position", "top-center");
         alertify.success(response.data.message);
-        navigate("/signUp");
+        navigate("/dasboard");
       }
       if (response.data.status === false) {
         alertify.set("notifier", "position", "top-center");
