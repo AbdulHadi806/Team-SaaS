@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SignUp from "../components/signup/SignUp";
-import Login from "../components/login/Login";
 import { useNavigate } from "react-router-dom";
+import alertify from "alertifyjs";
+import "alertifyjs/build/css/alertify.css";
 import { useCreateAdminMutation } from "../redux/apiCalls/apiSlice";
 
 const SignUpPage = () => {
@@ -11,19 +12,33 @@ const SignUpPage = () => {
     userName: "",
     password: "",
   });
+  const [createAdmin, { error }] = useCreateAdminMutation();
+  console.log("error", error);
   const navigate = useNavigate();
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      await createAdmin(inputValue);
-      console.log("data saved", inputValue);
+      const response = await createAdmin(inputValue);
+      if (response.data.status === true) console.log("data saved", inputValue);
+      alertify.set("notifier", "position", "top-center");
+      alertify.success(response.data.message);
       navigate("/");
       setInput("");
+      if (response.data.status === false) {
+        alertify.set("notifier", "position", "top-center");
+        alertify.error(response.data.message);
+      }
     } catch (err) {
       console.log(err);
     }
   };
-  const [createAdmin] = useCreateAdminMutation();
+  useEffect(() => {
+    if (error) {
+      alertify.set("notifier", "position", "top-center");
+      alertify.error(error && error.data.message);
+    }
+  }, [error]);
+
   const handleChange = (e) => {
     setInput({ ...inputValue, [e.target.name]: e.target.value });
     console.log("input data", inputValue);

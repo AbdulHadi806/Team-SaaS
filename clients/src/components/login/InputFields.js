@@ -7,16 +7,16 @@ function InputFields(props) {
     <>
       <div className="flex items-center mb-4 relative">
         <FontAwesomeIcon
-          icon={props.iconName}
+          icon={props.iconname}
           className=" border  border-[#86a4c3]  p-[16px] rounded rounded-r-none "
         />
         <input {...props} />
 
         {props.variant === "pass" && (
           <FontAwesomeIcon
-            icon={props.showPassword ? faEye : faEyeSlash}
+            icon={props.showpassword ? faEye : faEyeSlash}
             className="absolute right-[10px] cursor-pointer"
-            onClick={props.togglePassword}
+            onClick={props.togglepassword}
           />
         )}
       </div>

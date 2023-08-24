@@ -12,8 +12,7 @@ import { socialIcons } from "../login/SocialIcons";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [loginAdmin, { data: loginSuccess, error: loginError }] =
-    useLoginAdminMutation();
+  const [loginAdmin, { error: loginError }] = useLoginAdminMutation();
   const navigate = useNavigate();
   const togglePassword = () => {
     setShowPassword(!showPassword);
@@ -27,14 +26,14 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await loginAdmin(inputValue);
-      const token = response.data.token;
-      if (response.data.status === true && token) {
+      if (response.data.status) {
+        const token = response.data.token;
         localStorage.setItem("access_token_admin", token);
         alertify.set("notifier", "position", "top-center");
         alertify.success(response.data.message);
-       await navigate("/dashboard");
+        navigate("/mainDashboard");
       }
-      if (response.data.status === false) {
+      if (!response.data.status) {
         alertify.set("notifier", "position", "top-center");
         alertify.error(response.data.message);
       }
@@ -51,10 +50,11 @@ const Login = () => {
 
   const handleChange = (e) => {
     setInput({ ...inputValue, [e.target.name]: e.target.value });
+    console.log("input data", inputValue);
   };
   return (
     <>
-      <div className="background-1">
+      <div className="background-1 h-full">
         <div>
           <div className="md:w-[600px] p-[60px]  bg-[#fff] rounded ">
             <h2 className="text-center text-[36px] text-blue-600 font-bold mb-2">
@@ -65,7 +65,7 @@ const Login = () => {
             </span>
             <form className="w-[100%] mb-6" onSubmit={submitHandler}>
               <InputFields
-                iconName={faUser}
+                iconname={faUser}
                 type="text"
                 name="userName"
                 id="userName"
@@ -75,7 +75,7 @@ const Login = () => {
                 className="border  border-[#86a4c3]  w-[100%] p-3 border-l-0 rounded rounded-l-none outline-none"
               />
               <InputFields
-                iconName={faLock}
+                iconname={faLock}
                 type={showPassword ? "text" : "password"}
                 name="password"
                 id="password"
@@ -84,7 +84,7 @@ const Login = () => {
                 onChange={handleChange}
                 placeholder="Password"
                 className="border  border-[#86a4c3]  w-[100%] p-3 border-l-0 rounded rounded-l-none outline-none "
-                togglePassword={togglePassword}
+                togglepassword={togglePassword}
                 showPassword={showPassword}
               />
               <div className="flex  justify-between ">

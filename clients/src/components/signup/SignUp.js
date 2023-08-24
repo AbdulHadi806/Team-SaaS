@@ -23,7 +23,7 @@ const SignUp = ({ handleChange, inputValue, submitHandler }) => {
             </span>
             <form className="w-[100%] mb-6" onSubmit={submitHandler}>
               <InputFields
-                iconName={faUser}
+                iconname={faUser}
                 type="text"
                 name="name"
                 id="name"
@@ -34,7 +34,7 @@ const SignUp = ({ handleChange, inputValue, submitHandler }) => {
                 className="border  border-[#86a4c3]  w-[100%] p-3 border-l-0 rounded rounded-l-none outline-none"
               />
               <InputFields
-                iconName={faEnvelope}
+                iconname={faEnvelope}
                 type="email"
                 name="email"
                 id="email"
@@ -45,7 +45,7 @@ const SignUp = ({ handleChange, inputValue, submitHandler }) => {
                 className="border  border-[#86a4c3]  w-[100%] p-3 border-l-0 rounded rounded-l-none outline-none"
               />
               <InputFields
-                iconName={faLock}
+                iconname={faLock}
                 type="text"
                 required
                 name="userName"
@@ -56,15 +56,16 @@ const SignUp = ({ handleChange, inputValue, submitHandler }) => {
                 className="border  border-[#86a4c3]  w-[100%] p-3 border-l-0 rounded rounded-l-none outline-none"
               />
               <InputFields
-                iconName={faLock}
+                iconname={faLock}
                 type={showPassword ? "text" : "password"}
                 name="password"
                 placeholder="Password"
                 onChange={handleChange}
                 variant="pass"
+                required
                 value={inputValue.password}
                 className="border border-[#86a4c3] w-[100%] p-3 border-l-0 rounded rounded-l-none outline-none"
-                togglePassword={togglePassword}
+                togglepassword={togglePassword}
                 showPassword={showPassword}
               />
               <div className="flex items-center  mb-[40px] gap-[40px] mt-[30px]">
