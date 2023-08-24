@@ -53,6 +53,7 @@ const loginAdmin = async (req, res) => {
     const user = await Admin.findOne({
       userName: req.body.userName,
     })
+    console.log(user, "useruseruseruser useruseruseruser useruseruseruser")
     if(!user){
       return res.status(404).json({message: "Username or password Incorrect..", status: false});
     }
