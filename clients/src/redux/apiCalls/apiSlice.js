@@ -32,6 +32,21 @@ export const apiSlice = createApi({
 
       invalidatesTags: ["Admin"],
     }),
+    getAdminProfile: builder.mutation({
+      query: (token) => ({
+        url: "profile/admin",
+        method: "GET",
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+          authorization: `Bearer ${token}`,
+        },
+      }),
+      invalidatesTags: ["Admin"],
+    }),
   }),
 });
-export const { useCreateAdminMutation, useLoginAdminMutation } = apiSlice;
+export const {
+  useCreateAdminMutation,
+  useLoginAdminMutation,
+  useGetAdminProfileMutation,
+} = apiSlice;

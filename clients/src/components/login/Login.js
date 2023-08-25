@@ -26,6 +26,7 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await loginAdmin(inputValue);
+      console.log("respo", response);
       if (response.data.status) {
         const token = response.data.token;
         localStorage.setItem("access_token_admin", token);
@@ -33,6 +34,7 @@ const Login = () => {
         alertify.success(response.data.message);
         navigate("/mainDashboard");
       }
+
       if (!response.data.status) {
         alertify.set("notifier", "position", "top-center");
         alertify.error(response.data.message);
@@ -46,11 +48,10 @@ const Login = () => {
       alertify.set("notifier", "position", "top-center");
       alertify.error(loginError && loginError.data.message);
     }
-  }, [loginError]);
+  }, [loginError, navigate]);
 
   const handleChange = (e) => {
     setInput({ ...inputValue, [e.target.name]: e.target.value });
-    console.log("input data", inputValue);
   };
   return (
     <>
@@ -85,7 +86,7 @@ const Login = () => {
                 placeholder="Password"
                 className="border  border-[#86a4c3]  w-[100%] p-3 border-l-0 rounded rounded-l-none outline-none "
                 togglepassword={togglePassword}
-                showPassword={showPassword}
+                showpassword={showPassword}
               />
               <div className="flex  justify-between ">
                 <div className="flex items-start  mb-[40px] gap-[30px] ">
@@ -115,7 +116,7 @@ const Login = () => {
                 Don't have an account?
                 <Link
                   to="/signUp"
-                  className="text-[#D97706] hover:text-[#FF6C6C] font-bold"
+                  className="text-[#D97706] hover:text-[#FF6C6C] font-bold ms-1"
                 >
                   Sign Up
                 </Link>

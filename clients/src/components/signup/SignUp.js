@@ -66,7 +66,7 @@ const SignUp = ({ handleChange, inputValue, submitHandler }) => {
                 value={inputValue.password}
                 className="border border-[#86a4c3] w-[100%] p-3 border-l-0 rounded rounded-l-none outline-none"
                 togglepassword={togglePassword}
-                showPassword={showPassword}
+                showpassword={showPassword}
               />
               <div className="flex items-center  mb-[40px] gap-[40px] mt-[30px]">
                 <input type="checkbox" className="h-6 w-6 text-indigo-600 " />
@@ -90,7 +90,7 @@ const SignUp = ({ handleChange, inputValue, submitHandler }) => {
                 {" "}
                 Already have an account?{" "}
                 <Link to="/" className="text-[#D97706] font-bold">
-                  sign In
+                  Login In
                 </Link>
               </label>
             </div>
