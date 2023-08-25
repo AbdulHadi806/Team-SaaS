@@ -8,9 +8,9 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 const menuItems = [
-  { icon: faDashboard, text: "Dashboard", link: "/dashboard" },
-  { icon: faUser, text: "Users", link: "/" },
-  { icon: faSignInAlt, text: "Sign In", link: "/" },
+  { icon: faDashboard, text: "Dashboard", link: "/mainDashboard" },
+  { icon: faUser, text: "Users", link: "/mainDashboard" },
+  { icon: faSignInAlt, text: "Sign In", link: "/mainDashboard" },
   { icon: faSignOutAlt, text: "Log Out", link: "/logout" },
 ];
 

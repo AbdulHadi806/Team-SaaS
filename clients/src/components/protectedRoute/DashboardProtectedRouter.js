@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { AdminToken } from "../../redux/utils/adminAuth";
 
-function Protectedroute() {
+function DashboardProtectedroute() {
   const navigate = useNavigate();
   const token = AdminToken();
 
@@ -14,4 +14,4 @@ function Protectedroute() {
   return <Outlet />;
 }
 
-export default Protectedroute;
+export default DashboardProtectedroute;

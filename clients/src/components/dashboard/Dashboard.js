@@ -2,18 +2,22 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 import dateFormat from "dateformat";
 import { useEffect, useState } from "react";
+
+
 const Dashboard = ({ profile }) => {
   const [dateTime, setDateTime] = useState();
   const [day, setDay] = useState("");
+
   useEffect(() => {
     const interval = setInterval(() => {
-      setDateTime(new Date()); // Update date and time every second
+      setDateTime(new Date()); 
     }, 1000);
 
     return () => {
-      clearInterval(interval); // Clear the interval on component unmount
+      clearInterval(interval); 
     };
   }, []);
+
   const formattedTime = dateFormat(day, "h:MM:ss TT");
   const formattedDateTime = dateFormat(dateTime, "dddd, mmmm dS, yyyy");
   return (
