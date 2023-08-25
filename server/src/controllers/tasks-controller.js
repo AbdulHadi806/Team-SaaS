@@ -21,13 +21,12 @@ const addTasks = async (req, res) => {
 
 const deleteTasks = async (req, res) => {
     try {
-        const _id = req.body._id
+        const _id = req.params.task_id
         const existingTask = await Task.findById(_id)
         if (!existingTask) {
-            res.status(404).json({ message: "Task not found", status: false })
+           return res.status(404).json({ message: "Task not found", status: false })
         }
-        const deletedTodo = await Task.findByIdAndDelete(_id)
-        console.log(deletedTodo, 'existingTask')
+        await Task.findByIdAndDelete(_id)
         res.status(200).json({ message: "Task Successfully deleted", status: true })
     } catch (err) {
         res.json(500).json({ message: "Failed to delete Task.", status: false })
@@ -36,12 +35,12 @@ const deleteTasks = async (req, res) => {
 
 const updateTasks = async (req, res) => {
     try {
-        const _id = req.body._id;
-        const existingTask = await Task.findById(_id);
-        existingTask.status = true
+        const _id = req.params.task_id
+        const existingTask = await Task.findById(_id)
         if (!existingTask) {
             return res.status(404).json({ message: "Task not found", status: false });
         }
+        existingTask.status = true
         await existingTask.save();
         res.status(200).json({ message: "Task updated successfully", status: true })
     } catch (err) {
@@ -56,7 +55,7 @@ const getAllTasks = async (req, res) => {
         if (!getAllTasks) {
             return res.status(404).json({ message: "No Task Found", status: false })
         }
-        res.status(200).json({ message: "Tasks Found", status: true })
+        res.status(200).json({ message: "Tasks Found", status: true, getAllTasks })
     } catch (err) {
         res.json(500).json({ message: "Something Went Wrong", status: false })
     }
@@ -66,7 +65,7 @@ const getAllMyTasks = async (req, res) => {
         const user_Id = req.user._id
         const getAllTasks = await Task.find({ assigned_to: user_Id })
         if(!getAllTasks){
-            return res.status(404).json({message: "No assigned Task found.", status: true})
+            return res.status(404).json({message: "No assigned Task found.", status: false})
         }
         res.status(200).json({message: "Tasks Found", status: true, getAllTasks})
     } catch (err) {
@@ -74,6 +73,20 @@ const getAllMyTasks = async (req, res) => {
     }
 }
 
+const getAllTasksByRole = async (req, res) => {
+    try {
+        const taskCategory = req.params.role;
+        const getAllTasksByRole = await Task.find({assigned_to_role: taskCategory})
+        if(!getAllTasksByRole) {
+            return res.status(404).json({message: "No Tasks Found.", status: false})
+        }
+        res.status(200).json({message:"Tasks Found.", status: true, getAllTasksByRole})
+    } catch(err) {
+        res.status(500).json({message: "Failed to fetch Tasks.", status: false})
+    }
+}
+
+exports.getAllTasksByRole = getAllTasksByRole;
 exports.getAllMyTasks = getAllMyTasks;
 exports.getAllTasks = getAllTasks;
 exports.updateTasks = updateTasks;
