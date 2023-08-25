@@ -6,12 +6,14 @@ import DashboardProtectedroute from "./components/protectedRoute/DashboardProtec
 import { Logout } from "./components/login/Logout";
 import Sidebar from "./components/Sidebar";
 import MainDashboard from "./components/dashboard/MainDashboard";
+import NotFoundPage from "./components/NotFound/NotFoundPage";
 
 
 function App() {
   return (
     <div className="App">
       <Routes>
+      <Route path='*' element={<NotFoundPage />}/>
         <Route path="/" element={<Login />} />
         <Route element={<DashboardProtectedroute />}>
           <Route path="/mainDashboard" element={<MainDashboard />} />
