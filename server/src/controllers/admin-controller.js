@@ -3,7 +3,6 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const signUpAdmin = async (req, res) => {
-  console.log("body", req.body);
   if (
     !req.body.name ||
     !req.body.email ||
@@ -15,11 +14,16 @@ const signUpAdmin = async (req, res) => {
       .json({ message: "Something is missing.", status: false });
   }
   try {
+    const hasUppercase = /[A-Z]/.test(req.body.password);
+    const hasDigit = /\d/.test(req.body.password);
+    const hasSpecialCharacter = /[@$!%*?&]/.test(req.body.password);
+
+    if (!hasUppercase || !hasDigit || !hasSpecialCharacter || req.body.password.length <= 8) {
+      return res.status(400).json({message: "Password must contain at least one uppercase letter, one digit, and one special character.",status: false});
+    }
     const userNameExists = await Admin.findOne({ userName: req.body.userName });
     if (userNameExists !== null) {
-      return res
-        .status(500)
-        .json({ message: "User Already Exists", status: false });
+      return res.status(404).json({ message: "User Already Exists", status: false });
     }
     const salt = await bcrypt.genSalt(10);
     const password = req.body.password;
@@ -53,16 +57,15 @@ const loginAdmin = async (req, res) => {
     const user = await Admin.findOne({
       userName: req.body.userName,
     })
-    console.log(user, "useruseruseruser useruseruseruser useruseruseruser")
-    if(!user){
-      return res.status(404).json({message: "Username or password Incorrect..", status: false});
+    if (!user) {
+      return res.status(404).json({ message: "Username or password Incorrect..", status: false });
     }
     const passwordChecker = await bcrypt.compare(
       req.body.password,
       user.password
     );
-    if(!passwordChecker){
-      return res.status(404).json({message: "Username or Password Incorrect..", status: false});
+    if (!passwordChecker) {
+      return res.status(404).json({ message: "Username or Password Incorrect..", status: false });
     }
     if (user && passwordChecker) {
       const token = jwt.sign(
@@ -79,9 +82,9 @@ const loginAdmin = async (req, res) => {
         .set("Authorization", `Bearer ${token}`)
         .status(200)
         .json({ token, message: "Logged in Successfully", status: true });
-    } 
+    }
   } catch (err) {
-    res.status(500).json({ message: "Something went wrong. Please try again." , status: false});
+    res.status(500).json({ message: "Something went wrong. Please try again.", status: false });
   }
 };
 
