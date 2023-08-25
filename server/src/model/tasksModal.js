@@ -29,6 +29,14 @@ const taskSchema = new mongoose.Schema({
         type: [subtaskSchema],
         default: []
     },
+    Created_By: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Admin',
+        required: true
+    },
+    assigned_to_role: {
+        type: String,
+    },
     assigned_to: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
