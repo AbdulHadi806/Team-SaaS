@@ -16,7 +16,7 @@ const menuItems = [
 
 function Sidebar() {
   return (
-    <div className="h-screen w-60 h-full transition-transform -translate-x-full sm:translate-x-0">
+    <div className="h-screen w-60 h-full transition-transform -translate-x-full sm:translate-x-0 fixed">
       <div className="h-full px-3 py-4 overflow-y-auto bg-gray-800">
         <ul className="space-y-2 font-medium">
           {menuItems.map((item, index) => (

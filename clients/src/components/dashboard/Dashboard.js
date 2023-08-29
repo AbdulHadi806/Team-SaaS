@@ -2,34 +2,20 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 import dateFormat from "dateformat";
 import { useEffect, useState } from "react";
-import { AdminToken } from "../../redux/utils/adminAuth";
-import { useGetAllUsersMutation } from "../../redux/apiCalls/apiSlice";
-
 
 const Dashboard = ({ profile }) => {
   const [dateTime, setDateTime] = useState();
   const [day, setDay] = useState("");
-  const [getAllUsers] = useGetAllUsersMutation()
+
   useEffect(() => {
     const interval = setInterval(() => {
-      setDateTime(new Date()); 
+      setDateTime(new Date());
     }, 1000);
 
     return () => {
-      clearInterval(interval); 
+      clearInterval(interval);
     };
   }, []);
-  const getAllUsersHandler = async() => {
-    try {
-      const res = await getAllUsers()
-      console.log(res, "getAllUsersHandler")
-    } catch(err) {
-      console.log(err)
-    }
-  }
-  useEffect(() => {
-    getAllUsersHandler()
-  }, [])
 
   const formattedTime = dateFormat(day, "h:MM:ss TT");
   const formattedDateTime = dateFormat(dateTime, "dddd, mmmm dS, yyyy");

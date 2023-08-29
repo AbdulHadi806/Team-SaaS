@@ -10,9 +10,11 @@ import NotFoundPage from "./components/NotFound/NotFoundPage";
 import CreateTask from "./components/tasks/CreateTask";
 import CreateUsers from "./components/user/CreateUsers";
 
+import UserTable from "./components/user/UserTable";
+
 function App() {
   return (
-    <div className="App h-[100vh]">
+    <div className="App">
       <Routes>
         <Route path="*" element={<NotFoundPage />} />
         <Route path="/" element={<Login />} />
@@ -22,8 +24,12 @@ function App() {
         <Route path="/signUp" element={<SignUpPage />} />
         <Route path="/sideBar" element={<Sidebar />} />
         <Route path="/logout" element={<Logout />} />
+
         <Route path="/createTask" element={<CreateTask />} />
         <Route path="/createUsers" element={<CreateUsers />} />
+
+        <Route path="/createUser" element={<CreateUsers />} />
+        <Route path="/userTable" element={<UserTable />} />
       </Routes>
     </div>
   );

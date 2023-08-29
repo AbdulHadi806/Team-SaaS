@@ -11,6 +11,7 @@ function CreateTask() {
   const [usersData, setUsersData] = useState([]);
   const [createTask] = useCreateTaskMutation();
   const [getAllUsers] = useGetAllUsersMutation();
+  const token = AdminToken();
 
   const [task, setTask] = useState({
     task: "",
@@ -22,16 +23,21 @@ function CreateTask() {
     getAllUsersHandler();
   }, []);
 
+  useEffect(() => {
+    console.log("Updated user data:", usersData);
+  }, [usersData]);
+
   const handleChange = (e) => {
     setTask({ ...task, [e.target.name]: e.target.value });
     console.log("ghjgjhg", task);
   };
-  const token = AdminToken();
-  console.log("token", token);
+
   const getAllUsersHandler = async () => {
     try {
       const res = await getAllUsers(token);
       console.log(res, "getAllUsersHandler");
+      setUsersData(res.data.users);
+      console.log("userdata", usersData);
     } catch (err) {
       console.log(err);
     }
@@ -41,7 +47,7 @@ function CreateTask() {
     e.preventDefault();
     try {
       console.log(token, "tooo");
-      const response = await createTask(task, token);
+      const response = await createTask(task);
       console.log("respo", response);
     } catch (err) {
       console.log(err);
@@ -82,12 +88,12 @@ function CreateTask() {
             className="border border-[#86a4c3] w-[100%] p-3 border-l-0 rounded rounded-l-none outline-none"
           >
             <option value="">Assigned To</option>
-            {/* {usersData &&
-              usersData.users.map((user) => (
-                <option key={user.id} value={user.id}>
-                  {user.name}
+            {usersData &&
+              usersData.map((user) => (
+                <option key={user._id} value={user._id}>
+                  {user.userName}
                 </option>
-              ))} */}
+              ))}
           </select>
 
           <div className="flex justify-center ">

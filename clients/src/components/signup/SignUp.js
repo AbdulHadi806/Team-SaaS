@@ -12,7 +12,7 @@ const SignUp = ({ handleChange, inputValue, submitHandler }) => {
   };
   return (
     <>
-      <div className="background h-[100vh]">
+      <div className="background">
         <div>
           <div className="md:w-[700px] p-[60px]  bg-[#fff] rounded ">
             <h2 className="text-center text-[36px] text-blue-600 font-bold mb-2">

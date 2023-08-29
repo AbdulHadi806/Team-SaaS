@@ -48,7 +48,7 @@ const Login = () => {
       alertify.set("notifier", "position", "top-center");
       alertify.error(loginError && loginError.data.message);
     }
-  }, [loginError]);
+  }, [loginError, navigate]);
 
   const handleChange = (e) => {
     setInput({ ...inputValue, [e.target.name]: e.target.value });
