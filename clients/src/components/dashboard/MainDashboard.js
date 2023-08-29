@@ -4,6 +4,7 @@ import Dashboard from "./Dashboard";
 import Tasks from "./Tasks";
 import { AdminToken } from "../../redux/utils/adminAuth";
 import { useGetAdminProfileMutation } from "../../redux/apiCalls/apiSlice";
+import Header from "../Header";
 
 function MainDashboard() {
   const [profile, setProfile] = useState("");
@@ -27,8 +28,9 @@ function MainDashboard() {
     <>
       <div className="flex offset-3">
         <Sidebar />
-        <div className="flex flex-col pr-[30px]">
+        <div className="flex-1 flex flex-col pl-60 mx-auto max-w-full">
           <div>
+            <Header />
             <Dashboard profile={profile} />
             <Tasks />
           </div>

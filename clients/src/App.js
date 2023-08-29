@@ -22,12 +22,8 @@ function App() {
           <Route path="/mainDashboard" element={<MainDashboard />} />
         </Route>
         <Route path="/signUp" element={<SignUpPage />} />
-        <Route path="/sideBar" element={<Sidebar />} />
         <Route path="/logout" element={<Logout />} />
-
         <Route path="/createTask" element={<CreateTask />} />
-        <Route path="/createUsers" element={<CreateUsers />} />
-
         <Route path="/createUser" element={<CreateUsers />} />
         <Route path="/userTable" element={<UserTable />} />
       </Routes>

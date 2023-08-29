@@ -99,14 +99,17 @@ const updateUserInfo = async (req, res) => {
 }
 
 const getAllUsers = async (req, res) => {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 5;
     try {
         const created_by = req.user._id;
-        const users = await User.find({ created_by })
-        console.log(users, "users at after merged from Usama")
+        const users = await User.find({ created_by }).skip((page - 1) * limit)
+        .limit(limit);
+        const totalCount = await User.countDocuments({ created_by });
         if (!users) {
             return res.status(204).json({ message: "No users available.", status: false })
         }
-        res.status(200).json({ message: "All users fetched successfully.", status: true, users })
+        res.status(200).json({ message: "All users fetched successfully.", status: true, users, totalCount })
     } catch (err) {
         res.status(500).json({ message: "Failed to fetch users", status: false })
     }

@@ -1,52 +1,90 @@
 import React, { useEffect, useState } from "react";
 import { useGetAllUsersMutation } from "../../redux/apiCalls/apiSlice";
 import { AdminToken } from "../../redux/utils/adminAuth";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+import { faCog, faCircle, faTimes, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
+import ReactPaginate from 'react-paginate';
+import Pagination from "../reusableComponent/Pagination";
+import { ToolTip } from "../reusableComponent/Tooltip";
+
 
 const UserTable = () => {
   const [getAllUsers, { data }] = useGetAllUsersMutation();
-  const getAllUsersHandler = async () => {
-    const token = AdminToken();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
+
+  const getAllUsersHandler = async (currentPage) => {
     try {
-      const res = await getAllUsers(token);
-      console.log(res, "getAllUsersHandler");
+      const res = await getAllUsers(currentPage);
+      const count = Math.ceil(res.data.totalCount / 5);
+      setTotalCount(count)
     } catch (err) {
       console.log(err);
     }
   };
   useEffect(() => {
-    getAllUsersHandler();
+    getAllUsersHandler(currentPage);
     console.log(data, "data");
-  }, []);
+  }, [currentPage]);
+  const handlePageChange = ({ selected }) => {
+    setCurrentPage(selected + 1);
+  };
+
   return (
-    <div class=" w-6/12 m-auto  overflow-x-auto shadow-md sm:rounded-lg">
-      <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+    <div class=" w-6/12 m-auto  overflow-x-auto shadow-md sm:rounded-lg mt-[80px]">
+         <table class="w-full">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-          <tr>
+          <tr className="bg-[#299be4] text-[15px] font-bold text-[#fff] text-center">
+            <th scope="col" class="px-6 py-3">
+              #
+            </th>
             <th scope="col" class="px-6 py-3">
               User name
             </th>
             <th scope="col" class="px-6 py-3">
               Role
             </th>
-         
+            <th scope="col" class="px-6 py-3">
+              create
+            </th>
+            <th scope="col" class="px-6 py-3">
+            Action
+            </th>
+        
           </tr>
         </thead>
         <tbody>
           {data &&
-            data.users.map((item) => (
-              <tr class="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
-                <th
-                  scope="row"
-                  class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                >
+            data.users.map((item, index) => (
+              <tr class="bg-white border-b dark:bg-gray-900 dark:border-gray-700  text-[18px] text-bold  hover:bg-[#edeaea]  text-center">
+                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                  {index + 1}
+                </td>
+                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                   {item.userName}
-                </th>
+                </td>
                 <td class="px-6 py-4">{item.role}</td>
-               
+                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
+                  {item.updatedAt}
+                </td>
+
+                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white  flex gap-2 justify-center item-center text-center text-[20px]">
+                <button> <ToolTip content="update"> <FontAwesomeIcon icon={faCog} style={{ color: "#59b5f8" }} /></ToolTip></button>
+                     <button> <ToolTip content="setting"> <FontAwesomeIcon icon={faCircleXmark} style={{ color: "#972020" }}/></ToolTip></button>
+                </td>
+              
               </tr>
             ))}
         </tbody>
       </table>
+      <div className="flex justify-end">
+      <Pagination
+          pageCount={totalCount}
+          handlePageChange={handlePageChange}
+          currentPage={currentPage}
+        />
+      </div>
     </div>
   );
 };

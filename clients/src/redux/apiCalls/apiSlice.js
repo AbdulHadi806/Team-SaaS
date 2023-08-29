@@ -61,8 +61,8 @@ export const apiSlice = createApi({
       invalidatesTags: ["Tasks"],
     }),
     getAllUsers: builder.mutation({
-      query: () => ({
-        url: "users/all-users",
+      query: (currentPage) => ({
+        url: `users/all-users?page=${currentPage}`,
         method: "GET",
         headers: {
           "Content-type": "application/json; charset=UTF-8",
