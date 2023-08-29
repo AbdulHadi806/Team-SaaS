@@ -24,7 +24,7 @@ function MainDashboard() {
   }, []);
   return (
     <>
-      <div className="flex">
+      <div className="flex offset-3">
         <Sidebar />
         <div>
           <Dashboard profile={profile} />
