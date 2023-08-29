@@ -2,10 +2,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 import dateFormat from "dateformat";
 import { useEffect, useState } from "react";
+import CreateTask from "../tasks/CreateTask";
 
 const Dashboard = ({ profile }) => {
   const [dateTime, setDateTime] = useState();
   const [day, setDay] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -36,12 +45,12 @@ const Dashboard = ({ profile }) => {
           </div>
           <div className="flex items-center">
             <i class="fa-solid fa-magnifying-glass  px-5 py-[25px] color bg-[#D1D5DB] mr-2 rounded-md text-[20px] text-[#000000] font-bold"></i>
-            <a
-              href="/dashboard"
+            <button
+              onClick={openModal}
               className="px-[40px] py-6 color bg-[#000000] text-white rounded-md "
             >
               Add New User
-            </a>
+            </button>
           </div>
         </div>
 
@@ -133,6 +142,9 @@ const Dashboard = ({ profile }) => {
           </div>
         </div>
       </div>
+      {isModalOpen && (
+        <CreateTask closeModal={closeModal} openModal={openModal} />
+      )}
     </>
   );
 };

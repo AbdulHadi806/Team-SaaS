@@ -7,17 +7,17 @@ import InputFields from "../login/InputFields";
 import { AdminToken } from "../../redux/utils/adminAuth";
 import { faTasks, faTasksAlt } from "@fortawesome/free-solid-svg-icons";
 
-function CreateTask() {
+function CreateTask({ openModal, closeModal }) {
   const [usersData, setUsersData] = useState([]);
-  const [createTask] = useCreateTaskMutation();
-  const [getAllUsers] = useGetAllUsersMutation();
-  const token = AdminToken();
-
   const [task, setTask] = useState({
     task: "",
     assigned_to_role: "",
     assigned_to: " ",
   });
+
+  const [createTask] = useCreateTaskMutation();
+  const [getAllUsers] = useGetAllUsersMutation();
+  const token = AdminToken();
 
   useEffect(() => {
     getAllUsersHandler();
@@ -49,6 +49,7 @@ function CreateTask() {
       console.log(token, "tooo");
       const response = await createTask(task);
       console.log("respo", response);
+      closeModal();
     } catch (err) {
       console.log(err);
     }
@@ -56,7 +57,7 @@ function CreateTask() {
 
   return (
     <>
-      <div className=" w-[100%] h-screen flex justify-center items-center">
+      <div className=" z-10 fixed inset-0 w-[100%] h-screen flex justify-center items-center">
         <form
           className="className= md:w-[600px] p-[60px]  bg-[#125680] rounded "
           onSubmit={submitHandler}
@@ -96,12 +97,18 @@ function CreateTask() {
               ))}
           </select>
 
-          <div className="flex justify-center ">
+          <div className="flex justify-center pt-10">
             <button
               type="submit"
               className="bg-[#FF6C6C] text-white uppercase font-semibold mt-4 py-2 hover:bg-[#000] hover:transition-all  px-6 rounded"
             >
               Create Task
+            </button>
+            <button
+              className="bg-[#134E4C] text-white uppercase font-semibold mt-4 py-2 hover:bg-[#000] hover:transition-all ms-3  px-6 rounded"
+              onClick={closeModal}
+            >
+              Cancel
             </button>
           </div>
         </form>

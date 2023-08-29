@@ -25,13 +25,11 @@ function MainDashboard() {
 
   return (
     <>
-      <div className="flex offset-3">
+      <div className="flex w-full">
         <Sidebar />
-        <div className="flex flex-col pr-[30px]">
-          <div>
-            <Dashboard profile={profile} />
-            <Tasks />
-          </div>
+        <div className="flex flex-col ps-[60px] w-11/12">
+          <Dashboard profile={profile} />
+          <Tasks />
         </div>
       </div>
     </>
