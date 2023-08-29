@@ -8,7 +8,7 @@ function InputFields(props) {
       <div className="flex items-center  mb-4 relative">
         <FontAwesomeIcon
           icon={props.iconname}
-          className=" border  border-[#86a4c3]  p-[16px] rounded rounded-r-none "
+          className=" border  border-[#86a4c3]  p-[16px] rounded rounded-r-none  "
         />
         <input {...props} />
 
