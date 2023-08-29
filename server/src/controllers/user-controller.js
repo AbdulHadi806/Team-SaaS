@@ -102,7 +102,7 @@ const getAllUsers = async (req, res) => {
     try {
         const created_by = req.user._id;
         const users = await User.find({ created_by })
-        console.log(users, "users at getAllUsers")
+        console.log(users, "users at after merged from Usama")
         if (!users) {
             return res.status(204).json({ message: "No users available.", status: false })
         }
