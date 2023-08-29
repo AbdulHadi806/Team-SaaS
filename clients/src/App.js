@@ -7,14 +7,14 @@ import { Logout } from "./components/login/Logout";
 import Sidebar from "./components/Sidebar";
 import MainDashboard from "./components/dashboard/MainDashboard";
 import NotFoundPage from "./components/NotFound/NotFoundPage";
+import CreateTask from "./components/tasks/CreateTask";
 import CreateUsers from "./components/user/CreateUsers";
-
 
 function App() {
   return (
     <div className="App">
       <Routes>
-      <Route path='*' element={<NotFoundPage />}/>
+        <Route path="*" element={<NotFoundPage />} />
         <Route path="/" element={<Login />} />
         <Route element={<DashboardProtectedroute />}>
           <Route path="/mainDashboard" element={<MainDashboard />} />
@@ -22,7 +22,8 @@ function App() {
         <Route path="/signUp" element={<SignUpPage />} />
         <Route path="/sideBar" element={<Sidebar />} />
         <Route path="/logout" element={<Logout />} />
-        <Route path="/createUser" element={<CreateUsers/>}/>
+        <Route path="/createTask" element={<CreateTask />} />
+        <Route path="/createUsers" element={<CreateUsers />} />
       </Routes>
     </div>
   );

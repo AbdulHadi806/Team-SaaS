@@ -1,13 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { AdminToken } from "../utils/adminAuth";
 
-const token = AdminToken();
 export const apiSlice = createApi({
   reducerPath: "apiSlice",
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:8000/api/",
   }),
-  tagTypes: ["Admin", "User"],
+  tagTypes: ["Admin", "User", "Tasks"],
   endpoints: (builder) => ({
     createAdmin: builder.mutation({
       query: (data) => ({
@@ -38,6 +36,7 @@ export const apiSlice = createApi({
       query: (token) => ({
         url: "profile/admin",
         method: "GET",
+
         headers: {
           "Content-type": "application/json; charset=UTF-8",
           authorization: `Bearer ${token}`,
@@ -45,9 +44,31 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ["Admin"],
     }),
-
+    createTask: builder.mutation({
+      query: (data, token) => ({
+        url: "tasks",
+        method: "POST",
+        body: data,
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+          authorization: `Bearer ${token}`,
+        },
+      }),
+      invalidatesTags: ["Tasks"],
+    }),
+    getAllUsers: builder.mutation({
+      query: (token) => ({
+        url: "users/all-users",
+        method: "GET",
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+          authorization: `Bearer ${token}`,
+        },
+      }),
+      invalidatesTags: ["User"],
+    }),
     createUser: builder.mutation({
-      query: (data) => ({
+      query: (data, token) => ({
         url: "users/createUser",
         method: "POST",
         body: data,
@@ -64,5 +85,7 @@ export const {
   useCreateAdminMutation,
   useLoginAdminMutation,
   useGetAdminProfileMutation,
+  useCreateTaskMutation,
+  useGetAllUsersMutation,
   useCreateUserMutation,
 } = apiSlice;

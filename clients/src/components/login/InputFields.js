@@ -5,7 +5,7 @@ import { faEyeSlash, faEye } from "@fortawesome/free-solid-svg-icons";
 function InputFields(props) {
   return (
     <>
-      <div className="flex items-center mb-4 relative">
+      <div className="flex items-center  mb-4 relative">
         <FontAwesomeIcon
           icon={props.iconname}
           className=" border  border-[#86a4c3]  p-[16px] rounded rounded-r-none "
