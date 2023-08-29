@@ -26,7 +26,7 @@ function MainDashboard() {
     <>
       <div className="flex w-full">
         <Sidebar />
-        <div className="flex-1 flex flex-col pl-60 mx-auto max-w-full">
+        <div className="flex-1 flex flex-col ps-[60px]">
           <Dashboard profile={profile} />
         </div>
       </div>
