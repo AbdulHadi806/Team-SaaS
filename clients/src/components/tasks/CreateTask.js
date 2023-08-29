@@ -1,11 +1,17 @@
 import React, { useState, useEffect } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import {
   useCreateTaskMutation,
   useGetAllUsersMutation,
 } from "../../redux/apiCalls/apiSlice";
 import InputFields from "../login/InputFields";
 import { AdminToken } from "../../redux/utils/adminAuth";
-import { faTasks, faTasksAlt } from "@fortawesome/free-solid-svg-icons";
+import {
+  faUserCheck,
+  faClipboardCheck,
+  faUserSecret,
+} from "@fortawesome/free-solid-svg-icons";
 
 function CreateTask({ openModal, closeModal }) {
   const [usersData, setUsersData] = useState([]);
@@ -57,61 +63,78 @@ function CreateTask({ openModal, closeModal }) {
 
   return (
     <>
-      <div className=" z-10 fixed inset-0 w-[100%] h-screen flex justify-center items-center">
-        <form
-          className="className= md:w-[600px] p-[60px]  bg-[#125680] rounded "
-          onSubmit={submitHandler}
-        >
-          <InputFields
-            iconname={faTasksAlt}
-            type="text"
-            name="task"
-            id="task"
-            value={task.task}
-            onChange={handleChange}
-            placeholder="Task"
-            className="border  border-[#86a4c3]  w-[100%] p-3 border-l-0 rounded rounded-l-none outline-none"
-          />
-          <InputFields
-            iconname={faTasks}
-            type="text"
-            name="assigned_to_role"
-            id="assigned_to_role"
-            value={task.assigned_to_role}
-            onChange={handleChange}
-            placeholder=" Assigned Role"
-            className="border  border-[#86a4c3]  w-[100%] p-3 border-l-0 rounded rounded-l-none outline-none"
-          />
-          <select
-            name="assigned_to"
-            value={task.assigned_to}
-            onChange={handleChange}
-            className="border border-[#86a4c3] w-[100%] p-3 border-l-0 rounded rounded-l-none outline-none"
+      <div className="fixed inset-0 flex items-center justify-center z-10 bg-black bg-opacity-50 ">
+        <div className="bg-white p-6 rounded-lg shadow-md relative">
+          <button
+            className=" absolute right-[-10px] top-[-20px] text-dark uppercase font-semibold mt-4 py-2  hover:transition-all ms-3  px-6 rounded text-[30px]"
+            onClick={closeModal}
           >
-            <option value="">Assigned To</option>
-            {usersData &&
-              usersData.map((user) => (
-                <option key={user._id} value={user._id}>
-                  {user.userName}
-                </option>
-              ))}
-          </select>
-
-          <div className="flex justify-center pt-10">
-            <button
-              type="submit"
-              className="bg-[#FF6C6C] text-white uppercase font-semibold mt-4 py-2 hover:bg-[#000] hover:transition-all  px-6 rounded"
-            >
-              Create Task
-            </button>
-            <button
-              className="bg-[#134E4C] text-white uppercase font-semibold mt-4 py-2 hover:bg-[#000] hover:transition-all ms-3  px-6 rounded"
-              onClick={closeModal}
-            >
-              Cancel
-            </button>
-          </div>
-        </form>
+            <FontAwesomeIcon icon={faTimes} />
+          </button>
+          <form
+            className="className= md:w-[600px] p-[60px]  rounded "
+            onSubmit={submitHandler}
+          >
+            <InputFields
+              iconname={faClipboardCheck}
+              type="text"
+              name="task"
+              id="task"
+              value={task.task}
+              onChange={handleChange}
+              placeholder="Task"
+              className="border  border-[#86a4c3]  w-[100%] p-3 border-l-0 rounded rounded-l-none outline-none"
+            />
+            <InputFields
+              iconname={faUserSecret}
+              type="text"
+              name="assigned_to_role"
+              id="assigned_to_role"
+              value={task.assigned_to_role}
+              onChange={handleChange}
+              placeholder=" Assigned Role"
+              className="border  border-[#86a4c3]  w-[100%] p-3 border-l-0 rounded rounded-l-none outline-none"
+            />
+            <div className="flex items-center  mb-4 relative">
+              <FontAwesomeIcon
+                icon={faUserCheck}
+                className=" border  border-[#86a4c3]  p-[16px] rounded rounded-r-none  "
+              />
+              <select
+                name="assigned_to"
+                value={task.assigned_to}
+                onChange={handleChange}
+                className="border border-[#86a4c3] w-[100%] p-3  outline-none text-[#B9BAC4]"
+              >
+                <option className="text-[#000]">Assigned To</option>
+                {usersData &&
+                  usersData.map((user) => (
+                    <option
+                      key={user._id}
+                      value={user._id}
+                      className=" bg-dark text-[16px] text-[#000]"
+                    >
+                      {user.userName}
+                    </option>
+                  ))}
+              </select>
+            </div>
+            <div className="flex justify-center pt-8">
+              <button
+                type="submit"
+                className=" hover:bg-gray-800 text-white uppercase font-semibold mt-4 py-2 bg-[#000] hover:transition-all  px-6 rounded"
+              >
+                Create Task
+              </button>
+              <button
+                className="hover:bg-gray-800  text-white uppercase font-semibold mt-4 py-2 bg-teal-500 hover:transition-all ms-3  px-6 rounded"
+                onClick={closeModal}
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </>
   );

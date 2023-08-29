@@ -19,7 +19,11 @@ const signUpAdmin = async (req, res) => {
     const hasSpecialCharacter = /[@$!%*?&]/.test(req.body.password);
 
     if (!hasUppercase || !hasDigit || !hasSpecialCharacter || req.body.password.length <= 8) {
-      return res.status(400).json({message: "Password must contain at least one uppercase letter, one digit, and one special character.",status: false});
+      return res.status(400).json({message: "The password must be 8 characters in length and include a minimum of one uppercase letter, one digit, and one special character.",status: false});
+    }
+    
+    if ( req.body.password.length <= 8) {
+      return res.status(400).json({message: "Password is less than 8 characters.",status: false});
     }
     const userNameExists = await Admin.findOne({ userName: req.body.userName });
     if (userNameExists !== null) {
