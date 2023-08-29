@@ -8,11 +8,11 @@ import Sidebar from "./components/Sidebar";
 import MainDashboard from "./components/dashboard/MainDashboard";
 import NotFoundPage from "./components/NotFound/NotFoundPage";
 import CreateUsers from "./components/user/CreateUsers";
-
+import UserTable from "./components/user/UserTable";
 
 function App() {
   return (
-    <div className="App h-[100vh]">
+    <div className="App">
       <Routes>
       <Route path='*' element={<NotFoundPage />}/>
         <Route path="/" element={<Login />} />
@@ -23,6 +23,7 @@ function App() {
         <Route path="/sideBar" element={<Sidebar />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/createUser" element={<CreateUsers/>}/>
+        <Route path="/userTable" element={<UserTable/>}/>
       </Routes>
     </div>
   );
