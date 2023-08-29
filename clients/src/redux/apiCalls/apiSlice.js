@@ -1,7 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { AdminToken } from "../utils/adminAuth";
-
-const token = AdminToken();
+const token = AdminToken()
 export const apiSlice = createApi({
   reducerPath: "apiSlice",
   baseQuery: fetchBaseQuery({
@@ -45,7 +44,6 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ["Admin"],
     }),
-
     createUser: builder.mutation({
       query: (data) => ({
         url: "users/createUser",
@@ -58,6 +56,17 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ["Admin"],
     }),
+    getAllUsers: builder.mutation({
+      query: () => ({
+        url: "users/all-users",
+        method: "GET",
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+          authorization: `Bearer ${token}`,
+        },
+      }),
+      invalidatesTags: ["User"],
+    }),
   }),
 });
 export const {
@@ -65,4 +74,5 @@ export const {
   useLoginAdminMutation,
   useGetAdminProfileMutation,
   useCreateUserMutation,
+  useGetAllUsersMutation
 } = apiSlice;
