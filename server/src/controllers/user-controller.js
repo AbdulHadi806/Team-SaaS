@@ -102,10 +102,10 @@ const getAllUsers = async (req, res) => {
     try {
         const created_by = req.user._id;
         const users = await User.find({ created_by })
+        console.log(users, "users at getAllUsers")
         if (!users) {
             return res.status(204).json({ message: "No users available.", status: false })
         }
-        console.log(_id)
         res.status(200).json({ message: "All users fetched successfully.", status: true, users })
     } catch (err) {
         res.status(500).json({ message: "Failed to fetch users", status: false })

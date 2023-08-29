@@ -25,6 +25,10 @@ function MainDashboard() {
     <>
       <div className="flex">
         <Sidebar />
+<<<<<<< HEAD
+=======
+        <div className="flex flex-col pr-[30px]">
+>>>>>>> 0d04df339979434f15ad4c67352e56109f55bb5d
         <Dashboard profile={profile} />
       </div>
     </>
