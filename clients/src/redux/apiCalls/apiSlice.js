@@ -23,26 +23,27 @@ export const apiSlice = createApi({
       invalidatesTags: ["Admin"],
     }),
     loginAdmin: builder.mutation({
-      query: (data, token) => ({
+      query: (data, tokenFromRedux) => ({
         url: "registration/loginAdmin",
         method: "POST",
+       
         body: data,
         headers: {
           "Content-type": "application/json; charset=UTF-8",
-          authorization: `Bearer ${token}`,
+          authorization: `Bearer ${tokenFromRedux ==null? token:tokenFromRedux}`,
         },
       }),
 
       invalidatesTags: ["Admin"],
     }),
     getAdminProfile: builder.mutation({
-      query: (token) => ({
+      query: (tokenFromRedux) => ({
         url: "profile/admin",
         method: "GET",
 
         headers: {
           "Content-type": "application/json; charset=UTF-8",
-          authorization: `Bearer ${token}`,
+          authorization: `Bearer ${tokenFromRedux==null? token : tokenFromRedux}`,
         },
       }),
       invalidatesTags: ["Admin"],
@@ -69,7 +70,7 @@ export const apiSlice = createApi({
           authorization: `Bearer ${token}`,
         },
       }),
-      invalidatesTags: ["User"],
+      providesTags: ["User"],
     }),
 
     createUser: builder.mutation({
@@ -84,6 +85,19 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ["Admin"],
     }),
+    deleteUser:builder.mutation({
+      query:(id)=>({
+        url: "users/",
+        method: "DELETE",
+        body: id,
+
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+          authorization: `Bearer ${token}`,
+        },
+      }),
+      invalidatesTags: ["Admin"],
+    })
   }),
 });
 export const {
@@ -93,4 +107,5 @@ export const {
   useCreateTaskMutation,
   useCreateUserMutation,
   useGetAllUsersMutation,
+  useDeleteUserMutation
 } = apiSlice;
