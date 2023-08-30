@@ -7,6 +7,7 @@ import { faUser, faLock, faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import { socialIcons } from "../login/SocialIcons";
 const SignUp = ({ handleChange, inputValue, submitHandler }) => {
   const [showPassword, setShowPassword] = useState(false);
+  
   const togglePassword = () => {
     setShowPassword(!showPassword);
   };

@@ -1,1 +1,5 @@
-export const AdminToken = () => localStorage.getItem("access_token_admin");
+export const AdminToken = () => {
+    return localStorage.getItem("access_token_admin");
+
+}
+

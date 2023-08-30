@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useGetAllUsersMutation } from "../../redux/apiCalls/apiSlice";
+import { useDeleteUserMutation, useGetAllUsersMutation } from "../../redux/apiCalls/apiSlice";
 import { AdminToken } from "../../redux/utils/adminAuth";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
 import { faCog, faCircle, faTimes, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import ReactPaginate from 'react-paginate';
 import Pagination from "../reusableComponent/Pagination";
@@ -11,6 +10,7 @@ import { ToolTip } from "../reusableComponent/Tooltip";
 
 const UserTable = () => {
   const [getAllUsers, { data }] = useGetAllUsersMutation();
+  const [deleteUser] = useDeleteUserMutation();
   const [currentPage, setCurrentPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
 
@@ -36,12 +36,20 @@ const UserTable = () => {
   const getTime = (item) => {
     const timestamp = item;
     const dateObject = new Date(timestamp);
-
     const hours = String(dateObject.getUTCHours()).padStart(2, "0");
     const minutes = String(dateObject.getUTCMinutes()).padStart(2, "0");
     const formattedTime = `${hours}:${minutes}`;
     return formattedTime;
   };
+
+  const handleDelete = async (id) => {
+    try {
+      const res = await deleteUser({ _id: id });
+    } catch (err) {
+      console.log(err)
+    }
+  };
+
   useEffect(() => {
     getAllUsersHandler(currentPage);
     console.log(data, "data");
@@ -50,26 +58,22 @@ const UserTable = () => {
     setCurrentPage(selected + 1);
   };
 
+
+  const tableHeaderData = ["#" ,"User name", "Role", "createdAt", "Action"]
   return (
     <div class=" w-6/12  overflow-x-auto shadow-md sm:rounded-lg ml-[40px] my-[30px]">
       <table class="w-full">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr className="bg-[#299be4] text-[15px] font-bold text-[#fff] text-center">
-            <th scope="col" class="px-6 py-3">
-              #
-            </th>
-            <th scope="col" class="px-6 py-3">
-              User name
-            </th>
-            <th scope="col" class="px-6 py-3">
-              Role
-            </th>
-            <th scope="col" class="px-6 py-3">
-              create
-            </th>
-            <th scope="col" class="px-6 py-3">
-              Action
-            </th>
+            {
+              tableHeaderData.map(item => {
+                return (
+                  <th scope="col" class="px-6 py-3">
+                    {item}
+                  </th>
+                )
+              })
+            }
           </tr>
         </thead>
         <tbody>
@@ -101,7 +105,7 @@ const UserTable = () => {
                       />
                     </ToolTip>
                   </button>
-                  <button>
+                  <button onClick={(e) => { e.preventDefault(); handleDelete(item._id) }}>
                     {" "}
                     <ToolTip content="setting">
                       {" "}

@@ -9,35 +9,50 @@ import InputFields from "./InputFields";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { socialIcons } from "../login/SocialIcons";
+import { useDispatch, useSelector } from "react-redux";
+import { setAdminToken } from "../../redux/slice/adminSlice";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [saveAdmin, setSaveAdmin] = useState(false)
   const [loginAdmin, { error: loginError }] = useLoginAdminMutation();
   const navigate = useNavigate();
+  const dispatch = useDispatch()
   const togglePassword = () => {
     setShowPassword(!showPassword);
   };
+  const tokenFromRedux = useSelector(state => state.adminSlice.token)
   const [inputValue, setInput] = useState({
     userName: "",
     password: "",
   });
-
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      const response = await loginAdmin(inputValue);
-      console.log("respo", response);
-      if (response.data.status) {
-        const token = response.data.token;
-        localStorage.setItem("access_token_admin", token);
+      let res;
+         res = await loginAdmin(inputValue);
+      if(tokenFromRedux) {
+        
+         res = await loginAdmin(inputValue, tokenFromRedux);
+      }
+      console.log("respo", res);
+      if (res.data.status) {
+        const token = res.data.token;
+        
+        if(saveAdmin){
+          localStorage.setItem("access_token_admin", token);
+        }
+        else {
+          dispatch(setAdminToken(token))
+        }
         alertify.set("notifier", "position", "top-center");
-        alertify.success(response.data.message);
+        alertify.success(res.data.message);
         navigate("/mainDashboard");
       }
 
-      if (!response.data.status) {
+      if (!res.data.status) {
         alertify.set("notifier", "position", "top-center");
-        alertify.error(response.data.message);
+        alertify.error(res.data.message);
       }
     } catch (err) {
       console.log(err);
@@ -49,7 +64,7 @@ const Login = () => {
       alertify.error(loginError && loginError.data.message);
     }
   }, [loginError, navigate]);
-
+  
   const handleChange = (e) => {
     setInput({ ...inputValue, [e.target.name]: e.target.value });
   };
@@ -90,7 +105,7 @@ const Login = () => {
               />
               <div className="flex  justify-between ">
                 <div className="flex items-start  mb-[40px] gap-[30px] ">
-                  <input type="checkbox" className="h-6 w-6 text-indigo-600" />
+                  <input type="checkbox" onChange={() => setSaveAdmin(!saveAdmin)} className="h-6 w-6 text-indigo-600" />
                   <label className="text-[17px] ">
                     {" "}
                     Remember Me{" "}

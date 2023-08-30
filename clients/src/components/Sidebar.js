@@ -3,15 +3,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faDashboard,
   faUser,
-  faSignInAlt,
   faSignOutAlt,
 } from "@fortawesome/free-solid-svg-icons";
-
+import { Logout } from "./login/Logout";
+import { Link } from "react-router-dom";
 const menuItems = [
   { icon: faDashboard, text: "Dashboard", link: "/mainDashboard" },
   { icon: faUser, text: "Users", link: "/mainDashboard" },
-  { icon: faSignInAlt, text: "Sign In", link: "/mainDashboard" },
-  { icon: faSignOutAlt, text: "Log Out", link: "/logout" },
 ];
 
 function Sidebar() {
@@ -21,15 +19,23 @@ function Sidebar() {
         <ul className="space-y-2 font-medium">
           {menuItems.map((item, index) => (
             <li key={index}>
-              <a
+              <Link
                 href={item.link}
                 className="flex items-center p-2  rounded-lg text-white hover:text-[#000] hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                 <FontAwesomeIcon icon={item.icon} />
                 <span className="ml-3">{item.text}</span>
-              </a>
+              </Link>
             </li>
           ))}
+          <li >
+            <button onClick={Logout}
+              className="bg-[#f00] hover:bg-[#d00] gap-3 flex items-center w-[100%] px-4 py-2 text-white rounded text-[18px] w-100 font-semibold"
+            >
+              <FontAwesomeIcon icon={faSignOutAlt} />
+             Logout
+            </button>
+          </li>
         </ul>
       </div>
     </div>
