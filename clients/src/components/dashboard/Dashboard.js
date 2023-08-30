@@ -3,7 +3,6 @@ import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 import dateFormat from "dateformat";
 import { useEffect, useState } from "react";
 import CreateTask from "../tasks/CreateTask";
-import { Link } from "react-router-dom";
 
 const Dashboard = ({ profile }) => {
   const [dateTime, setDateTime] = useState();
@@ -12,6 +11,7 @@ const Dashboard = ({ profile }) => {
   const openModal = () => {
     setIsModalOpen(true);
   };
+
   const closeModal = () => {
     setIsModalOpen(false);
   };
@@ -43,13 +43,19 @@ const Dashboard = ({ profile }) => {
               {formattedTime}
             </span>
           </div>
-          <div className="flex items-center">
-            <i class="fa-solid fa-magnifying-glass  px-5 py-[25px] color bg-[#D1D5DB] mr-2 rounded-md text-[20px] text-[#000000] font-bold"></i>
-            <Link to="/createUser"
+          <div className="flex items-center gap-[10px]">
+          <button
+              onClick={openModal}
+              className="px-[40px] py-6 color bg-[#000000] text-white rounded-md "
+            >
+              Add Task
+            </button>
+            <button
+              onClick={openModal}
               className="px-[40px] py-6 color bg-[#000000] text-white rounded-md "
             >
               Add New User
-            </Link>
+            </button>
           </div>
         </div>
 
