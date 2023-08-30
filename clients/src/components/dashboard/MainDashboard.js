@@ -32,7 +32,9 @@ function MainDashboard() {
         <div className="flex-1 flex flex-col md:pl-[240px]">
           <Header />
           <Dashboard profile={profile} />
+          <div className="pb-[40px]">
           <UserTable />
+          </div>
         </div>
       </div>
     </>
