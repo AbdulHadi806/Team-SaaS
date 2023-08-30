@@ -86,6 +86,21 @@ const getAllTasksByRole = async (req, res) => {
     }
 }
 
+const getUserTasks = async (req, res) => {
+    try {
+        const userId = req.params.user_id;
+        const tasks = await Task.find({assigned_to: userId})
+        if(!tasks) {
+            res.status(404).json({message: "No Tasks Found of selected User.", status: false})
+        }
+        res.status(200).json({message: "Successfully fetched user Tasks.", status: true, tasks})
+
+    } catch(err) {
+        res.status(500).json({message: "Failed to fetch Tasks"})
+    }
+}
+
+exports.getUserTasks = getUserTasks;
 exports.getAllTasksByRole = getAllTasksByRole;
 exports.getAllMyTasks = getAllMyTasks;
 exports.getAllTasks = getAllTasks;

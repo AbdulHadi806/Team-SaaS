@@ -51,7 +51,7 @@ const UserTable = () => {
   };
 
   return (
-    <div class=" w-6/12 m-auto  overflow-x-auto shadow-md sm:rounded-lg mt-[80px]">
+    <div class=" w-6/12  overflow-x-auto shadow-md sm:rounded-lg ml-[40px] my-[30px]">
       <table class="w-full">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr className="bg-[#299be4] text-[15px] font-bold text-[#fff] text-center">

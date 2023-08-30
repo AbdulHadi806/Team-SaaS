@@ -3,6 +3,7 @@ import Sidebar from "../Sidebar";
 import Dashboard from "./Dashboard";
 import { AdminToken } from "../../redux/utils/adminAuth";
 import { useGetAdminProfileMutation } from "../../redux/apiCalls/apiSlice";
+import UserTable from "../user/UserTable";
 
 function MainDashboard() {
   const [profile, setProfile] = useState("");
@@ -26,8 +27,9 @@ function MainDashboard() {
     <>
       <div className="flex w-full">
         <Sidebar />
-        <div className="flex-1 flex flex-col ps-[60px]">
+        <div className="flex-1 flex flex-col pl-[250px]">
           <Dashboard profile={profile} />
+          <UserTable />
         </div>
       </div>
     </>

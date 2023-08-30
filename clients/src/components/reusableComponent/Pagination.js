@@ -21,9 +21,9 @@ function Pagination({pageCount, handlePageChange, currentPage}) {
           : 'bg-blue-500 text-white cursor-pointer hover:bg-blue-600'
           }`}
         activeClassName="px-3 py-2 bg-blue-500 text-white hover:bg-[#c3c3c3]"
-        pageLinkClassName="w-8 h-8 flex items-center justify-center"
-        previousLinkClassName="w-8 h-8 flex items-center justify-center"
-        nextLinkClassName="w-8 h-8 flex items-center justify-center"
+        pageLinkClassName="w-8 h-4 flex items-center justify-center"
+        previousLinkClassName="w-8 h-4 flex items-center justify-center"
+        nextLinkClassName="w-8 h-4 flex items-center justify-center"
       />
   )
 }

@@ -104,7 +104,7 @@ const getAllUsers = async (req, res) => {
     try {
         const created_by = req.user._id;
         const users = await User.find({ created_by }).skip((page - 1) * limit)
-        .limit(limit);
+        .limit(limit);  
         const totalCount = await User.countDocuments({ created_by });
         if (!users) {
             return res.status(204).json({ message: "No users available.", status: false })
