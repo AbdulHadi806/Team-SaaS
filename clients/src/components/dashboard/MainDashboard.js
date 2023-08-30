@@ -5,6 +5,7 @@ import { AdminToken } from "../../redux/utils/adminAuth";
 import { useGetAdminProfileMutation } from "../../redux/apiCalls/apiSlice";
 import UserTable from "../user/UserTable";
 import Header from "../Header";
+import Tabs from "./Tabs";
 
 function MainDashboard() {
   const [profile, setProfile] = useState("");
@@ -33,7 +34,7 @@ function MainDashboard() {
           <Header />
           <Dashboard profile={profile} />
           <div className="pb-[40px]">
-          <UserTable />
+          <Tabs />
           </div>
         </div>
       </div>
