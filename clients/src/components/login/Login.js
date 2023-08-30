@@ -16,6 +16,7 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [saveAdmin, setSaveAdmin] = useState(false)
   const [loginAdmin, { error: loginError }] = useLoginAdminMutation();
+
   const navigate = useNavigate();
   const dispatch = useDispatch()
   const togglePassword = () => {
@@ -26,6 +27,8 @@ const Login = () => {
     userName: "",
     password: "",
   });
+
+
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
@@ -35,7 +38,6 @@ const Login = () => {
         
          res = await loginAdmin(inputValue, tokenFromRedux);
       }
-      console.log("respo", res);
       if (res.data.status) {
         const token = res.data.token;
         

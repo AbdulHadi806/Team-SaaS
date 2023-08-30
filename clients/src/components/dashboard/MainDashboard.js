@@ -11,10 +11,16 @@ function MainDashboard() {
   const [profile, setProfile] = useState("");
   const [getAdminProfile] = useGetAdminProfileMutation();
   const tokenFromRedux = useSelector(state => state.adminSlice.token);
-
+  const token = AdminToken()
   const fetchAdminProfile = async () => {
     try {
-      const response = await getAdminProfile(tokenFromRedux);
+      let response;;
+      if(tokenFromRedux){
+        response = await getAdminProfile(tokenFromRedux);
+      }
+      else {
+        response = await getAdminProfile(token);
+      }
       const adminName = response.data.name;
       console.log("response", response);
       setProfile(adminName);
@@ -24,8 +30,10 @@ function MainDashboard() {
   };
   useEffect(() => {
     fetchAdminProfile();
-  }, []);
-
+  }, [token]);
+  useEffect(() => {
+    console.log(tokenFromRedux, "tokenFromRedux from mainDashgboard")
+  },[tokenFromRedux])
   return (
     <>
       <div className="flex w-full">
