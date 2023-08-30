@@ -1,7 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { AdminToken } from "../utils/adminAuth";
 
-
 const token = AdminToken();
 export const apiSlice = createApi({
   reducerPath: "apiSlice",
@@ -96,7 +95,18 @@ export const apiSlice = createApi({
         },
       }),
       invalidatesTags: ["User"],
-    })
+    }),
+    getAllTasks: builder.mutation({
+      query: () => ({
+        url: `tasks/all-tasks`,
+        method: "GET",
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+          authorization: `Bearer ${token}`,
+        },
+      }),
+      providesTags: ["Tasks"],
+    }),
   }),
 });
 export const {
@@ -106,5 +116,6 @@ export const {
   useCreateTaskMutation,
   useCreateUserMutation,
   useGetAllUsersMutation,
-  useDeleteUserMutation
+  useDeleteUserMutation,
+  useGetAllTasksMutation,
 } = apiSlice;
