@@ -6,6 +6,7 @@ import { faCog, faCircle, faTimes, faCircleXmark } from '@fortawesome/free-solid
 import ReactPaginate from 'react-paginate';
 import Pagination from "../reusableComponent/Pagination";
 import { ToolTip } from "../reusableComponent/Tooltip";
+import { useSelector } from "react-redux";
 
 
 const UserTable = () => {
@@ -13,10 +14,12 @@ const UserTable = () => {
   const [deleteUser] = useDeleteUserMutation();
   const [currentPage, setCurrentPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
-
+  
   const getAllUsersHandler = async (currentPage) => {
+    const token = AdminToken();
     try {
-      const res = await getAllUsers(currentPage);
+      let res;
+      res = await getAllUsers(currentPage);
       const count = Math.ceil(res.data.totalCount / 5);
       setTotalCount(count)
     } catch (err) {

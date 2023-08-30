@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-
 import { AdminToken } from "../utils/adminAuth";
+
 
 const token = AdminToken();
 export const apiSlice = createApi({
@@ -23,33 +23,33 @@ export const apiSlice = createApi({
       invalidatesTags: ["Admin"],
     }),
     loginAdmin: builder.mutation({
-      query: (data, tokenFromRedux) => ({
+      query: (data) => ({
         url: "registration/loginAdmin",
         method: "POST",
 
         body: data,
         headers: {
           "Content-type": "application/json; charset=UTF-8",
-          authorization: `Bearer ${tokenFromRedux == null ? token : tokenFromRedux}`,
+          authorization: `Bearer ${token}`,
         },
       }),
       invalidatesTags: ["Admin"],
     }),
     getAdminProfile: builder.mutation({
-      query: (tokenFromRedux) => ({
+      query: () => ({
         url: "profile/admin",
         method: "GET",
 
         headers: {
           "Content-type": "application/json; charset=UTF-8",
-          authorization: `Bearer ${tokenFromRedux == null ? token : tokenFromRedux}`,
+          authorization: `Bearer ${token}`,
         },
         providesTags: ["Admin"],
       }),
     }),
 
     createTask: builder.mutation({
-      query: (data) => ({
+      query: (data, tokenFromRedux) => ({
         url: "tasks",
         method: "POST",
         body: data,
@@ -61,7 +61,7 @@ export const apiSlice = createApi({
       invalidatesTags: ["Tasks"],
     }),
     getAllUsers: builder.mutation({
-      query: (currentPage) => ({
+      query: (currentPage, tokenFromRedux) => ({
         url: `users/all-users?page=${currentPage}`,
         method: "GET",
         headers: {
@@ -73,7 +73,7 @@ export const apiSlice = createApi({
     }),
 
     createUser: builder.mutation({
-      query: (data) => ({
+      query: (data, tokenFromRedux) => ({
         url: "users/createUser",
         method: "POST",
         body: data,

@@ -9,8 +9,6 @@ import InputFields from "./InputFields";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { socialIcons } from "../login/SocialIcons";
-import { useDispatch, useSelector } from "react-redux";
-import { setAdminToken } from "../../redux/slice/adminSlice";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -18,11 +16,9 @@ const Login = () => {
   const [loginAdmin, { error: loginError }] = useLoginAdminMutation();
 
   const navigate = useNavigate();
-  const dispatch = useDispatch()
   const togglePassword = () => {
     setShowPassword(!showPassword);
   };
-  const tokenFromRedux = useSelector(state => state.adminSlice.token)
   const [inputValue, setInput] = useState({
     userName: "",
     password: "",
@@ -32,21 +28,10 @@ const Login = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      let res;
-         res = await loginAdmin(inputValue);
-      if(tokenFromRedux) {
-        
-         res = await loginAdmin(inputValue, tokenFromRedux);
-      }
+      const res = await loginAdmin(inputValue);
       if (res.data.status) {
         const token = res.data.token;
-        
-        if(saveAdmin){
-          localStorage.setItem("access_token_admin", token);
-        }
-        else {
-          dispatch(setAdminToken(token))
-        }
+        localStorage.setItem("access_token_admin", token);
         alertify.set("notifier", "position", "top-center");
         alertify.success(res.data.message);
         navigate("/mainDashboard");
@@ -66,7 +51,7 @@ const Login = () => {
       alertify.error(loginError && loginError.data.message);
     }
   }, [loginError, navigate]);
-  
+
   const handleChange = (e) => {
     setInput({ ...inputValue, [e.target.name]: e.target.value });
   };
