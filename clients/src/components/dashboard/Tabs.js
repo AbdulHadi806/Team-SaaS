@@ -11,7 +11,7 @@ const Tabs = () => {
   return (
     <div className=" w-full">
       <ul
-        className="w-[87.5%] 
+        className="w-[95.3%] 
     ] flex-row flex p-[40px] py-[20px] rounded  bg-gray-800 mx-[40px] gap-[20px]"
       >
         <li

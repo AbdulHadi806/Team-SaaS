@@ -6,6 +6,8 @@ import CreateTask from "../tasks/CreateTask";
 import { Link } from "react-router-dom";
 import { useGetAllTasksMutation } from "../../redux/apiCalls/apiSlice";
 import { useLocation } from "react-router-dom";
+import UserCreate from "../user/UserCreate";
+
 
 const Dashboard = ({ profile }) => {
   const [dateTime, setDateTime] = useState();
@@ -13,6 +15,7 @@ const Dashboard = ({ profile }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [getAllTasks] = useGetAllTasksMutation();
   const [allTasks, setAllTasks] = useState();
+  const [isUserModalOpen, setIsUserModalOpen] = useState(false);
   const location = useLocation();
 
   const getAllTasksHandler = async () => {
@@ -34,6 +37,16 @@ const Dashboard = ({ profile }) => {
     setIsModalOpen(false);
   };
 
+
+  const openUserModal = () => {
+    setIsUserModalOpen(true);
+  };
+
+  const closeUserModal = () => {
+    setIsUserModalOpen(false);
+  };
+
+
   useEffect(() => {
     const interval = setInterval(() => {
       setDateTime(new Date());
@@ -49,7 +62,7 @@ const Dashboard = ({ profile }) => {
   const formattedDateTime = dateFormat(dateTime, "dddd, mmmm dS, yyyy");
   return (
     <>
-      <div className="w-11/12 flex-row justify-between p-[40px]">
+      <div className="w-full flex-row justify-between p-[40px]">
         <div className="flex justify-between wrap mb-[50px]">
           <div>
             <h2 className="text-[30px] font-bold text-[#3E1D47] capitalize">
@@ -69,12 +82,12 @@ const Dashboard = ({ profile }) => {
             >
               Add Task
             </button>
-            <Link
-              to="/createUser"
-              className="px-[40px] py-4 color bg-[#000000] hover:bg-[#230000] text-white rounded-md "
+            <button
+              onClick={openUserModal}
+              className="px-[40px] py-4 color bg-[#8f9eab] hover:bg-[#70367c] text-white rounded-md "
             >
-              Add New User
-            </Link>
+              Add User
+            </button>
           </div>
         </div>
 
@@ -120,6 +133,10 @@ const Dashboard = ({ profile }) => {
       </div>
       {isModalOpen && (
         <CreateTask closeModal={closeModal} openModal={openModal} />
+      )}
+
+{isUserModalOpen && (
+        <UserCreate closeModal={closeUserModal} openModal={openUserModal} />
       )}
     </>
   );
