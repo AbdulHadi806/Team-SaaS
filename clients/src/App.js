@@ -3,7 +3,6 @@ import SignUpPage from "./page/SignUpPage";
 import { Routes, Route } from "react-router-dom";
 import Login from "./components/login/Login";
 import DashboardProtectedroute from "./components/protectedRoute/DashboardProtectedRouter";
-import { Logout } from "./components/login/Logout";
 import Sidebar from "./components/Sidebar";
 import MainDashboard from "./components/dashboard/MainDashboard";
 import NotFoundPage from "./components/NotFound/NotFoundPage";
@@ -22,7 +21,6 @@ function App() {
           <Route path="/mainDashboard" element={<MainDashboard />} />
         </Route>
         <Route path="/signUp" element={<SignUpPage />} />
-        <Route path="/logout" element={<Logout />} />
         <Route path="/createTask" element={<CreateTask />} />
         <Route path="/createUser" element={<CreateUsers />} />
         <Route path="/userTable" element={<UserTable />} />

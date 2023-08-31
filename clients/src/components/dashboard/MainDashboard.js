@@ -3,14 +3,12 @@ import Sidebar from "../Sidebar";
 import Dashboard from "./Dashboard";
 import { AdminToken } from "../../redux/utils/adminAuth";
 import { useGetAdminProfileMutation } from "../../redux/apiCalls/apiSlice";
-import UserTable from "../user/UserTable";
 import Header from "../Header";
 import Tabs from "./Tabs";
 
 function MainDashboard() {
   const [profile, setProfile] = useState("");
   const [getAdminProfile] = useGetAdminProfileMutation();
-
   
   const token = AdminToken()
   const fetchAdminProfile = async () => {

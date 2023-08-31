@@ -1,23 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { useGetAllTasksMutation } from "../../redux/apiCalls/apiSlice";
+import { useLocation } from "react-router-dom";
 
 function AllTasks() {
   const [getAllTasks] = useGetAllTasksMutation();
   const [allTasks, setAllTasks] = useState();
-
+  const location =useLocation()
   const getAllTasksHandler = async () => {
     try {
       const res = await getAllTasks();
-      console.log("Res", res);
       setAllTasks(res.data.getAllTasks);
-      console.log(allTasks);
     } catch (error) {
       console.log(error);
     }
   };
   useEffect(() => {
     getAllTasksHandler();
-  }, []);
+  }, [location]);
   return (
     <>
       <h2 className=" text-[30px] font-bold text-[#3E1D47] ps-[40px] pt-[90px] ">

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 import {
   useCreateTaskMutation,
   useGetAllUsersMutation,
@@ -15,6 +16,7 @@ import {
 
 function CreateTask({ openModal, closeModal }) {
   const [usersData, setUsersData] = useState([]);
+  const navigate = useNavigate();
   const [task, setTask] = useState({
     task: "",
     assigned_to_role: "",
@@ -29,21 +31,14 @@ function CreateTask({ openModal, closeModal }) {
     getAllUsersHandler();
   }, []);
 
-  useEffect(() => {
-    console.log("Updated user data:", usersData);
-  }, [usersData]);
-
   const handleChange = (e) => {
     setTask({ ...task, [e.target.name]: e.target.value });
-    console.log("ghjgjhg", task);
   };
 
   const getAllUsersHandler = async () => {
     try {
       const res = await getAllUsers(token);
-      console.log(res, "getAllUsersHandler");
       setUsersData(res.data.users);
-      console.log("userdata", usersData);
     } catch (err) {
       console.log(err);
     }
@@ -52,10 +47,11 @@ function CreateTask({ openModal, closeModal }) {
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      console.log(token, "tooo");
-      const response = await createTask(task);
-      console.log("respo", response);
+      const response = await createTask(task, navigate);
       closeModal();
+      if (response) {
+        navigate("/mainDashboard");
+      }
     } catch (err) {
       console.log(err);
     }
@@ -83,7 +79,7 @@ function CreateTask({ openModal, closeModal }) {
               value={task.task}
               onChange={handleChange}
               placeholder="Task"
-              className="border  border-[#86a4c3]  w-[100%] p-3 border-l-0 rounded rounded-l-none outline-none"
+              className="border  border-[#86a4c3]  w-[100%] p-3 border-l-0 rounded rounded-l-none outline-none focus:border-0"
             />
             <InputFields
               iconname={faUserSecret}
@@ -93,18 +89,18 @@ function CreateTask({ openModal, closeModal }) {
               value={task.assigned_to_role}
               onChange={handleChange}
               placeholder=" Assigned Role"
-              className="border  border-[#86a4c3]  w-[100%] p-3 border-l-0 rounded rounded-l-none outline-none"
+              className="border  border-[#86a4c3]  w-[100%] p-3 border-l-0 rounded rounded-l-none outline-none  focus:border-0"
             />
             <div className="flex items-center  mb-4 relative">
               <FontAwesomeIcon
                 icon={faUserCheck}
-                className=" border  border-[#86a4c3]  p-[16px] rounded rounded-r-none  "
+                className=" border  border-[#86a4c3]  py-[16px] w-[54px] rounded rounded-r-none  "
               />
               <select
                 name="assigned_to"
                 value={task.assigned_to}
                 onChange={handleChange}
-                className="border border-[#86a4c3] w-[100%] p-3  outline-none text-[#B9BAC4]"
+                className="border border-[#86a4c3] w-[100%] p-3  outline-none text-[#B9BAC4]  focus:border-0 border-l-0"
               >
                 <option className="text-[#000]">Assigned To</option>
                 {usersData &&

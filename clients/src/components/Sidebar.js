@@ -5,7 +5,6 @@ import {
   faUser,
   faSignOutAlt,
 } from "@fortawesome/free-solid-svg-icons";
-import { Logout } from "./login/Logout";
 import { Link } from "react-router-dom";
 const menuItems = [
   { icon: faDashboard, text: "Dashboard", link: "/mainDashboard" },
@@ -28,14 +27,6 @@ function Sidebar() {
               </Link>
             </li>
           ))}
-          <li >
-            <button onClick={Logout}
-              className="bg-[#70367C] hover:bg-[#70367C] gap-3 flex items-center w-[100%] px-4 py-2 text-white rounded text-[18px] w-100 font-semibold"
-            >
-              <FontAwesomeIcon icon={faSignOutAlt} />
-             Logout
-            </button>
-          </li>
         </ul>
       </div>
     </div>
