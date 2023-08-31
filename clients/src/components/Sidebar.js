@@ -30,7 +30,7 @@ function Sidebar() {
           ))}
           <li >
             <button onClick={Logout}
-              className="bg-[#f00] hover:bg-[#d00] gap-3 flex items-center w-[100%] px-4 py-2 text-white rounded text-[18px] w-100 font-semibold"
+              className="bg-[#70367C] hover:bg-[#70367C] gap-3 flex items-center w-[100%] px-4 py-2 text-white rounded text-[18px] w-100 font-semibold"
             >
               <FontAwesomeIcon icon={faSignOutAlt} />
              Logout

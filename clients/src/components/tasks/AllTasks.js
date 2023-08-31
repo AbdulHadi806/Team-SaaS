@@ -20,7 +20,7 @@ function AllTasks() {
   }, []);
   return (
     <>
-      <h2 className=" text-[30px] font-bold text-[#3E1D47] ps-[40px] pt-[40px] ">
+      <h2 className=" text-[30px] font-bold text-[#3E1D47] ps-[40px] pt-[90px] ">
         Task for today
       </h2>
       <div className="flex flex-col w-[45%] ps-[40px] my-[40px] ">
