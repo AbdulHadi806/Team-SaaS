@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faLock, faTimes } from "@fortawesome/free-solid-svg-icons";
 import InputFields from "../login/InputFields";
 import { AdminToken } from "../../redux/utils/adminAuth";
 
@@ -42,6 +42,12 @@ const UserCreate = ({ openModal, closeModal }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center z-10 bg-black bg-opacity-50 ">
       <div className="bg-white p-6 rounded-lg shadow-md relative">
+        <button
+          className=" absolute right-[-10px] top-[-20px] text-dark uppercase font-semibold mt-4 py-2  hover:transition-all ms-3  px-6 rounded text-[30px]"
+          onClick={closeModal}
+        >
+          <FontAwesomeIcon icon={faTimes} />
+        </button>
         <form
           className="className= md:w-[600px] p-[60px]  rounded "
           onSubmit={submitHandler}
@@ -55,20 +61,20 @@ const UserCreate = ({ openModal, closeModal }) => {
             value={user.userName}
             onChange={handleChange}
             placeholder="Username"
-            className="border  border-[#86a4c3]  w-[100%] p-3 border-l-0 rounded rounded-l-none outline-none"
+            className="border  border-[#86a4c3]  w-[100%] p-3 border-l-0 rounded rounded-l-none outline-none focus:border-0"
           />
           <InputFields
-            iconname={faClipboardCheck}
+            iconname={faLock}
             type={showPassword ? "text" : "password"}
-            variant="pass"
             name="password"
             id="password"
+            variant="pass"
             value={user.password}
             onChange={handleChange}
-            placeholder=" Password"
-            togglePassword={togglePassword}
+            placeholder="Password"
+            className="border  border-[#86a4c3]  w-[100%] p-3 border-l-0 rounded rounded-l-none outline-none "
+            togglepassword={togglePassword}
             showpassword={showPassword}
-            className="border  border-[#86a4c3]  w-[100%] p-3 border-l-0 rounded rounded-l-none outline-none"
           />
 
           <InputFields
@@ -79,7 +85,7 @@ const UserCreate = ({ openModal, closeModal }) => {
             value={user.role}
             onChange={handleChange}
             placeholder="Role"
-            className="border  border-[#86a4c3]  w-[100%] p-3 border-l-0 rounded rounded-l-none outline-none"
+            className="border  border-[#86a4c3]  w-[100%] p-3 border-l-0 rounded rounded-l-none outline-none focus:border-0"
           />
 
           <div className="flex justify-center pt-8">

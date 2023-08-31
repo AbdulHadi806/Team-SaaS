@@ -20,7 +20,7 @@ function Sidebar() {
             <li key={index}>
               <Link
                 href={item.link}
-                className="flex items-center p-2  rounded-lg text-white hover:text-[#000] hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                className="flex items-center p-2  rounded-lg text-white hover:text-[#000] hover:bg-white dark:hover:bg-white group"
               >
                 <FontAwesomeIcon icon={item.icon} />
                 <span className="ml-3">{item.text}</span>

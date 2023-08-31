@@ -7,7 +7,6 @@ import Sidebar from "./components/Sidebar";
 import MainDashboard from "./components/dashboard/MainDashboard";
 import NotFoundPage from "./components/NotFound/NotFoundPage";
 import CreateTask from "./components/tasks/CreateTask";
-import CreateUsers from "./components/user/CreateUsers";
 
 import UserTable from "./components/user/UserTable";
 
@@ -22,7 +21,7 @@ function App() {
         </Route>
         <Route path="/signUp" element={<SignUpPage />} />
         <Route path="/createTask" element={<CreateTask />} />
-        <Route path="/createUser" element={<CreateUsers />} />
+
         <Route path="/userTable" element={<UserTable />} />
       </Routes>
     </div>
