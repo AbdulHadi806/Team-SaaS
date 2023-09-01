@@ -12,8 +12,11 @@ import { socialIcons } from "../login/SocialIcons";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [saveAdmin, setSaveAdmin] = useState(false)
-  const [loginAdmin, { error: loginError }] = useLoginAdminMutation();
+  const [saveAdmin, setSaveAdmin] = useState(false);
+  const [loginAdmin, { error: loginError }] = useLoginAdminMutation(
+    {},
+    { refetchOnMountOrArgChange: true }
+  );
 
   const navigate = useNavigate();
   const togglePassword = () => {
@@ -23,7 +26,6 @@ const Login = () => {
     userName: "",
     password: "",
   });
-
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -92,7 +94,11 @@ const Login = () => {
               />
               <div className="flex  justify-between ">
                 <div className="flex items-start  mb-[40px] gap-[30px] ">
-                  <input type="checkbox" onChange={() => setSaveAdmin(!saveAdmin)} className="h-6 w-6 text-indigo-600" />
+                  <input
+                    type="checkbox"
+                    onChange={() => setSaveAdmin(!saveAdmin)}
+                    className="h-6 w-6 text-indigo-600"
+                  />
                   <label className="text-[17px] ">
                     {" "}
                     Remember Me{" "}

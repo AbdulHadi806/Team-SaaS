@@ -5,7 +5,7 @@ import { useLocation } from "react-router-dom";
 function AllTasks() {
   const [getAllTasks] = useGetAllTasksMutation();
   const [allTasks, setAllTasks] = useState();
-  const location =useLocation()
+  const location = useLocation();
   const getAllTasksHandler = async () => {
     try {
       const res = await getAllTasks();
@@ -19,7 +19,7 @@ function AllTasks() {
   }, [location]);
   return (
     <>
-      <h2 className=" text-[30px] font-bold text-[#3E1D47] ps-[40px] pt-[90px] ">
+      <h2 className=" text-[30px] font-bold text-[#3E1D47] ps-[40px] pt-[40px] ">
         Task for today
       </h2>
       <div className="flex flex-col w-[45%] ps-[40px] my-[40px] ">

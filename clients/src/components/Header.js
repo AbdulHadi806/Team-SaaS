@@ -6,7 +6,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function Header() {
   const [profile, setProfile] = useState("");
-  const [getAdminProfile] = useGetAdminProfileMutation();
+  const [getAdminProfile] = useGetAdminProfileMutation(
+    {},
+    { refetchOnMountOrArgChange: true }
+  );
   const [profileDropdown, setProfileDropdown] = useState(false);
 
   const token = AdminToken();

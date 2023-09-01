@@ -14,7 +14,7 @@ import {
   faUserSecret,
 } from "@fortawesome/free-solid-svg-icons";
 
-function CreateTask({ openModal, closeModal }) {
+function CreateTask({ closeModal }) {
   const [usersData, setUsersData] = useState([]);
   const navigate = useNavigate();
   const [task, setTask] = useState({
@@ -23,8 +23,14 @@ function CreateTask({ openModal, closeModal }) {
     assigned_to: " ",
   });
 
-  const [createTask] = useCreateTaskMutation();
-  const [getAllUsers] = useGetAllUsersMutation();
+  const [createTask] = useCreateTaskMutation(
+    {},
+    { refetchOnMountOrArgChange: true }
+  );
+  const [getAllUsers] = useGetAllUsersMutation(
+    {},
+    { refetchOnMountOrArgChange: true }
+  );
   const token = AdminToken();
 
   useEffect(() => {

@@ -1,33 +1,75 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
+import { faEllipsisVertical, faTrash } from "@fortawesome/free-solid-svg-icons";
 import dateFormat from "dateformat";
 import { useEffect, useState } from "react";
 import CreateTask from "../tasks/CreateTask";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useGetAllTasksMutation } from "../../redux/apiCalls/apiSlice";
 import { useLocation } from "react-router-dom";
 import UserCreate from "../user/UserCreate";
+import { AdminToken } from "../../redux/utils/adminAuth";
+import {
+  useGetAdminProfileMutation,
+  useDeleteTaskMutation,
+} from "../../redux/apiCalls/apiSlice";
 
-const Dashboard = ({ profile }) => {
+const Dashboard = () => {
   const [dateTime, setDateTime] = useState();
   const [day, setDay] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [getAllTasks] = useGetAllTasksMutation();
+  const [getAllTasks, { data: testTASKS }] = useGetAllTasksMutation();
   const [allTasks, setAllTasks] = useState();
   const [isUserModalOpen, setIsUserModalOpen] = useState(false);
   const location = useLocation();
+  const [profile, setProfile] = useState("");
+  const [getAdminProfile] = useGetAdminProfileMutation(
+    {},
+    { refetchOnMountOrArgChange: true }
+  );
+  const [deleteTask] = useDeleteTaskMutation(
+    {},
+    { refetchOnMountOrArgChange: true }
+  );
+
+  const token = AdminToken();
+  const navigate = useNavigate();
+
+  const fetchAdminProfile = async () => {
+    try {
+      const response = await getAdminProfile(token);
+      const adminName = response.data.name;
+      setProfile(adminName);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    fetchAdminProfile();
+  }, [location]);
+  const deleteTaskHandler = async (id) => {
+    console.log("userid", id);
+    try {
+      const res = await deleteTask({ _id: id });
+      console.log("task delete", res);
+      getAllTasksHandler();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const getAllTasksHandler = async () => {
     try {
       const res = await getAllTasks();
-      setAllTasks(res.data.getAllTasks);
+      if (res.data) {
+        setAllTasks(res.data.getAllTasks);
+      }
     } catch (error) {
       console.log(error);
     }
   };
   useEffect(() => {
     getAllTasksHandler();
-  }, [location]);
+  }, []);
   const openModal = () => {
     setIsModalOpen(true);
   };
@@ -57,6 +99,18 @@ const Dashboard = ({ profile }) => {
 
   const formattedTime = dateFormat(day, "h:MM:ss TT");
   const formattedDateTime = dateFormat(dateTime, "dddd, mmmm dS, yyyy");
+
+  const [deletetask, setDeletetask] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState(null);
+
+  const toggleCard = (index) => {
+    console.log(index);
+    setSelectedIndex(index);
+    if (selectedIndex === index) {
+      setDeletetask(!deletetask);
+    }
+  };
+
   return (
     <>
       <div className="w-full flex-row justify-between p-[40px]">
@@ -105,10 +159,35 @@ const Dashboard = ({ profile }) => {
                       className="w-[50px]"
                     />
                   </div>
-                  <FontAwesomeIcon
-                    className=" text-[30px] text-[#fff] cursor-pointer"
-                    icon={faEllipsisVertical}
-                  />
+                  <div className="relative">
+                    <button onClick={() => toggleCard(index)}>
+                      <FontAwesomeIcon
+                        className=" text-[30px] text-[#fff] cursor-pointer "
+                        icon={faEllipsisVertical}
+                      />
+                    </button>
+                    <div
+                      className={`${
+                        selectedIndex === index && deletetask
+                          ? "transition ease-in-out delay-150 block w-[90px] opacity-1  bg-white h-[30px] rounded-lg absolute top-[35px] right-0 flex"
+                          : "height-[0px] transition ease-in-out delay-150 hidden"
+                      }`}
+                    >
+                      <div
+                        onClick={(e) => {
+                          deleteTaskHandler(item._id);
+                        }}
+                        className="flex justify-between block  w-full p-3 items-center
+                        cursor-pointer"
+                      >
+                        <FontAwesomeIcon
+                          icon={faTrash}
+                          className="text-[11px]"
+                        />
+                        <span className="font-bold">Delete</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <h3 className="text-[30px] font-bold text-[#fff] mb-3 ">
                   {item.assigned_to_role}
