@@ -49,9 +49,12 @@ const updateTasks = async (req, res) => {
 }
 
 const getAllTasks = async (req, res) => {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 3;
     try {
         const adminId = req.user._id;
-        const getAllTasks = await Task.find({ Created_By: adminId })
+        const getAllTasks = await Task.find({ Created_By: adminId }).skip((page - 1) * limit)
+        .limit(limit);  
         if (!getAllTasks) {
             return res.status(404).json({ message: "No Task Found", status: false })
         }
@@ -100,6 +103,24 @@ const getUserTasks = async (req, res) => {
     }
 }
 
+
+const deleteAllSpecificTasks = async (req, res) => {
+    try {
+        const taskRole = req.body.assigned_to_role;
+        const deleteResult = await Task.deleteMany({ assigned_to_role: taskRole });
+
+        if (deleteResult.deletedCount === 0) {
+            return res.status(404).json({ message: "No Tasks Found...", status: false });
+        }
+
+        res.status(200).json({ message: "Tasks have been removed successfully.", status: true });
+
+    } catch(err) {
+        res.status(500).json({message: "Failed to delete tasks, please try again later...", status: false})
+    }
+}
+
+exports.deleteAllSpecificTasks = deleteAllSpecificTasks;
 exports.getUserTasks = getUserTasks;
 exports.getAllTasksByRole = getAllTasksByRole;
 exports.getAllMyTasks = getAllMyTasks;
