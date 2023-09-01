@@ -4,30 +4,22 @@ import dateFormat from "dateformat";
 import { useEffect, useState } from "react";
 import CreateTask from "../tasks/CreateTask";
 import { Link } from "react-router-dom";
-import { useGetAllTasksMutation } from "../../redux/apiCalls/apiSlice";
+import { useGetAllTasksTestQuery } from "../../redux/apiCalls/apiSlice";
 import { useLocation } from "react-router-dom";
 import UserCreate from "../user/UserCreate";
+import { AdminToken } from "../../redux/utils/adminAuth";
 
 const Dashboard = ({ profile }) => {
   const [dateTime, setDateTime] = useState();
   const [day, setDay] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [getAllTasks] = useGetAllTasksMutation();
-  const [allTasks, setAllTasks] = useState();
+  const testToken = AdminToken()
+  const {data: taskRoles, refetch: getTaskRoles} = useGetAllTasksTestQuery(testToken);
   const [isUserModalOpen, setIsUserModalOpen] = useState(false);
-  const location = useLocation();
-
-  const getAllTasksHandler = async () => {
-    try {
-      const res = await getAllTasks();
-      setAllTasks(res.data.getAllTasks);
-    } catch (error) {
-      console.log(error);
-    }
-  };
   useEffect(() => {
-    getAllTasksHandler();
-  }, [location]);
+    getTaskRoles()
+    console.log(taskRoles, ":dashboard")
+  }, [])
   const openModal = () => {
     setIsModalOpen(true);
   };
@@ -89,8 +81,8 @@ const Dashboard = ({ profile }) => {
         </div>
 
         <div className="flex gap-4  ">
-          {allTasks &&
-            allTasks.map((item, index) => (
+          {taskRoles &&
+            taskRoles.getAllTasks.map((item, index) => (
               <div
                 key={index}
                 className={` w-1/3 ${

@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import {
   useCreateTaskMutation,
   useGetAllUsersMutation,
+  useGetAllUsersTestQuery,
 } from "../../redux/apiCalls/apiSlice";
 import InputFields from "../login/InputFields";
 import { AdminToken } from "../../redux/utils/adminAuth";
@@ -16,38 +17,27 @@ import {
 
 function CreateTask({ openModal, closeModal }) {
   const [usersData, setUsersData] = useState([]);
+  const testToken = AdminToken()
+  const currentPage = 1
+  const {data, refetch: getAllUsersTest} = useGetAllUsersTestQuery({currentPage,testToken})
+ 
   const navigate = useNavigate();
   const [task, setTask] = useState({
     task: "",
     assigned_to_role: "",
     assigned_to: " ",
   });
-
   const [createTask] = useCreateTaskMutation();
-  const [getAllUsers] = useGetAllUsersMutation();
-  const token = AdminToken();
-
-  useEffect(() => {
-    getAllUsersHandler();
-  }, []);
 
   const handleChange = (e) => {
     setTask({ ...task, [e.target.name]: e.target.value });
   };
 
-  const getAllUsersHandler = async () => {
-    try {
-      const res = await getAllUsers(token);
-      setUsersData(res.data.users);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   const submitHandler = async (e) => {
     e.preventDefault();
+    const testToken = AdminToken();
     try {
-      const response = await createTask(task, navigate);
+      const response = await createTask({task, testToken});
       closeModal();
       if (response) {
         navigate("/mainDashboard");

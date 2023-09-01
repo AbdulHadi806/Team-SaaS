@@ -18,8 +18,19 @@ export const apiSlice = createApi({
           "Content-type": "application/json; charset=UTF-8",
         },
       }),
-
       invalidatesTags: ["Admin"],
+    }),
+    getAdminProfile: builder.mutation({
+      query: (tokenTest) => ({
+        url: "profile/admin",
+        method: "GET",
+
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+          authorization: `Bearer ${tokenTest}`,
+        },
+      }),
+      providesTags: ["Admin"],
     }),
     loginAdmin: builder.mutation({
       query: (data) => ({
@@ -34,19 +45,6 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ["Admin"],
     }),
-    getAdminProfile: builder.mutation({
-      query: () => ({
-        url: "profile/admin",
-        method: "GET",
-
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-          authorization: `Bearer ${token}`,
-        },
-        providesTags: ["Admin"],
-      }),
-    }),
-
     createTask: builder.mutation({
       query: (data, tokenFromRedux) => ({
         url: "tasks",
@@ -59,45 +57,54 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ["Tasks"],
     }),
-    getAllUsers: builder.mutation({
-      query: (currentPage, tokenFromRedux) => ({
-        url: `users/all-users?page=${currentPage}`,
-        method: "GET",
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-          authorization: `Bearer ${token}`,
-        },
-      }),
-      providesTags: ["User"],
-    }),
-
     createUser: builder.mutation({
-      query: (data, tokenFromRedux) => ({
+      query: ({ user, tokenTest }) => ({
         url: "users/createUser",
         method: "POST",
-        body: data,
+        body: user,
         headers: {
           "Content-type": "application/json; charset=UTF-8",
-          authorization: `Bearer ${token}`,
+          authorization: `Bearer ${tokenTest}`,
         },
       }),
       invalidatesTags: ["User"],
     }),
     deleteUser: builder.mutation({
-      query: (id) => ({
+      query: ({ _id, tokenTest }) => ({
         url: "users/",
         method: "DELETE",
-        body: id,
-
+        body: { _id },
         headers: {
           "Content-type": "application/json; charset=UTF-8",
-          authorization: `Bearer ${token}`,
+          authorization: `Bearer ${tokenTest}`,
         },
       }),
       invalidatesTags: ["User"],
     }),
+    getAllUsersTest: builder.query({
+      query: ({currentPage, tokenTest}) =>({
+        url: `users/all-users?page=${currentPage}`,
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+          authorization: `Bearer ${tokenTest}`,
+        },
+      }),
+      
+      providesTags: ['User', "Admin"],
+    }),
+    getAllTasksTest: builder.query({
+      query: ( testToken) =>({
+        url: `tasks/all-tasks`,
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+          authorization: `Bearer ${testToken}`,
+        },
+      }),
+      
+      providesTags: ['Tasks', "Admin"],
+    }),
     getAllTasks: builder.mutation({
-      query: () => ({
+      query: (tokenTest) => ({
         url: `tasks/all-tasks`,
         method: "GET",
         headers: {
@@ -115,7 +122,8 @@ export const {
   useGetAdminProfileMutation,
   useCreateTaskMutation,
   useCreateUserMutation,
-  useGetAllUsersMutation,
+  useGetAllTasksTestQuery,
   useDeleteUserMutation,
   useGetAllTasksMutation,
+  useGetAllUsersTestQuery
 } = apiSlice;

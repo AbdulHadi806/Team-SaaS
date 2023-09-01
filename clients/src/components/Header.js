@@ -21,19 +21,15 @@ function Header() {
   };
   useEffect(() => {
     fetchAdminProfile();
-    console.log(profile, "profile");
   }, []);
   return (
     <div className="shadow px-[20px] flex justify-between items-center xl:px-[40px] py-[20px]  bg-white">
       <h3 className="text-[21px] font-semibold">Admin</h3>
       <button
-        onMouseLeave={(e) => {
-          setProfileDropdown(false);
+        onClick={() => {
+          setProfileDropdown(!profileDropdown);
         }}
-        onMouseOver={(e) => {
-          setProfileDropdown(true);
-        }}
-        className="relative min-w-[50px] bg-[#1F2937] pl-2 pr-3 py-2 rounded-[100%]"
+        className="relative min-w-[50px] bg-[#1F2937] p-2 rounded-[100%]"
       >
         <div className="flex items-center">
           <div className="w-[40px]">

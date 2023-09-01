@@ -55,10 +55,11 @@ const getAllTasks = async (req, res) => {
         const adminId = req.user._id;
         const getAllTasks = await Task.find({ Created_By: adminId }).skip((page - 1) * limit)
         .limit(limit);  
+        const totalCount = await Task.countDocuments({ Created_By: adminId });
         if (!getAllTasks) {
             return res.status(404).json({ message: "No Task Found", status: false })
         }
-        res.status(200).json({ message: "Tasks Found", status: true, getAllTasks })
+        res.status(200).json({ message: "Tasks Found", status: true, getAllTasks, totalCount })
     } catch (err) {
         res.json(500).json({ message: "Something Went Wrong", status: false })
     }

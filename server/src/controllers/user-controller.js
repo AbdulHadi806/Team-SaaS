@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const createUser = async (req, res) => {
+    console.log(req.body)
     if (!req.body.userName || !req.body.role || !req.body.password) {
         return res.status(400).json({ message: "Something is missing.", status: false })
     }
@@ -64,6 +65,7 @@ const loginUser = async (req, res) => {
 }
 
 const deleteUser = async (req, res) => {
+    console.log(req.body)
     try {
         const _id = req.body._id;
         const existingUser = await User.findById(_id)

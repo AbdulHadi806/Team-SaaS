@@ -30,9 +30,10 @@ const UserCreate = ({ openModal, closeModal }) => {
   };
 
   const submitHandler = async (e) => {
+    const tokenTest = AdminToken()
     e.preventDefault();
     try {
-      const response = await createUser(user);
+      await createUser({user, tokenTest});
       closeModal();
     } catch (err) {
       console.log(err);

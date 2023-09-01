@@ -10,10 +10,10 @@ function MainDashboard() {
   const [profile, setProfile] = useState("");
   const [getAdminProfile] = useGetAdminProfileMutation();
   
-  const token = AdminToken()
   const fetchAdminProfile = async () => {
+  const tokenTest = AdminToken()
     try {
-      const  response = await getAdminProfile(token);
+      const  response = await getAdminProfile(tokenTest);
       const adminName = response.data.name;
       setProfile(adminName);
     } catch (error) {

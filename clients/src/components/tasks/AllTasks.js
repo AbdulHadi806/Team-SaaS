@@ -1,22 +1,27 @@
 import React, { useEffect, useState } from "react";
-import { useGetAllTasksMutation } from "../../redux/apiCalls/apiSlice";
+import { useGetAllTasksMutation, useGetAllTasksTestQuery } from "../../redux/apiCalls/apiSlice";
 import { useLocation } from "react-router-dom";
+import { AdminToken } from "../../redux/utils/adminAuth";
 
 function AllTasks() {
   const [getAllTasks] = useGetAllTasksMutation();
-  const [allTasks, setAllTasks] = useState();
+  const testToken = AdminToken()
+  const {data: allTasks} = useGetAllTasksTestQuery(testToken)
+  // const [allTasks, setAllTasks] = useState();
   const location =useLocation()
-  const getAllTasksHandler = async () => {
-    try {
-      const res = await getAllTasks();
-      setAllTasks(res.data.getAllTasks);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  useEffect(() => {
-    getAllTasksHandler();
-  }, [location]);
+  // const getAllTasksHandler = async () => {
+  //   const tokenTest = AdminToken()
+  //   try {
+  //     const res = await getAllTasks(tokenTest);
+  //     setAllTasks(res.data.getAllTasks);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+  // useEffect(() => {
+  //   getAllTasksHandler();
+  // }, [location]);
+
   return (
     <>
       <h2 className=" text-[30px] font-bold text-[#3E1D47] ps-[40px] pt-[90px] ">
@@ -24,7 +29,7 @@ function AllTasks() {
       </h2>
       <div className="flex flex-col w-[45%] ps-[40px] my-[40px] ">
         {allTasks &&
-          allTasks.map((item, index) => (
+          allTasks.getAllTasks.map((item, index) => (
             <div
               className={`w-[100%] rounded-[10px] shadow-2xl border-l-[8px] bg-[#FBFBFB] ${
                 index % 2 === 0 ? "border-[#70367C]" : "border-[#000]"

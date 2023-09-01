@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 
 import {
-  useGetAllUsersMutation,
-  useDeleteUserMutation,
+  // useGetAllUsersMutation,
+  useDeleteUserMutation, useGetAllUsersTestQuery,
 } from "../../redux/apiCalls/apiSlice";
 import { AdminToken } from "../../redux/utils/adminAuth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -13,22 +13,28 @@ import Pagination from "../reusableComponent/Pagination";
 import { ToolTip } from "../reusableComponent/Tooltip";
 
 const UserTable = () => {
-  const [getAllUsers, { data }] = useGetAllUsersMutation();
+  // const [getAllUsers, { data }] = useGetAllUsersMutation();
   const [deleteUser] = useDeleteUserMutation();
   const [showModal, setShowModal] = useState(false);
   const [userToDelete, setUserToDelete] = useState(null);
   const [userid, setId] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
-  const getAllUsersHandler = async (currentPage) => {
-    try {
-      const res = await getAllUsers(currentPage);
-      const count = Math.ceil(res.data.totalCount / 5);
+
+
+  const tokenTest = AdminToken()
+  const { data, refetch: getAllUsersQuery } = useGetAllUsersTestQuery({currentPage,tokenTest});
+  const getAllUsersHandler =  () => {
+    if (data) {
+      const count =  Math.ceil(data.totalCount / 5);
       setTotalCount(count);
-    } catch (err) {
-      console.log(err);
     }
   };
+  useEffect(() => {
+    getAllUsersQuery({currentPage,tokenTest})
+    getAllUsersHandler()
+  }, [currentPage])
+
   const getData = (item) => {
     const timestamp = item;
     const dateObject = new Date(timestamp);
@@ -50,18 +56,19 @@ const UserTable = () => {
   };
 
   useEffect(() => {
-    getAllUsersHandler(currentPage);
+    // getAllUsersHandler(currentPage);
   }, [currentPage]);
   const handlePageChange = ({ selected }) => {
     setCurrentPage(selected + 1);
   };
 
   const handleDelete = async () => {
+    const tokenTest = AdminToken()
+    console.log(userid)
     try {
-      const res = await deleteUser({ _id: userid });
-
+      await deleteUser({ _id: userid, tokenTest});
       setShowModal(false);
-      getAllUsersHandler(currentPage);
+      // getAllUsersHandler(currentPage);
     } catch (err) {
       console.log(err);
     }
