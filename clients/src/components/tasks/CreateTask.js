@@ -19,8 +19,7 @@ function CreateTask({ openModal, closeModal }) {
   const [usersData, setUsersData] = useState([]);
   const testToken = AdminToken()
   const currentPage = 1
-  const {data, refetch: getAllUsersTest} = useGetAllUsersTestQuery({currentPage,testToken})
- 
+  const {data, refetch: getAllUsers} = useGetAllUsersTestQuery({currentPage,testToken})
   const navigate = useNavigate();
   const [task, setTask] = useState({
     task: "",
