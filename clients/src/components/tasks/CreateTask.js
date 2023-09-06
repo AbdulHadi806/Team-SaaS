@@ -39,7 +39,7 @@ function CreateTask({ openModal, closeModal }) {
     e.preventDefault();
     const testToken = AdminToken();
     try {
-      const response = await createTask({task, testToken});
+      const response = await createTask(task);
       closeModal();
       if (response) {
         navigate("/mainDashboard");

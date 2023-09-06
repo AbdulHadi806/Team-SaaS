@@ -1,6 +1,7 @@
 const Task = require("../model/tasksModal");
 
 const addTasks = async (req, res) => {
+    console.log(req.body, ':req.body' )
     if (!req.body.task) {
         res.status(403).json({ message: "Please add task", status: false })
     }
@@ -14,7 +15,6 @@ const addTasks = async (req, res) => {
         await newTask.save()
         return res.status(200).json({ message: "Task created Successfully", status: true })
     } catch (err) {
-        console.log(err)
         return res.status(500).json({ message: "Unsuccessfull in creating a task.", status: false })
     }
 }

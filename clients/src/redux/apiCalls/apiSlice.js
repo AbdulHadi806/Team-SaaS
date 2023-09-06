@@ -46,7 +46,7 @@ export const apiSlice = createApi({
       invalidatesTags: ["Admin"],
     }),
     createTask: builder.mutation({
-      query: (data, tokenFromRedux) => ({
+      query: (data) => ({
         url: "tasks",
         method: "POST",
         body: data,
