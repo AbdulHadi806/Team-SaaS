@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import {
   // useGetAllUsersMutation,
-  useDeleteUserMutation, useGetAllUsersTestQuery,
+  useDeleteUserMutation, useGetAllUsersQuery,
 } from "../../redux/apiCalls/apiSlice";
 import { AdminToken } from "../../redux/utils/adminAuth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -23,7 +23,7 @@ const UserTable = () => {
 
 
   const tokenTest = AdminToken()
-  const { data, refetch: getAllUsersQuery } = useGetAllUsersTestQuery({currentPage,tokenTest});
+  const { data, refetch: getAllUsersQuery } = useGetAllUsersQuery({currentPage,tokenTest});
   const getAllUsersHandler =  () => {
     if (data) {
       const count =  Math.ceil(data.totalCount / 5);
@@ -82,7 +82,7 @@ const UserTable = () => {
   return (
     <>
       {data && data.users.length > 0 ? (
-        <div class="w-6/12 mx-[40px] overflow-x-auto shadow-md sm:rounded-lg mt-[80px]">
+        <div class="mx-[40px] overflow-x-auto shadow-md sm:rounded-sm mt-[40px]">
           <table class="w-full">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr className="bg-gray-800 h-[55px] text-[15px] font-bold text-[#fff] text-center">

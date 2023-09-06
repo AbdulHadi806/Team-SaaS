@@ -4,7 +4,7 @@ import dateFormat from "dateformat";
 import { useEffect, useState } from "react";
 import CreateTask from "../tasks/CreateTask";
 import { Link } from "react-router-dom";
-import { useGetAllTasksTestQuery } from "../../redux/apiCalls/apiSlice";
+import { useGetAllTasksQuery } from "../../redux/apiCalls/apiSlice";
 import { useLocation } from "react-router-dom";
 import UserCreate from "../user/UserCreate";
 import { AdminToken } from "../../redux/utils/adminAuth";
@@ -14,7 +14,7 @@ const Dashboard = ({ profile }) => {
   const [day, setDay] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const testToken = AdminToken()
-  const {data: taskRoles, refetch: getTaskRoles} = useGetAllTasksTestQuery(testToken);
+  const {data: taskRoles, refetch: getTaskRoles} = useGetAllTasksQuery(testToken);
   const [isUserModalOpen, setIsUserModalOpen] = useState(false);
   useEffect(() => {
     getTaskRoles()

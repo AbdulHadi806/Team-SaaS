@@ -4,8 +4,7 @@ import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import {
   useCreateTaskMutation,
-  useGetAllUsersMutation,
-  useGetAllUsersTestQuery,
+  useGetAllUsersQuery,
 } from "../../redux/apiCalls/apiSlice";
 import InputFields from "../login/InputFields";
 import { AdminToken } from "../../redux/utils/adminAuth";
@@ -17,15 +16,19 @@ import {
 
 function CreateTask({ openModal, closeModal }) {
   const [usersData, setUsersData] = useState([]);
-  const testToken = AdminToken()
+  const tokenTest = AdminToken()
   const currentPage = 1
-  const {data, refetch: getAllUsers} = useGetAllUsersTestQuery({currentPage,testToken})
+  const {data, refetch: getAllUsers} = useGetAllUsersQuery({currentPage,tokenTest})
   const navigate = useNavigate();
   const [task, setTask] = useState({
     task: "",
     assigned_to_role: "",
     assigned_to: " ",
   });
+  useEffect(() => {
+    getAllUsers({currentPage,tokenTest})
+    console.log(data,':datadatadata')
+  }, [])
   const [createTask] = useCreateTaskMutation();
 
   const handleChange = (e) => {
@@ -92,8 +95,8 @@ function CreateTask({ openModal, closeModal }) {
                 className="border border-[#86a4c3] w-[100%] p-3  outline-none text-[#B9BAC4]  focus:border-0 border-l-0"
               >
                 <option className="text-[#000]">Assigned To</option>
-                {usersData &&
-                  usersData.map((user) => (
+                {data &&
+                  data.users.map((user) => (
                     <option
                       key={user._id}
                       value={user._id}

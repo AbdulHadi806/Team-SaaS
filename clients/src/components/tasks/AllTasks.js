@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useGetAllTasksMutation, useGetAllTasksTestQuery } from "../../redux/apiCalls/apiSlice";
+import { useGetAllTasksQuery } from "../../redux/apiCalls/apiSlice";
 import { useLocation } from "react-router-dom";
 import { AdminToken } from "../../redux/utils/adminAuth";
 
 function AllTasks() {
-  const [getAllTasks] = useGetAllTasksMutation();
   const testToken = AdminToken()
-  const {data: allTasks} = useGetAllTasksTestQuery(testToken)
+  const {data: allTasks} = useGetAllTasksQuery(testToken)
   // const [allTasks, setAllTasks] = useState();
   const location =useLocation()
   // const getAllTasksHandler = async () => {

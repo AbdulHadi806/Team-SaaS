@@ -3,6 +3,7 @@ import { useGetAdminProfileMutation } from "../redux/apiCalls/apiSlice";
 import { AdminToken, LogoutAdminHandler } from "../redux/utils/adminAuth";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Link } from "react-router-dom";
 
 function Header() {
   const [profile, setProfile] = useState("");
@@ -41,9 +42,9 @@ function Header() {
           style={profileDropdown ? { display: "block" } : { display: "none" }}
         >
           <ul>
-            <li className="px-1 py-[5px] hover:text-[#660079] font-medium">
+            <Link to={"/admin-profile"} className="px-1 py-[5px] hover:text-[#660079] font-medium">
               Profile
-            </li>
+            </Link>
             <li className="border-t py-[5px] px-1 hover:text-[#660079] font-medium">
               Dashboard
             </li>

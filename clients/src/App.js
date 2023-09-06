@@ -6,9 +6,7 @@ import DashboardProtectedroute from "./components/protectedRoute/DashboardProtec
 import Sidebar from "./components/Sidebar";
 import MainDashboard from "./components/dashboard/MainDashboard";
 import NotFoundPage from "./components/NotFound/NotFoundPage";
-import CreateTask from "./components/tasks/CreateTask";
-
-import UserTable from "./components/user/UserTable";
+import { AdminProfile } from "./components/user/AdminProfile";
 
 function App() {
   return (
@@ -18,11 +16,9 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route element={<DashboardProtectedroute />}>
           <Route path="/mainDashboard" element={<MainDashboard />} />
+          <Route path="/admin-profile" element={<AdminProfile />} />
         </Route>
         <Route path="/signUp" element={<SignUpPage />} />
-        <Route path="/createTask" element={<CreateTask />} />
-
-        <Route path="/userTable" element={<UserTable />} />
       </Routes>
     </div>
   );

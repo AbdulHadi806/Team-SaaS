@@ -81,7 +81,7 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ["User"],
     }),
-    getAllUsersTest: builder.query({
+    getAllUsers: builder.query({
       query: ({currentPage, tokenTest}) =>({
         url: `users/all-users?page=${currentPage}`,
         headers: {
@@ -92,7 +92,7 @@ export const apiSlice = createApi({
       
       providesTags: ['User', "Admin"],
     }),
-    getAllTasksTest: builder.query({
+    getAllTasks: builder.query({
       query: ( testToken) =>({
         url: `tasks/all-tasks`,
         headers: {
@@ -103,17 +103,6 @@ export const apiSlice = createApi({
       
       providesTags: ['Tasks', "Admin"],
     }),
-    getAllTasks: builder.mutation({
-      query: (tokenTest) => ({
-        url: `tasks/all-tasks`,
-        method: "GET",
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-          authorization: `Bearer ${token}`,
-        },
-      }),
-      providesTags: ["Tasks"],
-    }),
   }),
 });
 export const {
@@ -122,8 +111,7 @@ export const {
   useGetAdminProfileMutation,
   useCreateTaskMutation,
   useCreateUserMutation,
-  useGetAllTasksTestQuery,
+  useGetAllTasksQuery,
   useDeleteUserMutation,
-  useGetAllTasksMutation,
-  useGetAllUsersTestQuery
+  useGetAllUsersQuery
 } = apiSlice;
