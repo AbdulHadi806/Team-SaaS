@@ -1,10 +1,10 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
+import { faEllipsisVertical, faTrash } from "@fortawesome/free-solid-svg-icons";
 import dateFormat from "dateformat";
 import { useEffect, useState } from "react";
 import CreateTask from "../tasks/CreateTask";
 import { Link } from "react-router-dom";
-import { useGetAllTasksQuery } from "../../redux/apiCalls/apiSlice";
+import { useDeleteTaskMutation, useGetAllTasksQuery } from "../../redux/apiCalls/apiSlice";
 import { useLocation } from "react-router-dom";
 import UserCreate from "../user/UserCreate";
 import { AdminToken } from "../../redux/utils/adminAuth";
@@ -16,13 +16,38 @@ const Dashboard = ({ profile }) => {
   const testToken = AdminToken()
   const {data: taskRoles, refetch: getTaskRoles} = useGetAllTasksQuery(testToken);
   const [isUserModalOpen, setIsUserModalOpen] = useState(false);
+  const [deletetask, setDeletetask] = useState(
+    new Array(taskRoles && taskRoles.getAllTasks.length).fill(false)
+  );
+  const toggleCard = (index) => {
+    const updatedIndex = new Array(taskRoles.getAllTasks.length).fill(false);
+    updatedIndex[index] = !deletetask[index];
+    setDeletetask(updatedIndex);
+  };
+  const [deleteTask] = useDeleteTaskMutation(
+    {},
+    { refetchOnMountOrArgChange: true }
+  );
+  const deleteTaskHandler = async (id) => {
+    try {
+      const res = await deleteTask({ _id: id });
+      fetchRoles()
+      await getTaskRoles()
+      setDeletetask(!deleteTask); 
+    } catch (error) {
+      console.log(error); 
+    } 
+  };
+  const fetchRoles = async() => {
+    await getTaskRoles()
+  }
   useEffect(() => {
-    getTaskRoles()
-    console.log(taskRoles, ":dashboard")
+    console.log(taskRoles, "taskRoles")
+    fetchRoles()
   }, [])
   const openModal = () => {
     setIsModalOpen(true);
-  };
+  }; 
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -78,13 +103,13 @@ const Dashboard = ({ profile }) => {
               Add User
             </button>
           </div>
-        </div>
+        </div> 
 
         <div className="flex gap-4  ">
-          {taskRoles &&
+        {taskRoles &&
             taskRoles.getAllTasks.map((item, index) => (
               <div
-                key={index}
+                key={item._id}
                 className={` w-1/3 ${
                   colors[index % colors.length]
                 }   rounded-lg p-[30px] ease-in-out duration-300 pb-[40px] hover:scale-[1.05] hover:shadow-[2px_3px_31px_4px_rgb(0,0,0,0.3)]`}
@@ -97,10 +122,36 @@ const Dashboard = ({ profile }) => {
                       className="w-[50px]"
                     />
                   </div>
-                  <FontAwesomeIcon
-                    className=" text-[30px] text-[#fff] cursor-pointer"
-                    icon={faEllipsisVertical}
-                  />
+                  <div className="relative">
+                    <button onClick={() => toggleCard(index)}>
+                      <FontAwesomeIcon
+                        className=" text-[30px] text-[#fff] cursor-pointer "
+                        icon={faEllipsisVertical}
+                      />
+                    </button>
+                    <div
+                      className={`${
+                        deletetask[index]
+                          ? "transition ease-in-out delay-150 block w-[90px] opacity-1  bg-white h-[30px] rounded-lg absolute top-[35px] right-0 flex"
+                          : "height-[0px] transition ease-in-out delay-150 hidden"
+                      }`}
+                    >
+                      <div
+                        onClick={() => {
+                          deleteTaskHandler(item._id);
+                          console.log("id", item._id);
+                        }}
+                        className="flex justify-between block  w-full p-3 items-center
+                        cursor-pointer"
+                      >
+                        <FontAwesomeIcon
+                          icon={faTrash}
+                          className="text-[11px]"
+                        />
+                        <span className="font-bold">Delete</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <h3 className="text-[30px] font-bold text-[#fff] mb-3 ">
                   {item.assigned_to_role}

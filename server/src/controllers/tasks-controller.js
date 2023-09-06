@@ -1,7 +1,6 @@
 const Task = require("../model/tasksModal");
 
 const addTasks = async (req, res) => {
-    console.log(req.body, ':req.body' )
     if (!req.body.task) {
         res.status(403).json({ message: "Please add task", status: false })
     }

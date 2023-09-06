@@ -15,7 +15,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 function CreateTask({ openModal, closeModal }) {
-  const [usersData, setUsersData] = useState([]);
   const tokenTest = AdminToken()
   const currentPage = 1
   const {data, refetch: getAllUsers} = useGetAllUsersQuery({currentPage,tokenTest})

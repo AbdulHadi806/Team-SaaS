@@ -103,6 +103,18 @@ export const apiSlice = createApi({
       
       providesTags: ['Tasks', "Admin"],
     }),
+    deleteTask: builder.mutation({
+      query: ({ _id }) => ({
+        url: `tasks/${_id}`,
+        method: "DELETE",
+
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+          authorization: `Bearer ${token}`,
+        },
+      }),
+      invalidatesTags: ["Tasks"],
+    }),
   }),
 });
 export const {
@@ -113,5 +125,6 @@ export const {
   useCreateUserMutation,
   useGetAllTasksQuery,
   useDeleteUserMutation,
-  useGetAllUsersQuery
+  useGetAllUsersQuery,
+  useDeleteTaskMutation
 } = apiSlice;
