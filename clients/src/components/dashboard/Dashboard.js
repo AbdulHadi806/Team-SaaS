@@ -31,7 +31,6 @@ const Dashboard = () => {
   }, [])
   const [getAllTasks, { data: testTASKS }] = useGetAllTasksMutation();
   const [allTasks, setAllTasks] = useState();
-  const [isUserModalOpen, setIsUserModalOpen] = useState(false);
   const location = useLocation();
   const [profile, setProfile] = useState("");
   const [getAdminProfile] = useGetAdminProfileMutation(
