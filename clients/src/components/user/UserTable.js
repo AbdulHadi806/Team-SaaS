@@ -82,7 +82,7 @@ const UserTable = () => {
   return (
     <>
       {data && data.users.length > 0 ? (
-        <div class="w-6/12 mx-[40px] overflow-x-auto shadow-md sm:rounded-lg mt-[80px]">
+        <div class=" mx-[40px] overflow-x-auto shadow-md sm:rounded-sm mt-[40px]">
           <table class="w-full">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr className="bg-gray-800 h-[55px] text-[15px] font-bold text-[#fff] text-center">
@@ -98,11 +98,11 @@ const UserTable = () => {
             <tbody>
               {data &&
                 data.users.map((item, index) => (
-                  <tr class="bg-white border-b dark:bg-gray-900 dark:border-gray-700  text-[18px] text-bold  hover:bg-[#edeaea]  text-center">
-                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                      # {index + 1}
+                  <tr class="bg-white border-b dark:border-gray-700  text-[18px] text-bold  hover:bg-[#edeaea]  text-center">
+                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
+                      {index + 1}
                     </td>
-                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                       {item.userName}
                     </td>
                     <td class="px-6 py-4">{item.role}</td>
