@@ -1,63 +1,43 @@
 import React, { useEffect, useState } from "react";
-import { useGetAllTasksMutation, useGetAllTasksTestQuery } from "../../redux/apiCalls/apiSlice";
-import { useLocation } from "react-router-dom";
+import Sidebar from "../Sidebar";
+import Dashboard from "./Dashboard";
 import { AdminToken } from "../../redux/utils/adminAuth";
+import { useGetAdminProfileMutation } from "../../redux/apiCalls/apiSlice";
+import Header from "../Header";
+import Tabs from "./Tabs";
 
-function AllTasks() {
-  const [getAllTasks] = useGetAllTasksMutation();
-  const testToken = AdminToken()
-  const {data: allTasks} = useGetAllTasksTestQuery(testToken)
-  // const [allTasks, setAllTasks] = useState();
-  const location =useLocation()
-  // const getAllTasksHandler = async () => {
-  //   const tokenTest = AdminToken()
-  //   try {
-  //     const res = await getAllTasks(tokenTest);
-  //     setAllTasks(res.data.getAllTasks);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-  // useEffect(() => {
-  //   getAllTasksHandler();
-  // }, [location]);
+function MainDashboard() {
+  const [profile, setProfile] = useState("");
+  const [getAdminProfile] = useGetAdminProfileMutation();
+  
+  const fetchAdminProfile = async () => {
+  const tokenTest = AdminToken()
+    try {
+      const  response = await getAdminProfile(tokenTest);
+      const adminName = response.data.name;
+      setProfile(adminName);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    fetchAdminProfile();
+  }, []);
 
   return (
     <>
-      <h2 className=" text-[30px] font-bold text-[#3E1D47] ps-[40px] pt-[90px] ">
-        Task for today
-      </h2>
-      <div className="flex flex-col w-[45%] ps-[40px] my-[40px] ">
-        {allTasks &&
-          allTasks.getAllTasks.map((item, index) => (
-            <div
-              className={`w-[100%] rounded-[10px] shadow-2xl border-l-[8px] bg-[#FBFBFB] ${
-                index % 2 === 0 ? "border-[#70367C]" : "border-[#000]"
-              } flex justify-between items-center mb-[30px]`}
-              key={index}
-            >
-              <div className="flex flex-col p-[30px]">
-                <h3 className="text-[30px] font-bold text-[#3E1D47] capitalize ">
-                  {item.assigned_to_role}
-                </h3>
-                <span className="inline-block  mt-[20px]  capitalize font-bold text-[#70367C] ">
-                  {" "}
-                  {item.task}
-                </span>
-              </div>
-              <div class="flex items-center mr-4">
-                <input
-                  id="red-checkbox"
-                  type="checkbox"
-                  value=""
-                  class="w-5 rounded-[50%] h-5 text-[#000] bg-[#fff] focus:ring-0 dark:bg-0 dark:border-[#000]"
-                />
-              </div>
-            </div>
-          ))}
+      <div className="flex w-full">
+        <Sidebar />
+        <div className="flex-1 flex flex-col md:pl-[240px]">
+          <Header />
+          <Dashboard profile={profile} />
+          <div className="pb-[40px]">
+          <Tabs />
+          </div>
+        </div>
       </div>
     </>
-  );
+  )
 }
 
-export default AllTasks;
+export default MainDashboard;
