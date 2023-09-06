@@ -14,7 +14,7 @@ const Dashboard = ({ profile }) => {
   const [day, setDay] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const testToken = AdminToken()
-  const {data: taskRoles, refetch: getTaskRoles} = useGetAllTasksQuery(testToken);
+  const {data: taskRoles} = useGetAllTasksQuery(testToken);
   const [isUserModalOpen, setIsUserModalOpen] = useState(false);
   const [deletetask, setDeletetask] = useState(
     new Array(taskRoles && taskRoles.getAllTasks.length).fill(false)
@@ -30,21 +30,13 @@ const Dashboard = ({ profile }) => {
   );
   const deleteTaskHandler = async (id) => {
     try {
-      const res = await deleteTask({ _id: id });
-      fetchRoles()
-      await getTaskRoles()
+      await deleteTask({ _id: id });
       setDeletetask(!deleteTask); 
     } catch (error) {
       console.log(error); 
     } 
   };
-  const fetchRoles = async() => {
-    await getTaskRoles()
-  }
-  useEffect(() => {
-    console.log(taskRoles, "taskRoles")
-    fetchRoles()
-  }, [])
+  
   const openModal = () => {
     setIsModalOpen(true);
   }; 

@@ -3,7 +3,6 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const createUser = async (req, res) => {
-    console.log(req.body)
     if (!req.body.userName || !req.body.role || !req.body.password) {
         return res.status(400).json({ message: "Something is missing.", status: false })
     }
@@ -86,7 +85,16 @@ const updateUserInfo = async (req, res) => {
         if (!existingUser) {
             return res.status(404).json({ message: "User not found", status: false });
         }
-        existingUser.userName = req.body.userName
+        if(req.body.userName && req.body.role){
+            existingUser.userName = req.body.userName
+            existingUser.role = req.body.role
+        }
+        else if(req.body.userName) {
+            existingUser.userName = req.body.userName
+        }
+        else if (req.body.role) {
+            existingUser.role = req.body.role
+        }
         const userNameExists = await User.findOne({ userName: req.body.userName });
         if (userNameExists) {
             return res.status(409).json({ message: "UserName already exists", status: false });

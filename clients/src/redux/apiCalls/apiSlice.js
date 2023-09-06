@@ -115,6 +115,18 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ["Tasks"],
     }),
+    updateTask: builder.mutation({
+      query: ({ task_id, testToken }) => ({
+        url: `tasks/update-task`,
+        method: "PATCH",
+        body: {task_id} ,
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+          authorization: `Bearer ${testToken}`,
+        },
+      }),
+      invalidatesTags: ["Tasks"],
+    }),
   }),
 });
 export const {
@@ -126,5 +138,6 @@ export const {
   useGetAllTasksQuery,
   useDeleteUserMutation,
   useGetAllUsersQuery,
-  useDeleteTaskMutation
+  useDeleteTaskMutation,
+  useUpdateTaskMutation
 } = apiSlice;

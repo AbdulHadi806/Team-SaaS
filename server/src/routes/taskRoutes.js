@@ -8,7 +8,7 @@ taskRoutes.get('/all-tasks', getAllTasks)
 taskRoutes.get('/all-tasks/:role', getAllTasksByRole)
 taskRoutes.post('/', addTasks)
 taskRoutes.delete('/:task_id', deleteTasks)
-taskRoutes.patch('/:task_id', updateTasks)
+taskRoutes.patch('/update-task', updateTasks)
 taskRoutes.get('/:user_id', getUserTasks)
 taskRoutes.delete('/all-tasks/specific-tasks', deleteAllSpecificTasks)
 

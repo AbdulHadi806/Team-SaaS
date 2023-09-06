@@ -34,7 +34,7 @@ const deleteTasks = async (req, res) => {
 
 const updateTasks = async (req, res) => {
     try {
-        const _id = req.params.task_id
+        const _id = req.body.task_id
         const existingTask = await Task.findById(_id)
         if (!existingTask) {
             return res.status(404).json({ message: "Task not found", status: false });
@@ -46,6 +46,7 @@ const updateTasks = async (req, res) => {
         res.json(500).json({ message: "Falied To update task", status: false })
     }
 }
+
 
 const getAllTasks = async (req, res) => {
     const page = parseInt(req.query.page) || 1;
