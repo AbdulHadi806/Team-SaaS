@@ -4,17 +4,21 @@ import dateFormat from "dateformat";
 import { useEffect, useState } from "react";
 import CreateTask from "../tasks/CreateTask";
 import { Link } from "react-router-dom";
-import { useDeleteTaskMutation, useGetAllTasksQuery } from "../../redux/apiCalls/apiSlice";
+import {
+  useDeleteProjectMutation,
+  useGetAllTasksQuery,
+} from "../../redux/apiCalls/apiSlice";
 import { useLocation } from "react-router-dom";
 import UserCreate from "../user/UserCreate";
 import { AdminToken } from "../../redux/utils/adminAuth";
 
 const Dashboard = ({ profile }) => {
+  const testToken = AdminToken();
+  const { data: taskRoles, refetch: getTaskRoles } =useGetAllTasksQuery(testToken);
+  const [deleteTask] = useDeleteProjectMutation();
   const [dateTime, setDateTime] = useState();
   const [day, setDay] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const testToken = AdminToken()
-  const {data: taskRoles} = useGetAllTasksQuery(testToken);
   const [isUserModalOpen, setIsUserModalOpen] = useState(false);
   const [deletetask, setDeletetask] = useState(
     new Array(taskRoles && taskRoles.getAllTasks.length).fill(false)
@@ -24,22 +28,26 @@ const Dashboard = ({ profile }) => {
     updatedIndex[index] = !deletetask[index];
     setDeletetask(updatedIndex);
   };
-  const [deleteTask] = useDeleteTaskMutation(
-    {},
-    { refetchOnMountOrArgChange: true }
-  );
   const deleteTaskHandler = async (id) => {
     try {
-      await deleteTask({ _id: id });
-      setDeletetask(!deleteTask); 
+      await deleteTask({ assigned_to_role: id });
+      fetchRoles();
+      await getTaskRoles();
+      setDeletetask(!deleteTask);
     } catch (error) {
-      console.log(error); 
-    } 
+      console.log(error);
+    }
   };
-  
+  const fetchRoles = async () => {
+    await getTaskRoles();
+  };
+  useEffect(() => {
+    console.log(taskRoles, "taskRoles");
+    fetchRoles();
+  }, []);
   const openModal = () => {
     setIsModalOpen(true);
-  }; 
+  };
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -95,74 +103,91 @@ const Dashboard = ({ profile }) => {
               Add User
             </button>
           </div>
-        </div> 
+        </div>
 
         <div className="flex gap-4  ">
-        {taskRoles &&
-            taskRoles.getAllTasks.map((item, index) => (
-              <div
-                key={item._id}
-                className={` w-1/3 ${
-                  colors[index % colors.length]
-                }   rounded-lg p-[30px] ease-in-out duration-300 pb-[40px] hover:scale-[1.05] hover:shadow-[2px_3px_31px_4px_rgb(0,0,0,0.3)]`}
-              >
-                <div className="flex items-center justify-between mb-1 ">
-                  <div className=" bg-[#fff] mb-3 rounded-full">
-                    <img
-                      src="assets/avatar-4.png"
-                      alt="not found"
-                      className="w-[50px]"
-                    />
-                  </div>
-                  <div className="relative">
-                    <button onClick={() => toggleCard(index)}>
-                      <FontAwesomeIcon
-                        className=" text-[30px] text-[#fff] cursor-pointer "
-                        icon={faEllipsisVertical}
-                      />
-                    </button>
-                    <div
-                      className={`${
-                        deletetask[index]
-                          ? "transition ease-in-out delay-150 block w-[90px] opacity-1  bg-white h-[30px] rounded-lg absolute top-[35px] right-0 flex"
-                          : "height-[0px] transition ease-in-out delay-150 hidden"
-                      }`}
-                    >
-                      <div
-                        onClick={() => {
-                          deleteTaskHandler(item._id);
-                          console.log("id", item._id);
-                        }}
-                        className="flex justify-between block  w-full p-3 items-center
-                        cursor-pointer"
-                      >
-                        <FontAwesomeIcon
-                          icon={faTrash}
-                          className="text-[11px]"
+          {taskRoles &&
+            [
+              ...new Set(
+                taskRoles.getAllTasks.map((item) => item.assigned_to_role)
+              ),
+            ].map((role, index) => {
+              // Find the first task with the current role
+              const taskWithRole = taskRoles.getAllTasks.find(
+                (item) => item.assigned_to_role === role
+              );
+
+              // Check if a task with the current role exists
+              if (taskWithRole) {
+                return (
+                  <div
+                    key={taskWithRole._id} // Use the unique identifier of the task (assuming it's unique)
+                    className={`w-1/3 ${
+                      colors[index % colors.length]
+                    } rounded-lg p-[30px] ease-in-out duration-300 pb-[40px] hover:scale-[1.05] hover:shadow-[2px_3px_31px_4px_rgb(0,0,0,0.3)]`}
+                  >
+                    <div className="flex items-center justify-between mb-1 ">
+                      <div className=" bg-[#fff] mb-3 rounded-full">
+                        <img
+                          src="assets/avatar-4.png"
+                          alt="not found"
+                          className="w-[50px]"
                         />
-                        <span className="font-bold">Delete</span>
+                      </div>
+                      <div className="relative">
+                        <button onClick={() => toggleCard(index)}>
+                          <FontAwesomeIcon
+                            className=" text-[30px] text-[#fff] cursor-pointer "
+                            icon={faEllipsisVertical}
+                          />
+                        </button>
+                        <div
+                          className={`${
+                            deletetask[index]
+                              ? "transition ease-in-out delay-150 block w-[90px] opacity-1  bg-white h-[30px] rounded-lg absolute top-[35px] right-0 flex"
+                              : "height-[0px] transition ease-in-out delay-150 hidden"
+                          }`}
+                        >
+                          <div
+                            onClick={() => {
+                              deleteTaskHandler(taskWithRole.assigned_to_role);
+                              console.log("id", taskWithRole.assigned_to_role);
+                            }}
+                            className="flex justify-between block  w-full p-3 items-center
+                        cursor-pointer"
+                          >
+                            <FontAwesomeIcon
+                              icon={faTrash}
+                              className="text-[11px]"
+                            />
+                            <span className="font-bold">Delete</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <h3 className="text-[30px] font-bold text-[#fff] mb-3 ">
+                      {taskWithRole.assigned_to_role}
+                    </h3>
+                    <div>
+                      <span className="text-[#fff] mb-2 inline-block">
+                        10 task-80% complete
+                      </span>
+                      <div className="w-full bg-[#9d9d9d] rounded-full h-2.5 dark:bg-gray-700">
+                        <div
+                          className="bg-[#fff] h-2.5 rounded-full"
+                          style={{ width: "45%" }}
+                        ></div>
                       </div>
                     </div>
                   </div>
-                </div>
-                <h3 className="text-[30px] font-bold text-[#fff] mb-3 ">
-                  {item.assigned_to_role}
-                </h3>
-                <div>
-                  <span className="text-[#fff] mb-2 inline-block">
-                    10 task-80% complete
-                  </span>
-                  <div className="w-full bg-[#9d9d9d] rounded-full h-2.5 dark:bg-gray-700">
-                    <div
-                      className="bg-[#fff] h-2.5 rounded-full"
-                      style={{ width: "45%" }}
-                    ></div>
-                  </div>
-                </div>
-              </div>
-            ))}
+                );
+              } else {
+                return null;
+              }
+            })}
         </div>
       </div>
+
       {isModalOpen && (
         <CreateTask closeModal={closeModal} openModal={openModal} />
       )}
