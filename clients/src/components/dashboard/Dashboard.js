@@ -3,6 +3,7 @@ import CreateTask from "../tasks/CreateTask";
 import UserCreate from "../user/UserCreate";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsisVertical, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 
 function Dashboard(props) {
   const {
@@ -21,6 +22,7 @@ function Dashboard(props) {
     closeModal,
     closeUserModal,
   } = props;
+  
   return (
     <>
       <div className="w-full flex-row justify-between p-[40px]">
@@ -67,12 +69,13 @@ function Dashboard(props) {
               // Check if a task with the current role exists
               if (taskWithRole) {
                 return (
+                 
                   <div
                     key={taskWithRole._id} // Use the unique identifier of the task (assuming it's unique)
                     className={`w-1/3 ${
                       colors[index % colors.length]
                     } rounded-lg p-[30px] ease-in-out duration-300 pb-[40px] hover:scale-[1.05] hover:shadow-[2px_3px_31px_4px_rgb(0,0,0,0.3)]`}
-                  >
+                  > <Link to={`/rolesDetail/${taskWithRole.assigned_to_role}`}>
                     <div className="flex items-center justify-between mb-1 ">
                       <div className=" bg-[#fff] mb-3 rounded-full">
                         <img
@@ -126,7 +129,9 @@ function Dashboard(props) {
                         ></div>
                       </div>
                     </div>
+                    </Link>
                   </div>
+                 
                 );
               }
             })}

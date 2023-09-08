@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const connection = () => {
   mongoose
-    .connect(`mongodb://localhost:27017/SaaS`, {})
+    .connect(`mongodb://0.0.0.0:27017/SaaS`, {})
     .then(() => {
       console.log("connection successfull with mongo");
     })

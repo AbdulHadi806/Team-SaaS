@@ -34,7 +34,7 @@ function Header() {
       >
         <div className="flex items-center">
           <div className="w-[40px]">
-            <img src="assets/avatar-1.png" alt="Admin Image" />
+            <img src="/assets/avatar-3.png" alt="Admin Image" />
           </div>
         </div>
         <div

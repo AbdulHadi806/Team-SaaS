@@ -152,6 +152,29 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ["User"],
     }),
+    getRoles: builder.query({
+      query: ({ token, roles }) => ({
+        url: `tasks/all-tasks/${roles}`,
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+          authorization: `Bearer ${token}`,
+        },
+      }),
+
+      providesTags: ["Tasks", "Admin"],
+    }),
+
+    getUserByRole: builder.query({
+      query: ({ token, roles }) => ({
+        url: `users/users/${roles}`,
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+          authorization: `Bearer ${token}`,
+        },
+      }),
+
+      providesTags: ["Tasks", "Admin"],
+    }),
   }),
 });
 export const {
@@ -166,5 +189,7 @@ export const {
   useDeleteProjectMutation,
   useUpdateTaskMutation,
   useUpdateUserMutation,
-  useLoginUserMutation
+  useLoginUserMutation,
+  useGetRolesQuery,
+  useGetUserByRoleQuery,
 } = apiSlice;

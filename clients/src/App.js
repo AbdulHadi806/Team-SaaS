@@ -10,6 +10,7 @@ import { AdminProfile } from "./components/user/AdminProfile";
 import { useEffect } from "react";
 import io from 'socket.io-client';
 import CreateTask from "./components/tasks/CreateTask";
+import RolesDetail from "./components/tasks/RolesDetail";
 
 function App() {
 const socket = io('http://localhost:8000');
@@ -36,6 +37,7 @@ const socket = io('http://localhost:8000');
         <Route element={<DashboardProtectedroute />}>
           <Route path="/mainDashboard" element={<MainDashboard />} />
           <Route path="/admin-profile" element={<AdminProfile />} />
+          <Route path="/rolesDetail/:roles" element={<RolesDetail />} />
         </Route>
         <Route path="/createTask" element={<CreateTask />} />
         <Route path="/signUp" element={<SignUpPage />} />
