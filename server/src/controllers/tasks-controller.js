@@ -1,4 +1,5 @@
 const Task = require("../model/tasksModal");
+const socketManager = require("../socket/socket")
 
 const addTasks = async (req, res) => {
     if (!req.body.task) {
@@ -12,9 +13,12 @@ const addTasks = async (req, res) => {
             assigned_to_role: req.body.assigned_to_role
         })
         await newTask.save()
+        const io = socketManager.getIoInstance();
+        io.emit('todoadded', { message: "Task created Successfully", status: true, newTask });
         return res.status(200).json({ message: "Task created Successfully", status: true })
     } catch (err) {
-        return res.status(500).json({ message: "Unsuccessfull in creating a task.", status: false })
+        console.log(err)
+        return res.status(500).json({ message: "Unsuccessfull in creating a task.", status: false, err })
     }
 }
 

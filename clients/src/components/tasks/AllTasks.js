@@ -3,15 +3,14 @@ import {
   useGetAllTasksQuery,
   useUpdateTaskMutation,
 } from "../../redux/apiCalls/apiSlice";
-import { useLocation } from "react-router-dom";
 import { AdminToken } from "../../redux/utils/adminAuth";
 
 function AllTasks() {
   const testToken = AdminToken();
-  const { data: taskRoles, refetch: getTaskRoles } = useGetAllTasksQuery(testToken);
+  const { data: taskRoles, refetch: getTaskRoles } =
+    useGetAllTasksQuery(testToken);
   const [updateTask] = useUpdateTaskMutation();
 
-  
   const updateTaskHandler = async (id) => {
     try {
       await updateTask({ task_id: id, testToken });
@@ -61,7 +60,9 @@ function AllTasks() {
                   className="w-5 rounded-[50%] h-5 text-[#000] bg-[#fff] focus:ring-0 dark:bg-0 dark:border-[#000]"
                 />
                 <button
-                  onClick={(e) => {updateTaskHandler(item._id)}}
+                  onClick={(e) => {
+                    updateTaskHandler(item._id);
+                  }}
                 >
                   update
                 </button>

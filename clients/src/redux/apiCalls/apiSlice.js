@@ -82,29 +82,29 @@ export const apiSlice = createApi({
       invalidatesTags: ["User"],
     }),
     getAllUsers: builder.query({
-      query: ({currentPage, tokenTest}) =>({
+      query: ({ currentPage, tokenTest }) => ({
         url: `users/all-users?page=${currentPage}`,
         headers: {
           "Content-type": "application/json; charset=UTF-8",
           authorization: `Bearer ${tokenTest}`,
         },
       }),
-      
-      providesTags: ['User', "Admin"],
+
+      providesTags: ["User", "Admin"],
     }),
     getAllTasks: builder.query({
-      query: ( testToken) =>({
+      query: (testToken) => ({
         url: `tasks/all-tasks`,
         headers: {
           "Content-type": "application/json; charset=UTF-8",
           authorization: `Bearer ${testToken}`,
         },
       }),
-      
-      providesTags: ['Tasks', "Admin"],
+
+      providesTags: ["Tasks", "Admin"],
     }),
     deleteProject: builder.mutation({
-      query: ( assigned_to_role ) => ({
+      query: (assigned_to_role) => ({
         url: `tasks/all-tasks/specific-tasks`,
         method: "DELETE",
         body: assigned_to_role,
@@ -119,10 +119,22 @@ export const apiSlice = createApi({
       query: ({ task_id, testToken }) => ({
         url: `tasks/update-task`,
         method: "PATCH",
-        body: {task_id} ,
+        body: { task_id },
         headers: {
           "Content-type": "application/json; charset=UTF-8",
           authorization: `Bearer ${testToken}`,
+        },
+      }),
+      invalidatesTags: ["Tasks"],
+    }),
+    updateUser: builder.mutation({
+      query: ({ _id, userName, role, tokenTest }) => ({
+        url: `users/update-users`,
+        method: "PATCH",
+        body: { _id, userName, role },
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+          authorization: `Bearer ${tokenTest}`,
         },
       }),
       invalidatesTags: ["Tasks"],
@@ -139,5 +151,6 @@ export const {
   useDeleteUserMutation,
   useGetAllUsersQuery,
   useDeleteProjectMutation,
-  useUpdateTaskMutation
+  useUpdateTaskMutation,
+  useUpdateUserMutation,
 } = apiSlice;

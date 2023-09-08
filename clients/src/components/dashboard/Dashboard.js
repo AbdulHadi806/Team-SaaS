@@ -1,79 +1,26 @@
+import React from "react";
+import CreateTask from "../tasks/CreateTask";
+import UserCreate from "../user/UserCreate";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsisVertical, faTrash } from "@fortawesome/free-solid-svg-icons";
-import dateFormat from "dateformat";
-import { useEffect, useState } from "react";
-import CreateTask from "../tasks/CreateTask";
-import { Link } from "react-router-dom";
-import {
-  useDeleteProjectMutation,
-  useGetAllTasksQuery,
-} from "../../redux/apiCalls/apiSlice";
-import { useLocation } from "react-router-dom";
-import UserCreate from "../user/UserCreate";
-import { AdminToken } from "../../redux/utils/adminAuth";
 
-const Dashboard = ({ profile }) => {
-  const testToken = AdminToken();
-  const { data: taskRoles, refetch: getTaskRoles } =useGetAllTasksQuery(testToken);
-  const [deleteTask] = useDeleteProjectMutation();
-  const [dateTime, setDateTime] = useState();
-  const [day, setDay] = useState("");
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isUserModalOpen, setIsUserModalOpen] = useState(false);
-  const [deletetask, setDeletetask] = useState(
-    new Array(taskRoles && taskRoles.getAllTasks.length).fill(false)
-  );
-  const toggleCard = (index) => {
-    const updatedIndex = new Array(taskRoles.getAllTasks.length).fill(false);
-    updatedIndex[index] = !deletetask[index];
-    setDeletetask(updatedIndex);
-  };
-  const deleteTaskHandler = async (id) => {
-    try {
-      await deleteTask({ assigned_to_role: id });
-      fetchRoles();
-      await getTaskRoles();
-      setDeletetask(!deleteTask);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  const fetchRoles = async () => {
-    await getTaskRoles();
-  };
-  useEffect(() => {
-    console.log(taskRoles, "taskRoles");
-    fetchRoles();
-  }, []);
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-
-  const openUserModal = () => {
-    setIsUserModalOpen(true);
-  };
-
-  const closeUserModal = () => {
-    setIsUserModalOpen(false);
-  };
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setDateTime(new Date());
-    }, 1000);
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
-  const colors = ["bg-[#2F4F4F]", "bg-[#1F2937]", "bg-[#4A5568]"];
-
-  const formattedTime = dateFormat(day, "h:MM:ss TT");
-  const formattedDateTime = dateFormat(dateTime, "dddd, mmmm dS, yyyy");
+function Dashboard(props) {
+  const {
+    profile,
+    formattedDateTime,
+    openModal,
+    formattedTime,
+    openUserModal,
+    taskRoles,
+    toggleCard,
+    deletetask,
+    colors,
+    deleteTaskHandler,
+    isModalOpen,
+    isUserModalOpen,
+    closeModal,
+    closeUserModal,
+  } = props;
   return (
     <>
       <div className="w-full flex-row justify-between p-[40px]">
@@ -181,8 +128,6 @@ const Dashboard = ({ profile }) => {
                     </div>
                   </div>
                 );
-              } else {
-                return null;
               }
             })}
         </div>
@@ -197,6 +142,6 @@ const Dashboard = ({ profile }) => {
       )}
     </>
   );
-};
+}
 
 export default Dashboard;

@@ -13,20 +13,39 @@ import {
   faClipboardCheck,
   faUserSecret,
 } from "@fortawesome/free-solid-svg-icons";
+import io from 'socket.io-client';
+const socket = io('http://localhost:8000');
+
 
 function CreateTask({ openModal, closeModal }) {
+ 
   const tokenTest = AdminToken()
   const currentPage = 1
-  const {data, refetch: getAllUsers} = useGetAllUsersQuery({currentPage,tokenTest})
+  const { data, refetch: getAllUsers } = useGetAllUsersQuery({ currentPage, tokenTest })
+  const [isCustomValue, setIsCustomValue] = useState(false);
   const navigate = useNavigate();
   const [task, setTask] = useState({
     task: "",
     assigned_to_role: "",
     assigned_to: " ",
   });
+ 
   useEffect(() => {
-    getAllUsers({currentPage,tokenTest})
-    console.log(data,':datadatadata')
+    console.log(socket.connected, "status")
+    socket.on('newTask', (newTaskData) => {
+      console.log('New task received:', newTaskData);
+    });
+    socket.on("TodoAdded", (data) => {
+      console.log("New Task Created", data)
+    })
+    return () => {
+      socket.off('newTask');
+    };
+  }, []);
+
+  useEffect(() => {
+    getAllUsers({ currentPage, tokenTest })
+    console.log(data, ':datadatadata')
   }, [])
   const [createTask] = useCreateTaskMutation();
 
@@ -72,16 +91,53 @@ function CreateTask({ openModal, closeModal }) {
               placeholder="Task"
               className="border  border-[#86a4c3]  w-[100%] p-3 border-l-0 rounded rounded-l-none outline-none focus:border-0"
             />
-            <InputFields
-              iconname={faUserSecret}
-              type="text"
-              name="assigned_to_role"
-              id="assigned_to_role"
-              value={task.assigned_to_role}
-              onChange={handleChange}
-              placeholder=" Assigned Role"
-              className="border  border-[#86a4c3]  w-[100%] p-3 border-l-0 rounded rounded-l-none outline-none  focus:border-0"
-            />
+            <div className="flex items-center  mb-4 relative">
+              <FontAwesomeIcon
+                icon={faUserSecret}
+                style={isCustomValue ? { display: "none" } : { display: "block" }}
+                className=" border  border-[#86a4c3]  py-[16px] w-[54px] rounded rounded-r-none  "
+              />
+              <select
+                name="assigned_to_role" style={isCustomValue ? { display: "none" } : { display: "block" }}
+                className="border border-[#86a4c3] w-[100%] p-3  outline-none text-[#B9BAC4]  focus:border-0 border-l-0"
+                value={isCustomValue ? 'custom' : task.assigned_to_role}
+                onChange={(e) => {
+                  if (e.target.value === 'custom') {
+                    setIsCustomValue(true);
+                  } else {
+                    setIsCustomValue(false);
+                    setTask({ ...task, assigned_to_role: e.target.value });
+                  }
+                }}
+              >
+                {/* <option className="text-[#000]">Assign Role</option> */}
+                {data &&
+                  data.users.map((user) => (
+                    <option
+                      key={user._id}
+                      value={user.role}
+                      className="bg-dark text-[16px] text-[#000]"
+                    >
+                      {user.role}
+                    </option>
+                  ))}
+                <option value="custom" className="bg-dark text-[16px] text-[#000]">Custom Value</option>
+              </select>
+              {isCustomValue ? (
+                <>
+                  <InputFields
+                    iconname={faUserSecret}
+                    type="text"
+                    name="assigned_to_role"
+                    value={task.assigned_to_role}
+                    onChange={handleChange}
+                    placeholder="Assigned Role"
+                    className="border  border-[#86a4c3] w-[100%] p-3 border-l-0 rounded rounded-l-none outline-none  focus:border-0"
+                  />
+                  <button onClick={() => { setIsCustomValue(false) }}>Move Back</button>
+                </>
+              ) : null}
+            </div>
             <div className="flex items-center  mb-4 relative">
               <FontAwesomeIcon
                 icon={faUserCheck}

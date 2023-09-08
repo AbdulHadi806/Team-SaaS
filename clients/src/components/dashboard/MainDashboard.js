@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "../Sidebar";
-import Dashboard from "./Dashboard";
+import DashboardPage from "../../page/DashboardPage";
 import { AdminToken } from "../../redux/utils/adminAuth";
 import { useGetAdminProfileMutation } from "../../redux/apiCalls/apiSlice";
 import Header from "../Header";
@@ -9,11 +9,11 @@ import Tabs from "./Tabs";
 function MainDashboard() {
   const [profile, setProfile] = useState("");
   const [getAdminProfile] = useGetAdminProfileMutation();
-  
+
   const fetchAdminProfile = async () => {
-  const tokenTest = AdminToken()
+    const tokenTest = AdminToken();
     try {
-      const  response = await getAdminProfile(tokenTest);
+      const response = await getAdminProfile(tokenTest);
       const adminName = response.data.name;
       setProfile(adminName);
     } catch (error) {
@@ -30,14 +30,14 @@ function MainDashboard() {
         <Sidebar />
         <div className="flex-1 flex flex-col md:pl-[240px]">
           <Header />
-          <Dashboard profile={profile} />
+          <DashboardPage profile={profile} />
           <div className="pb-[40px]">
-          <Tabs />
+            <Tabs />
           </div>
         </div>
       </div>
     </>
-  )
+  );
 }
 
 export default MainDashboard;

@@ -2,15 +2,21 @@ import React, { useEffect, useState } from "react";
 
 import {
   // useGetAllUsersMutation,
-  useDeleteUserMutation, useGetAllUsersQuery,
+  useDeleteUserMutation,
+  useGetAllUsersQuery,
 } from "../../redux/apiCalls/apiSlice";
 import { AdminToken } from "../../redux/utils/adminAuth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ConfirmationModal from "../reusableComponent/ComfirmationModel";
-import { faCog, faCircleXmark } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPenToSquare,
+  faCircleXmark,
+} from "@fortawesome/free-solid-svg-icons";
 
 import Pagination from "../reusableComponent/Pagination";
 import { ToolTip } from "../reusableComponent/Tooltip";
+import CreateTaskPage from "../reusableComponent/CreateTaskPage";
+import UpdateModal from "../reusableComponent/UpdateModal";
 
 const UserTable = () => {
   // const [getAllUsers, { data }] = useGetAllUsersMutation();
@@ -20,20 +26,23 @@ const UserTable = () => {
   const [userid, setId] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
+  const [editModal, setEditModal] = useState(false);
 
-
-  const tokenTest = AdminToken()
-  const { data, refetch: getAllUsersQuery } = useGetAllUsersQuery({currentPage,tokenTest});
-  const getAllUsersHandler =  () => {
+  const tokenTest = AdminToken();
+  const { data, refetch: getAllUsersQuery } = useGetAllUsersQuery({
+    currentPage,
+    tokenTest,
+  });
+  const getAllUsersHandler = () => {
     if (data) {
-      const count =  Math.ceil(data.totalCount / 5);
+      const count = Math.ceil(data.totalCount / 5);
       setTotalCount(count);
     }
   };
   useEffect(() => {
-    getAllUsersQuery({currentPage,tokenTest})
-    getAllUsersHandler()
-  }, [currentPage])
+    getAllUsersQuery({ currentPage, tokenTest });
+    getAllUsersHandler();
+  }, [currentPage]);
 
   const getData = (item) => {
     const timestamp = item;
@@ -63,21 +72,32 @@ const UserTable = () => {
   };
 
   const handleDelete = async () => {
-    const tokenTest = AdminToken()
-    console.log(userid)
+    const tokenTest = AdminToken();
     try {
-      await deleteUser({ _id: userid, tokenTest});
+      await deleteUser({ _id: userid, tokenTest });
       setShowModal(false);
       // getAllUsersHandler(currentPage);
     } catch (err) {
       console.log(err);
     }
   };
-
+  const closeEditModal = () => {
+    setEditModal(false);
+  };
   const handleCancelDelete = () => {
     setUserToDelete(null);
     setShowModal(false);
   };
+
+  const [editTask, setEditTask] = useState({
+    _id: "",
+    userName: null,
+    role: null,
+  });
+  const handleChange = (e) => {
+    setEditTask({ ...editTask, [e.target.name]: e.target.value });
+  };
+
   const tableHeaderData = ["#", "Username", "Role", "createdAt", "Action"];
   return (
     <>
@@ -98,11 +118,11 @@ const UserTable = () => {
             <tbody>
               {data &&
                 data.users.map((item, index) => (
-                  <tr class="bg-white border-b dark:bg-gray-900 dark:border-gray-700  text-[18px] text-bold  hover:bg-[#edeaea]  text-center">
-                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                      # {index + 1}
+                  <tr class="bg-white border-b bg-white dark:border-gray-700  text-[18px] text-bold  hover:bg-[#edeaea]  text-center">
+                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
+                      {index + 1}
                     </td>
-                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-gray">
                       {item.userName}
                     </td>
                     <td class="px-6 py-4">{item.role}</td>
@@ -116,11 +136,19 @@ const UserTable = () => {
                     <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white  flex gap-2 justify-center item-center text-center text-[20px]">
                       <button>
                         {" "}
-                        <ToolTip content="update">
+                        <ToolTip content="Update">
                           {" "}
                           <FontAwesomeIcon
-                            icon={faCog}
+                            icon={faPenToSquare}
                             style={{ color: "#59b5f8" }}
+                            onClick={(e) => {
+                              e.preventDefault();
+
+                              setEditTask({
+                                ...item,
+                              });
+                              setEditModal(true);
+                            }}
                           />
                         </ToolTip>
                       </button>
@@ -131,7 +159,7 @@ const UserTable = () => {
                         }}
                       >
                         {" "}
-                        <ToolTip content="setting">
+                        <ToolTip content="Delete">
                           {" "}
                           <FontAwesomeIcon
                             icon={faCircleXmark}
@@ -149,6 +177,15 @@ const UserTable = () => {
               isOpen={showModal}
               onClose={handleCancelDelete}
               onDelete={handleDelete}
+            />
+          )}
+          {editModal && (
+            <UpdateModal
+              closeModal={closeEditModal}
+              editTask={editTask}
+              handleChange={handleChange}
+              tokenTest={tokenTest}
+              currentPage={currentPage}
             />
           )}
           <div className="flex justify-end">

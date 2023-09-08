@@ -7,8 +7,26 @@ import Sidebar from "./components/Sidebar";
 import MainDashboard from "./components/dashboard/MainDashboard";
 import NotFoundPage from "./components/NotFound/NotFoundPage";
 import { AdminProfile } from "./components/user/AdminProfile";
+import { useEffect } from "react";
+import io from 'socket.io-client';
 
 function App() {
+const socket = io('http://localhost:8000');
+
+  useEffect(() => {
+    socket.on("connect", () => {
+      console.log("Socket is running")
+    })
+    socket.on('connect_error', (error) => {
+      console.error('Socket connection error:', error);
+    });
+    socket.on("todoadded", (data) => {
+      console.log(data)
+    })
+    return () => {
+      socket.off('todoadded'); 
+    };
+  }, [])
   return (
     <div className="App">
       <Routes>

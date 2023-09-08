@@ -11,7 +11,6 @@ function InputFields(props) {
           className=" border  border-[#86a4c3]  p-[16px] rounded rounded-r-none "
         />
         <input {...props} />
-
         {props.variant === "pass" && (
           <FontAwesomeIcon
             icon={props.showpassword ? faEye : faEyeSlash}

@@ -5,6 +5,6 @@ const userRoutes = express.Router();
 userRoutes.post('/createUser', createUser)
 userRoutes.get('/users/:role', getTasksByRole)
 userRoutes.delete('/', deleteUser)
-userRoutes.patch('/', updateUserInfo)
+userRoutes.patch('/update-users', updateUserInfo)
 userRoutes.get('/all-users', getAllUsers)
 module.exports = userRoutes;
