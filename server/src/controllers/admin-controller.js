@@ -85,7 +85,7 @@ const loginAdmin = async (req, res) => {
       res
         .set("Authorization", `Bearer ${token}`)
         .status(200)
-        .json({ token, message: "Logged in Successfully", status: true });
+        .json({ token, message: "Logged in Successfully", status: true, type: "admin" });
     }
   } catch (err) {
     res.status(500).json({ message: "Something went wrong. Please try again.", status: false });

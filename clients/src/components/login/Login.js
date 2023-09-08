@@ -3,8 +3,11 @@ import alertify from "alertifyjs";
 import "alertifyjs/build/css/alertify.css";
 import "./Login.css";
 
-import { faUser, faLock } from "@fortawesome/free-solid-svg-icons";
-import { useLoginAdminMutation } from "../../redux/apiCalls/apiSlice";
+import { faUser, faLock, faUserCheck } from "@fortawesome/free-solid-svg-icons";
+import {
+  useLoginAdminMutation,
+  useLoginUserMutation,
+} from "../../redux/apiCalls/apiSlice";
 import InputFields from "./InputFields";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -12,34 +15,56 @@ import { socialIcons } from "../login/SocialIcons";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [saveAdmin, setSaveAdmin] = useState(false)
+  const [saveAdmin, setSaveAdmin] = useState(false);
   const [loginAdmin, { error: loginError }] = useLoginAdminMutation();
+  const [loginUser, { error: userLoginError }] = useLoginUserMutation();
 
   const navigate = useNavigate();
   const togglePassword = () => {
     setShowPassword(!showPassword);
   };
+  const [selectedRole, setSelectedRole] = useState("admin");
+
   const [inputValue, setInput] = useState({
     userName: "",
     password: "",
   });
 
-
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      const res = await loginAdmin(inputValue);
-      if (res.data.status) {
-        const token = res.data.token;
-        localStorage.setItem("access_token_admin", token);
-        alertify.set("notifier", "position", "top-center");
-        alertify.success(res.data.message);
-        navigate("/mainDashboard");
-      }
+      if (selectedRole === "admin") {
+        const res = await loginAdmin(inputValue);
+        console.log("Admin login response", res);
 
-      if (!res.data.status) {
-        alertify.set("notifier", "position", "top-center");
-        alertify.error(res.data.message);
+        if (res.data.status) {
+          const token = res.data.token;
+          localStorage.setItem("access_token_admin", token);
+          alertify.set("notifier", "position", "top-right");
+          alertify.success(res.data.message);
+          navigate("/mainDashboard");
+        } else {
+          alertify.set("notifier", "position", "top-right");
+          alertify.error(res.data.message);
+        }
+      } else if (selectedRole === "user") {
+        const res = await loginUser(inputValue);
+        console.log(" user login response", res);
+
+        if (res.data.type === "user") {
+          const token = res.data.token;
+          console.log("usertoken", token);
+          if (res.data.status) {
+            localStorage.setItem("access_token_User", token);
+            alertify.set("notifier", "position", "top-right");
+            alertify.success(res.data.message);
+            navigate("/createTask");
+          }
+          if (!res.data.status) {
+            alertify.set("notifier", "position", "top-right");
+            alertify.error(res.error.data.message);
+          }
+        }
       }
     } catch (err) {
       console.log(err);
@@ -47,10 +72,16 @@ const Login = () => {
   };
   useEffect(() => {
     if (loginError) {
-      alertify.set("notifier", "position", "top-center");
+      alertify.set("notifier", "position", "top-right");
       alertify.error(loginError && loginError.data.message);
     }
   }, [loginError, navigate]);
+  useEffect(() => {
+    if (userLoginError) {
+      alertify.set("notifier", "position", "top-right");
+      alertify.error(userLoginError && userLoginError.data.message);
+    }
+  }, [userLoginError, navigate]);
 
   const handleChange = (e) => {
     setInput({ ...inputValue, [e.target.name]: e.target.value });
@@ -90,9 +121,28 @@ const Login = () => {
                 togglepassword={togglePassword}
                 showpassword={showPassword}
               />
+              <div className="flex items-center  mb-4 relative">
+                <FontAwesomeIcon
+                  icon={faUserCheck}
+                  className=" border  border-[#86a4c3]  py-[16px] w-[54px] rounded rounded-r-none  "
+                />
+                <select
+                  name="role"
+                  value={selectedRole}
+                  onChange={(e) => setSelectedRole(e.target.value)}
+                  className="border border-[#86a4c3] w-[100%] p-3  outline-none text-[#000]  focus:border-0 border-l-0"
+                >
+                  <option value="admin">Admin</option>
+                  <option value="user">User</option>
+                </select>
+              </div>
               <div className="flex  justify-between ">
                 <div className="flex items-start  mb-[40px] gap-[30px] ">
-                  <input type="checkbox" onChange={() => setSaveAdmin(!saveAdmin)} className="h-6 w-6 text-indigo-600" />
+                  <input
+                    type="checkbox"
+                    onChange={() => setSaveAdmin(!saveAdmin)}
+                    className="h-6 w-6 text-indigo-600"
+                  />
                   <label className="text-[17px] ">
                     {" "}
                     Remember Me{" "}
@@ -147,3 +197,6 @@ const Login = () => {
 };
 
 export default Login;
+
+
+

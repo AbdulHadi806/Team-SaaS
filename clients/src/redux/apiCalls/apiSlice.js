@@ -139,6 +139,19 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ["Tasks"],
     }),
+    loginUser: builder.mutation({
+      query: (data) => ({
+        url: "users-login/login",
+        method: "POST",
+
+        body: data,
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+          authorization: `Bearer ${token}`,
+        },
+      }),
+      invalidatesTags: ["User"],
+    }),
   }),
 });
 export const {
@@ -153,4 +166,5 @@ export const {
   useDeleteProjectMutation,
   useUpdateTaskMutation,
   useUpdateUserMutation,
+  useLoginUserMutation
 } = apiSlice;

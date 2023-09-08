@@ -45,7 +45,6 @@ useEffect(() => {
   return (
     <>
       <Sidebar />
-    
       <div className="flex-1 flex  md:pl-[300px] gap-[20px] pr-[80px] pt-[60px]">
         <div className="w-[179px] p-[10px] bg-[#F0F8FF] flex items-center justify-center rounded-[4px] ">
           <img

@@ -9,6 +9,7 @@ import NotFoundPage from "./components/NotFound/NotFoundPage";
 import { AdminProfile } from "./components/user/AdminProfile";
 import { useEffect } from "react";
 import io from 'socket.io-client';
+import CreateTask from "./components/tasks/CreateTask";
 
 function App() {
 const socket = io('http://localhost:8000');
@@ -36,6 +37,7 @@ const socket = io('http://localhost:8000');
           <Route path="/mainDashboard" element={<MainDashboard />} />
           <Route path="/admin-profile" element={<AdminProfile />} />
         </Route>
+        <Route path="/createTask" element={<CreateTask />} />
         <Route path="/signUp" element={<SignUpPage />} />
       </Routes>
     </div>

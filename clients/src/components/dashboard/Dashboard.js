@@ -91,7 +91,7 @@ function Dashboard(props) {
                         <div
                           className={`${
                             deletetask[index]
-                              ? "transition ease-in-out delay-150 block w-[90px] opacity-1  bg-white h-[30px] rounded-lg absolute top-[35px] right-0 flex"
+                              ? "transition ease-in-out delay-150 block w-[80px] opacity-1  bg-white h-[30px] rounded-lg absolute top-[35px] right-0 flex"
                               : "height-[0px] transition ease-in-out delay-150 hidden"
                           }`}
                         >
@@ -100,14 +100,14 @@ function Dashboard(props) {
                               deleteTaskHandler(taskWithRole.assigned_to_role);
                               console.log("id", taskWithRole.assigned_to_role);
                             }}
-                            className="flex justify-between block  w-full p-3 items-center
+                            className="flex  block  gap-2 w-full p-2 justify-center items-center
                         cursor-pointer"
                           >
                             <FontAwesomeIcon
                               icon={faTrash}
                               className="text-[11px]"
                             />
-                            <span className="font-bold">Delete</span>
+                            <span className="font-bold text-[15px]">Delete</span>
                           </div>
                         </div>
                       </div>
@@ -132,7 +132,6 @@ function Dashboard(props) {
             })}
         </div>
       </div>
-
       {isModalOpen && (
         <CreateTask closeModal={closeModal} openModal={openModal} />
       )}

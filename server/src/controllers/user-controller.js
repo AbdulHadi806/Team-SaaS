@@ -36,13 +36,13 @@ const loginUser = async (req, res) => {
         const user = await User.findOne({
             userName: req.body.userName,
         })
-        if(!user) {
-            return res.status(404).json({message: "Username or Password Incorrect..", status: false});
+        if (!user) {
+            return res.status(404).json({ message: "Username or Password Incorrect..", status: false });
         }
         const passwordChecker = await bcrypt.compare(req.body.password, user.password)
-        if(!passwordChecker){
-            return res.status(404).json({message: "Username or Password Incorrect..", status: false});
-          }
+        if (!passwordChecker) {
+            return res.status(404).json({ message: "Username or Password Incorrect..", status: false });
+        }
         if (user && passwordChecker) {
             const token = jwt.sign({
                 userName: user.userName,
@@ -51,7 +51,7 @@ const loginUser = async (req, res) => {
             }, 'secret_is_a_secret_for_user', {
                 expiresIn: '1d'
             })
-            res.set('Authorization', `Bearer ${token}`).status(200).json({ user, token })
+            res.set('Authorization', `Bearer ${token}`).status(200).json({ user, token, type: "user", message: "User successfully Logged In.", status: true })
         }
         else {
             res.status(300).json({ message: "Password or user not correct or found", status: false })
@@ -85,20 +85,14 @@ const updateUserInfo = async (req, res) => {
         if (!existingUser) {
             return res.status(404).json({ message: "User not found", status: false });
         }
-        if(req.body.userName && req.body.role){
-            existingUser.userName = req.body.userName
-            existingUser.role = req.body.role
-        }
-        else if(req.body.userName) {
-            existingUser.userName = req.body.userName
-        }
-        else if (req.body.role) {
-            existingUser.role = req.body.role
-        }
-        const userNameExists = await User.findOne({ userName: req.body.userName });
-        if (userNameExists) {
-            return res.status(409).json({ message: "UserName already exists", status: false });
-        }
+        // if(existingUser.userName == req.body.userName){
+        //     return res.status(409).json({ message: "Please update userName.", status: true }) 
+        // }
+        // const userNameExists = await User.findOne({ userName: req.body.userName });
+
+        existingUser.userName = req.body.userName
+        existingUser.role = req.body.role
+
         const updatedUser = await existingUser.save();
 
         res.status(200).json({ message: "User info Updated", status: true, updatedUser })
@@ -114,7 +108,7 @@ const getAllUsers = async (req, res) => {
     try {
         const created_by = req.user._id;
         const users = await User.find({ created_by }).skip((page - 1) * limit)
-        .limit(limit);  
+            .limit(limit);
         const totalCount = await User.countDocuments({ created_by });
         if (!users) {
             return res.status(204).json({ message: "No users available.", status: false })
