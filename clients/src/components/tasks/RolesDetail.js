@@ -112,7 +112,7 @@ const RolesDetail = () => {
               <div className=" flex justify-center pb-2">
                 <img
                   src="/assets/task.svg"
-                  alt="Admin Image"
+                  alt="AdminImage"
                   className="  w-[80px] h-[80px] color-[#1c274c] mx-auto relative mt-[-60px]"
                 />
               </div>
@@ -133,7 +133,7 @@ const RolesDetail = () => {
                 <div className=" flex justify-center pb-2">
                   <img
                     src="/assets/users.svg"
-                    alt="Admin Image"
+                    alt="AdminImage"
                     className="    w-[120px] h-[80px]  mx-auto relative mt-[-60px] "
                   />
                 </div>
@@ -145,7 +145,7 @@ const RolesDetail = () => {
               </div>
             </div>
           </div>
-         <NewTabs/>
+          <NewTabs />
         </div>
       </div>
     </>

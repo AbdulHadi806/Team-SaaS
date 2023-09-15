@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 
 import {
-  // useGetAllUsersMutation,
   useDeleteUserMutation,
   useGetAllUsersQuery,
 } from "../../redux/apiCalls/apiSlice";
@@ -15,7 +14,6 @@ import {
 
 import Pagination from "../reusableComponent/Pagination";
 import { ToolTip } from "../reusableComponent/Tooltip";
-import CreateTaskPage from "../reusableComponent/CreateTaskPage";
 import UpdateModal from "../reusableComponent/UpdateModal";
 
 const UserTable = () => {

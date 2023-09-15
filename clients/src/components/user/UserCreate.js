@@ -1,45 +1,20 @@
-import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLock, faTimes } from "@fortawesome/free-solid-svg-icons";
-import InputFields from "../login/InputFields";
-import { AdminToken } from "../../redux/utils/adminAuth";
-
 import {
-  faUserCheck,
-  faClipboardCheck,
+  faLock,
+  faTimes,
   faUserSecret,
 } from "@fortawesome/free-solid-svg-icons";
-import { useCreateUserMutation } from "../../redux/apiCalls/apiSlice";
+import InputFields from "../login/InputFields";
 
-const UserCreate = ({ openModal, closeModal }) => {
-  const [createUser] = useCreateUserMutation();
-
-  const [user, setUser] = useState({
-    userName: "",
-    password: "",
-    role: "",
-  });
-  const [showPassword, setShowPassword] = useState(false);
-  const togglePassword = () => {
-    setShowPassword(!showPassword);
-  };
-
-  const handleChange = (e) => {
-    setUser({ ...user, [e.target.name]: e.target.value });
-    console.log(user);
-  };
-
-  const submitHandler = async (e) => {
-    const tokenTest = AdminToken()
-    e.preventDefault();
-    try {
-      await createUser({user, tokenTest});
-      closeModal();
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
+const UserCreate = (props) => {
+  const {
+    closeModal,
+    user,
+    submitHandler,
+    handleChange,
+    togglePassword,
+    showPassword,
+  } = props;
   return (
     <div className="fixed inset-0 flex items-center justify-center z-10 bg-black bg-opacity-50 ">
       <div className="bg-white p-6 rounded-lg shadow-md relative">

@@ -91,6 +91,7 @@ function DashboardPage({ profile }) {
         toggleCard={toggleCard}
         deleteTaskHandler={deleteTaskHandler}
         deletetask={deletetask}
+        testToken={testToken}
       />
     </>
   );

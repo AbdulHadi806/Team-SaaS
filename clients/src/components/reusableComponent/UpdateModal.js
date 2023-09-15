@@ -25,7 +25,6 @@ function UpdateModal(props) {
     tokenTest,
   });
 
-
   const updateHandler = async (e) => {
     e.preventDefault();
     try {
@@ -35,7 +34,7 @@ function UpdateModal(props) {
         role: role,
         tokenTest,
       });
-      console.log(res, "res")
+      console.log(res, "res");
       if (res.data.status) {
         alertify.set("notifier", "position", "top-center");
         alertify.success(res.data.message);

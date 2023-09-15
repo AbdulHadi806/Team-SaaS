@@ -1,72 +1,25 @@
-import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
-import { useNavigate } from "react-router-dom";
-import {
-  useCreateTaskMutation,
-  useGetAllUsersQuery,
-} from "../../redux/apiCalls/apiSlice";
+
 import InputFields from "../login/InputFields";
-import { AdminToken } from "../../redux/utils/adminAuth";
+
 import {
   faUserCheck,
   faClipboardCheck,
   faUserSecret,
 } from "@fortawesome/free-solid-svg-icons";
-import io from 'socket.io-client';
-const socket = io('http://localhost:8000');
 
-
-function CreateTask({ openModal, closeModal }) {
- 
-  const tokenTest = AdminToken()
-  const currentPage = 1
-  const { data, refetch: getAllUsers } = useGetAllUsersQuery({ currentPage, tokenTest })
-  const [isCustomValue, setIsCustomValue] = useState(false);
-  const navigate = useNavigate();
-  const [task, setTask] = useState({
-    task: "",
-    assigned_to_role: "",
-    assigned_to: " ",
-  });
- 
-  useEffect(() => {
-    console.log(socket.connected, "status")
-    socket.on('newTask', (newTaskData) => {
-      console.log('New task received:', newTaskData);
-    });
-    socket.on("TodoAdded", (data) => {
-      console.log("New Task Created", data)
-    })
-    return () => {
-      socket.off('newTask');
-    };
-  }, []);
-
-  useEffect(() => {
-    getAllUsers({ currentPage, tokenTest })
-    console.log(data, ':datadatadata')
-  }, [])
-  const [createTask] = useCreateTaskMutation();
-
-  const handleChange = (e) => {
-    setTask({ ...task, [e.target.name]: e.target.value });
-  };
-
-  const submitHandler = async (e) => {
-    e.preventDefault();
-    const testToken = AdminToken();
-    try {
-      const response = await createTask(task);
-      closeModal();
-      if (response) {
-        navigate("/mainDashboard");
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
+function CreateTask(props) {
+  const {
+    closeModal,
+    submitHandler,
+    handleChange,
+    isCustomValue,
+    setIsCustomValue,
+    task,
+    setTask,
+    data,
+  } = props;
   return (
     <>
       <div className="fixed inset-0 flex items-center justify-center z-10 bg-black bg-opacity-50 ">
@@ -94,15 +47,20 @@ function CreateTask({ openModal, closeModal }) {
             <div className="flex items-center  mb-4 relative">
               <FontAwesomeIcon
                 icon={faUserSecret}
-                style={isCustomValue ? { display: "none" } : { display: "block" }}
+                style={
+                  isCustomValue ? { display: "none" } : { display: "block" }
+                }
                 className=" border  border-[#86a4c3]  py-[16px] w-[54px] rounded rounded-r-none  "
               />
               <select
-                name="assigned_to_role" style={isCustomValue ? { display: "none" } : { display: "block" }}
+                name="assigned_to_role"
+                style={
+                  isCustomValue ? { display: "none" } : { display: "block" }
+                }
                 className="border border-[#86a4c3] w-[100%] p-3  outline-none text-[#B9BAC4]  focus:border-0 border-l-0"
-                value={isCustomValue ? 'custom' : task.assigned_to_role}
+                value={isCustomValue ? "custom" : task.assigned_to_role}
                 onChange={(e) => {
-                  if (e.target.value === 'custom') {
+                  if (e.target.value === "custom") {
                     setIsCustomValue(true);
                   } else {
                     setIsCustomValue(false);
@@ -121,7 +79,12 @@ function CreateTask({ openModal, closeModal }) {
                       {user.role}
                     </option>
                   ))}
-                <option value="custom" className="bg-dark text-[16px] text-[#000]">Custom Value</option>
+                <option
+                  value="custom"
+                  className="bg-dark text-[16px] text-[#000]"
+                >
+                  Custom Value
+                </option>
               </select>
               {isCustomValue ? (
                 <>
@@ -134,7 +97,13 @@ function CreateTask({ openModal, closeModal }) {
                     placeholder="Assigned Role"
                     className="border  border-[#86a4c3] w-[100%] p-3 border-l-0 rounded rounded-l-none outline-none  focus:border-0"
                   />
-                  <button onClick={() => { setIsCustomValue(false) }}>Move Back</button>
+                  <button
+                    onClick={() => {
+                      setIsCustomValue(false);
+                    }}
+                  >
+                    Move Back
+                  </button>
                 </>
               ) : null}
             </div>

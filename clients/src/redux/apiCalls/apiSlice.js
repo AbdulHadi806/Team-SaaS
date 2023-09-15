@@ -2,10 +2,19 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { AdminToken } from "../utils/adminAuth";
 
 const token = AdminToken();
+console.log("apislice", token);
 export const apiSlice = createApi({
   reducerPath: "apiSlice",
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:8000/api/",
+    // prepareHeaders: (headers) => {
+    //   const token = adminToken;
+    //   if (token) {
+    //     headers.set("Authorization", `Bearer ${token}`);
+    //   }
+    //   headers.set("Content-type", "application/json; charset=UTF-8");
+    //   return headers;
+    // },
   }),
   tagTypes: ["Admin", "User", "Tasks"],
   endpoints: (builder) => ({

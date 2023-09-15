@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
+import AllTaskPage from "../../page/AllTaskPage";
 import UserTable from "../user/UserTable";
-import AllTasks from "../tasks/AllTasks";
 const Tabs = () => {
   const [activeTab, setActiveTab] = useState("tab-a");
 
@@ -39,9 +39,8 @@ const Tabs = () => {
       </ul>
 
       <div>
-        {activeTab === "tab-a" && <AllTasks />}
+        {activeTab === "tab-a" && <AllTaskPage />}
         {activeTab === "tab-b" && <UserTable />}
-        {/* {activeTab === 'tab-c' && <ComponentC />} */}
       </div>
     </div>
   );
