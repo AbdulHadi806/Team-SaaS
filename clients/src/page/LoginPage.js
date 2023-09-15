@@ -24,7 +24,7 @@ const LoginPage = () => {
     userName: "",
     password: "",
   });
-
+  
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
@@ -38,14 +38,15 @@ const LoginPage = () => {
           alertify.set("notifier", "position", "top-right");
           alertify.success(res.data.message);
           localStorage.setItem("adminRole", res.data.type);
-          navigate("/mainDashboard");
+          if(res.data.type == 'admin') {
+            navigate("/mainDashboard");
+          }
         } else {
           alertify.set("notifier", "position", "top-right");
           alertify.error(res.data.message);
         }
       } else if (selectedRole === "user") {
         const res = await loginUser(inputValue);
-        console.log(" user login response", res);
 
         if (res.data.type === "user") {
           const token = res.data.token;
@@ -55,7 +56,7 @@ const LoginPage = () => {
             alertify.set("notifier", "position", "top-right");
             alertify.success(res.data.message);
             localStorage.setItem("userRole", res.data.type);
-            navigate("/mainDashboard");
+            navigate("/user-test-dashboard");
           }
           if (!res.data.status) {
             alertify.set("notifier", "position", "top-right");

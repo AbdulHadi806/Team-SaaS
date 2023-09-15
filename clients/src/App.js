@@ -10,18 +10,19 @@ import { useEffect } from "react";
 import io from "socket.io-client";
 import CreateTask from "./components/tasks/CreateTask";
 import RolesDetail from "./components/tasks/RolesDetail";
+import UserTestDashboard from "./components/userTestDashboard";
 
 function App() {
   const socket = io("http://localhost:8000");
 
   useEffect(() => {
     socket.on("connect", () => {
-      console.log("Socket is running");
+      console.log("Socket is running at App");
     });
     socket.on("connect_error", (error) => {
       console.error("Socket connection error:", error);
     });
-    socket.on("todoadded", (data) => {
+    socket.on("new_Task_Update", (data) => {
       console.log(data);
     });
     return () => {
@@ -38,7 +39,7 @@ function App() {
           <Route path="/admin-profile" element={<AdminProfilePage />} />
           <Route path="/rolesDetail/:roles" element={<RolesDetail />} />
         </Route>
-        <Route path="/createTask" element={<CreateTask />} />
+        <Route path="/user-test-dashboard" element={<UserTestDashboard />} />
         <Route path="/signUp" element={<SignUpPage />} />
       </Routes>
     </div>

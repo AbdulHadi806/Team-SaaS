@@ -39,7 +39,7 @@ function Dashboard(props) {
               {formattedTime}
             </span>
           </div>
-          {testToken && (
+         
             <div className="flex items-start gap-[10px]">
               <button
                 onClick={openModal}
@@ -54,7 +54,6 @@ function Dashboard(props) {
                 Add User
               </button>
             </div>
-          )}
         </div>
 
         <div className="flex gap-4  ">

@@ -15,7 +15,7 @@ const addTasks = async (req, res) => {
         await newTask.save()
 
         const io = socketManager.getIoInstance();
-        io.emit('todoadded', { message: "Task created Successfully", status: true, newTask });
+        io.emit('new_Task_Update', { message: "Task created Successfully", status: true, newTask, assigned_to: req.body.assigned_to });
         return res.status(200).json({ message: "Task created Successfully", status: true })
     } catch (err) {
         console.log(err)
