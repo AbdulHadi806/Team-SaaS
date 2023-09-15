@@ -68,7 +68,7 @@ function CreateTask(props) {
                   }
                 }}
               >
-                {/* <option className="text-[#000]">Assign Role</option> */}
+                <option className="text-[#000]">Assign Role</option>
                 {data &&
                   data.users.map((user) => (
                     <option

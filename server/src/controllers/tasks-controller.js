@@ -14,8 +14,6 @@ const addTasks = async (req, res) => {
         })
         await newTask.save()
 
-
-
         const io = socketManager.getIoInstance();
         io.emit('todoadded', { message: "Task created Successfully", status: true, newTask });
         return res.status(200).json({ message: "Task created Successfully", status: true })

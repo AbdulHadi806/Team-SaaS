@@ -26,7 +26,7 @@ function AllTasks(props) {
                   {item.assigned_to_role}
                 </h3>
                 <span
-                  className={`inline-block  mt-[20px]  capitalize font-bold  ${
+                  className={`inline-block  mt-[20px]  normal-case font-bold  ${
                     item.status ? "text-[#fff]" : "text-[#70367C]"
                   } `}
                 >

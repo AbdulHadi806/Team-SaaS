@@ -55,13 +55,13 @@ export const apiSlice = createApi({
       invalidatesTags: ["Admin"],
     }),
     createTask: builder.mutation({
-      query: (data) => ({
+      query: ({task, tokenTest}) => ({
         url: "tasks",
         method: "POST",
-        body: data,
+        body: task,
         headers: {
           "Content-type": "application/json; charset=UTF-8",
-          authorization: `Bearer ${token}`,
+          authorization: `Bearer ${tokenTest}`,
         },
       }),
       invalidatesTags: ["Tasks"],

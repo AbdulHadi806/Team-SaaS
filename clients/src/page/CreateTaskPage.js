@@ -44,14 +44,13 @@ function CreateTaskPage({ closeModal }) {
   const [createTask] = useCreateTaskMutation();
 
   const handleChange = (e) => {
-    setTask({ ...task, [e.target.name]: e.target.value });
+    setTask({ ...task, [e.target.name]: e.target.value.toUpperCase() });
   };
 
   const submitHandler = async (e) => {
     e.preventDefault();
-
     try {
-      const response = await createTask(task);
+      const response = await createTask({task, tokenTest});
       closeModal();
       if (response) {
         navigate("/mainDashboard");

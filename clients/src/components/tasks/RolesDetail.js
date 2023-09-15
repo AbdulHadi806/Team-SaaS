@@ -117,14 +117,9 @@ const RolesDetail = () => {
                 />
               </div>
               <div>
-                {getRoles &&
-                  getRoles.getAllTasksByRole.map((i) => {
-                    return (
                       <span className="text-[20px] font-bold">
-                        total task:{i.task.length}
+                        total task:{getRoles && getRoles.getAllTasksByRole.length}
                       </span>
-                    );
-                  })}
               </div>
             </div>
 
