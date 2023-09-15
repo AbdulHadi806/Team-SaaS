@@ -1,5 +1,5 @@
 const Admin = require("../model/adminModal");
-
+const User = require("../model/userModal");
 const getAdminInfo = async (req, res) => {
   try {
     const data = await Admin.findById(req.user._id).select(
@@ -15,7 +15,9 @@ const getAdminInfo = async (req, res) => {
 
 const getUserinfo = async (req, res) => {
   try {
-    const data = await Admin.findById(req.user._id);
+    console.log(req.user._id)
+    const data = await User.findById({_id: req.user._id});
+    console.log(data, "datadata")
     res
       .status(200)
       .json({

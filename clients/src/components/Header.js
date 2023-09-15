@@ -1,10 +1,18 @@
 import { Link } from "react-router-dom";
+import Notification from "./reusableComponent/notification";
+import { useState } from "react";
 function Header(props) {
-  const { role, profileDropdown, setProfileDropdown, LogoutAdminHandler } =
-    props;
+  const { role, profileDropdown, setProfileDropdown, LogoutAdminHandler, notifications } = props;
+  const [notificationDropDown, setNotificationDropDown] = useState(false)
   return (
     <div className="shadow px-[20px] flex justify-between items-center xl:px-[40px] py-[20px]  bg-white">
       <h3 className="text-[21px] font-semibold capitalize">{role}</h3>
+      <div className="flex items-center gap-4">
+      <button onClick={() => {
+        setNotificationDropDown(!notificationDropDown); 
+      }}>
+      <Notification notifications={notifications} profileDropdown={notificationDropDown}/>
+      </button>
       <button
         onClick={() => {
           setProfileDropdown(!profileDropdown);
@@ -39,6 +47,7 @@ function Header(props) {
           </ul>
         </div>
       </button>
+      </div>
     </div>
   );
 }

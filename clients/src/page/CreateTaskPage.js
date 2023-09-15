@@ -7,7 +7,6 @@ import {
 import { useNavigate } from "react-router-dom";
 import io from "socket.io-client";
 import CreateTask from "../components/tasks/CreateTask";
-const socket = io("http://localhost:8000");
 
 function CreateTaskPage({ closeModal }) {
   const tokenTest = AdminToken();
@@ -24,22 +23,9 @@ function CreateTaskPage({ closeModal }) {
     assigned_to: " ",
   });
 
-  useEffect(() => {
-    console.log(socket.connected, "status");
-    socket.on("newTask", (newTaskData) => {
-      console.log("New task received:", newTaskData);
-    });
-    socket.on("TodoAdded", (data) => {
-      console.log("New Task Created", data);
-    });
-    return () => {
-      socket.off("newTask");
-    };
-  }, []);
 
   useEffect(() => {
     getAllUsers({ currentPage, tokenTest });
-    console.log(data, ":datadatadata");
   }, []);
   const [createTask] = useCreateTaskMutation();
 

@@ -15,7 +15,7 @@ const addTasks = async (req, res) => {
         await newTask.save()
 
         const io = socketManager.getIoInstance();
-        io.emit('new_Task_Update', { message: "Task created Successfully", status: true, newTask, assigned_to: req.body.assigned_to });
+        io.emit('new_Task_Update', { message: "New Task available",task: req.body.task, status: true, assigned_to: req.body.assigned_to });
         return res.status(200).json({ message: "Task created Successfully", status: true })
     } catch (err) {
         console.log(err)
@@ -28,7 +28,7 @@ const deleteTasks = async (req, res) => {
         const _id = req.params.task_id
         const existingTask = await Task.findById(_id)
         if (!existingTask) {
-           return res.status(404).json({ message: "Task not found", status: false })
+            return res.status(404).json({ message: "Task not found", status: false })
         }
         await Task.findByIdAndDelete(_id)
         res.status(200).json({ message: "Task Successfully deleted", status: true })
@@ -59,7 +59,7 @@ const getAllTasks = async (req, res) => {
     try {
         const adminId = req.user._id;
         const getAllTasks = await Task.find({ Created_By: adminId }).skip((page - 1) * limit)
-        .limit(limit);  
+            .limit(limit);
         const totalCount = await Task.countDocuments({ Created_By: adminId });
         if (!getAllTasks) {
             return res.status(404).json({ message: "No Task Found", status: false })
@@ -73,10 +73,10 @@ const getAllMyTasks = async (req, res) => {
     try {
         const user_Id = req.user._id
         const getAllTasks = await Task.find({ assigned_to: user_Id })
-        if(!getAllTasks){
-            return res.status(404).json({message: "No assigned Task found.", status: false})
+        if (!getAllTasks) {
+            return res.status(404).json({ message: "No assigned Task found.", status: false })
         }
-        res.status(200).json({message: "Tasks Found", status: true, getAllTasks})
+        res.status(200).json({ message: "Tasks Found", status: true, getAllTasks })
     } catch (err) {
         res.json(500).json({ message: "Something Went Wrong", status: false })
     }
@@ -85,27 +85,27 @@ const getAllMyTasks = async (req, res) => {
 const getAllTasksByRole = async (req, res) => {
     try {
         const taskCategory = req.params.role;
-        const getAllTasksByRole = await Task.find({assigned_to_role: taskCategory})
-        if(!getAllTasksByRole) {
-            return res.status(404).json({message: "No Tasks Found.", status: false})
+        const getAllTasksByRole = await Task.find({ assigned_to_role: taskCategory })
+        if (!getAllTasksByRole) {
+            return res.status(404).json({ message: "No Tasks Found.", status: false })
         }
-        res.status(200).json({message:"Tasks Found.", status: true, getAllTasksByRole})
-    } catch(err) {
-        res.status(500).json({message: "Failed to fetch Tasks.", status: false})
+        res.status(200).json({ message: "Tasks Found.", status: true, getAllTasksByRole })
+    } catch (err) {
+        res.status(500).json({ message: "Failed to fetch Tasks.", status: false })
     }
 }
 
 const getUserTasks = async (req, res) => {
     try {
         const userId = req.params.user_id;
-        const tasks = await Task.find({assigned_to: userId})
-        if(!tasks) {
-            res.status(404).json({message: "No Tasks Found of selected User.", status: false})
+        const tasks = await Task.find({ assigned_to: userId })
+        if (!tasks) {
+            res.status(404).json({ message: "No Tasks Found of selected User.", status: false })
         }
-        res.status(200).json({message: "Successfully fetched user Tasks.", status: true, tasks})
+        res.status(200).json({ message: "Successfully fetched user Tasks.", status: true, tasks })
 
-    } catch(err) {
-        res.status(500).json({message: "Failed to fetch Tasks"})
+    } catch (err) {
+        res.status(500).json({ message: "Failed to fetch Tasks" })
     }
 }
 
@@ -121,8 +121,8 @@ const deleteAllSpecificTasks = async (req, res) => {
 
         res.status(200).json({ message: "Tasks have been removed successfully.", status: true });
 
-    } catch(err) {
-        res.status(500).json({message: "Failed to delete tasks, please try again later...", status: false})
+    } catch (err) {
+        res.status(500).json({ message: "Failed to delete tasks, please try again later...", status: false })
     }
 }
 
