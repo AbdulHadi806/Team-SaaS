@@ -17,7 +17,6 @@ function UserProfilePage() {
 
   const { data: userRole, refetch: getUserByTask } =
     useGetUserByTaskQuery(testToken);
-  console.log("userby role", userRole);
 
   useEffect(() => {
     fetchUserProfile();
