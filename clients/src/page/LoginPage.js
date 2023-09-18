@@ -24,7 +24,7 @@ const LoginPage = () => {
     userName: "",
     password: "",
   });
-  
+
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
@@ -38,7 +38,7 @@ const LoginPage = () => {
           alertify.set("notifier", "position", "top-right");
           alertify.success(res.data.message);
           localStorage.setItem("adminRole", res.data.type);
-          if(res.data.type == 'admin') {
+          if (res.data.type === "admin") {
             navigate("/mainDashboard");
           }
         } else {
@@ -56,7 +56,7 @@ const LoginPage = () => {
             alertify.set("notifier", "position", "top-right");
             alertify.success(res.data.message);
             localStorage.setItem("userRole", res.data.type);
-            navigate("/user-test-dashboard");
+            navigate("/user-dashboard");
           }
           if (!res.data.status) {
             alertify.set("notifier", "position", "top-right");

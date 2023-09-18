@@ -38,11 +38,8 @@ const RolesDetail = () => {
   });
 
   useEffect(() => {
-    console.log(getUsers, ":getUsers");
     getTasksByRoles({ token, roles });
     getUserByRole({ token, roles });
-
-    console.log(getUsers, "getUsers");
   }, [roles]);
 
   const handlePageChange = ({ selected }) => {
@@ -93,19 +90,18 @@ const RolesDetail = () => {
         <Sidebar />
         <div className="flex-1 flex flex-col md:pl-[240px]">
           <Header />
-          {getRoles &&
-            getRoles.getAllTasksByRole.map((i) => (
+          
               <div className="p-[20px]">
                 <h3 className="text-[27px] pb-[14px] font-bold">
                   Dashboard-project
                   <br />
-                  {i.assigned_to_role}
+                  {getRoles &&
+                getRoles.getAllTasksByRole[0].assigned_to_role}
                 </h3>
                 <span className="inline-block text-[20px] font-bold">
-                  CreateAt : {getData(i.createdAt)}
+                  CreateAt : {getData(getRoles && getRoles.getAllTasksByRole[0].createdAt)}
                 </span>
               </div>
-            ))}
 
           <div className=" flex p-[40px]  gap-[20px]">
             <div className="w-[175px] p-[30px] bg-[#F0F8FF]  flex-col  items-center justify-center rounded-[4px] text-center  mb-[40px]">

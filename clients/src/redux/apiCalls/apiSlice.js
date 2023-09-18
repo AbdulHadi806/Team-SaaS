@@ -29,6 +29,18 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ["Admin"],
     }),
+    getUserProfile: builder.mutation({
+      query: (userToken) => ({
+        url: "user-update-tasks/my-profile",
+        method: "GET",
+
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+          authorization: `Bearer ${userToken}`,
+        },
+      }),
+      providesTags: ["User"],
+    }),
     getAdminProfile: builder.mutation({
       query: (tokenTest) => ({
         url: "profile/admin",
@@ -184,6 +196,29 @@ export const apiSlice = createApi({
 
       providesTags: ["Tasks", "Admin"],
     }),
+    getUserByTask: builder.query({
+      query: (testToken) => ({
+        url: `user-update-tasks/get-all-user-assigned-task`,
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+          authorization: `Bearer ${testToken}`,
+        },
+      }),
+
+      providesTags: ["Tasks", "User"],
+    }),
+    updateUserTask: builder.mutation({
+      query: ({ task_id, testToken }) => ({
+        url: `user-update-tasks/update-task`,
+        method: "PATCH",
+        body: { task_id },
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+          authorization: `Bearer ${testToken}`,
+        },
+      }),
+      invalidatesTags: ["Tasks"],
+    }),
   }),
 });
 export const {
@@ -194,9 +229,12 @@ export const {
   useCreateUserMutation,
   useGetAllTasksQuery,
   useDeleteUserMutation,
+  useGetUserByTaskQuery,
   useGetAllUsersQuery,
   useDeleteProjectMutation,
   useUpdateTaskMutation,
+  useUpdateUserTaskMutation,
+  useGetUserProfileMutation,
   useUpdateUserMutation,
   useLoginUserMutation,
   useGetRolesQuery,

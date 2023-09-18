@@ -9,7 +9,6 @@ import HeaderPage from "../../page/HeaderPage";
 function MainDashboard() {
   const [profile, setProfile] = useState("");
   const [getAdminProfile] = useGetAdminProfileMutation();
-  const userRole = localStorage.getItem("userRole");
   const adminRole = localStorage.getItem("adminRole");
   const tokenTest = AdminToken();
 

@@ -23,6 +23,21 @@ const addTasks = async (req, res) => {
     }
 }
 
+const taskSeen = async(req, res) => {
+    try {
+        const _id = req.body.task_id
+        const existingTask = await Task.findById(_id)
+        if (!existingTask) {
+            return res.status(404).json({ message: "Task not found", status: false });
+        }
+        existingTask.seen = true
+        await existingTask.save();
+        res.status(200).json({ message: "Task Seen", status: true })
+    } catch (err) {
+        res.json(500).json({ message: "Falied To update task", status: false })
+    }
+}
+
 const deleteTasks = async (req, res) => {
     try {
         const _id = req.params.task_id
@@ -126,6 +141,7 @@ const deleteAllSpecificTasks = async (req, res) => {
     }
 }
 
+exports.taskSeen = taskSeen;
 exports.deleteAllSpecificTasks = deleteAllSpecificTasks;
 exports.getUserTasks = getUserTasks;
 exports.getAllTasksByRole = getAllTasksByRole;
