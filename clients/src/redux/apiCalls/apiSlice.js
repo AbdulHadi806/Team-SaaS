@@ -125,13 +125,13 @@ export const apiSlice = createApi({
       providesTags: ["Tasks", "Admin"],
     }),
     deleteProject: builder.mutation({
-      query: (assigned_to_role) => ({
+      query: ({assigned_to_role, testToken}) => ({
         url: `tasks/all-tasks/specific-tasks`,
         method: "DELETE",
-        body: assigned_to_role,
+        body: {assigned_to_role},
         headers: {
           "Content-type": "application/json; charset=UTF-8",
-          authorization: `Bearer ${token}`,
+          authorization: `Bearer ${testToken}`,
         },
       }),
       invalidatesTags: ["Tasks"],

@@ -30,7 +30,7 @@ function DashboardPage({ profile }) {
   };
   const deleteTaskHandler = async (id) => {
     try {
-      await deleteTask({ assigned_to_role: id });
+      await deleteTask({ assigned_to_role: id, testToken });
       fetchRoles();
       await getTaskRoles();
       setDeletetask(!deleteTask);
