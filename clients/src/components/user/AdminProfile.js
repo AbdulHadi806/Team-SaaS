@@ -19,14 +19,16 @@ export const AdminProfile = (props) => {
             </li>
             <li className="flex gap-2 text-[18px]">
               Username :{" "}
-              <span className="font-bold">{profileData.username}</span>{" "}
+              <span className="font-bold">{profileData.userName}</span>{" "}
             </li>
             <li className="flex gap-2 text-[18px]">
               Email : <span className="font-bold">{profileData.email}</span>
             </li>
             <li className="flex gap-2 text-[18px]">
               CreateAt :{" "}
-              <span className="font-bold">{getData(profileData.createAt)}</span>
+              <span className="font-bold">
+                {getData(profileData.createdAt)}
+              </span>
             </li>
           </ul>
         </div>

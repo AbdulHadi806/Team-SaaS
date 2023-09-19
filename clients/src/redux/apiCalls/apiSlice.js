@@ -29,7 +29,7 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ["Admin"],
     }),
-    getUserProfile: builder.mutation({
+    getUserProfile: builder.query({
       query: (userToken) => ({
         url: "user-update-tasks/my-profile",
         method: "GET",
@@ -41,14 +41,13 @@ export const apiSlice = createApi({
       }),
       providesTags: ["User"],
     }),
-    getAdminProfile: builder.mutation({
-      query: (tokenTest) => ({
-        url: "profile/admin",
-        method: "GET",
 
+    getAdminProfile: builder.query({
+      query: ({ testToken }) => ({
+        url: `profile/admin`,
         headers: {
           "Content-type": "application/json; charset=UTF-8",
-          authorization: `Bearer ${tokenTest}`,
+          authorization: `Bearer ${testToken}`,
         },
       }),
       providesTags: ["Admin"],
@@ -236,7 +235,7 @@ export const apiSlice = createApi({
 export const {
   useCreateAdminMutation,
   useLoginAdminMutation,
-  useGetAdminProfileMutation,
+  useGetAdminProfileQuery,
   useCreateTaskMutation,
   useCreateUserMutation,
   useGetAllTasksQuery,
@@ -246,7 +245,7 @@ export const {
   useDeleteProjectMutation,
   useUpdateTaskMutation,
   useUpdateUserTaskMutation,
-  useGetUserProfileMutation,
+  useGetUserProfileQuery,
   useUpdateUserMutation,
   useLoginUserMutation,
   useGetRolesQuery,

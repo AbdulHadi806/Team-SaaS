@@ -6,9 +6,7 @@ import { UserToken } from "../../redux/utils/adminAuth";
 function Notification({ notifications, profileDropdown }) {
   const [taskSeen] = useTaskSeenMutation();
   const userToken = UserToken();
-  console.log("Dfd", notifications.getAllTasks);
   const updateHandler = async (id) => {
-    console.log("id", id);
     try {
       const res = await taskSeen({ task_id: id, userToken });
       console.log(res, "ress");
@@ -31,7 +29,7 @@ function Notification({ notifications, profileDropdown }) {
                   className={`${
                     item.seen
                       ? "bg-[#000] text-[#fff]"
-                      : "bg-[#fff]  text-[#fff]"
+                      : "bg-[#fff]  text-[#000]"
                   } border-t py-[5px] px-1 hover:text-[#660079] font-medium`}
                 >
                   <span>{item.task.slice(0, 15)}</span>

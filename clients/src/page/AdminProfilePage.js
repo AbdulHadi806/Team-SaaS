@@ -1,26 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { useGetAdminProfileMutation } from "../redux/apiCalls/apiSlice";
+import React, { useEffect } from "react";
+import { useGetAdminProfileQuery } from "../redux/apiCalls/apiSlice";
 import { AdminToken } from "../redux/utils/adminAuth";
 import { AdminProfile } from "../components/user/AdminProfile";
 function AdminProfilePage() {
-  const [getAdminProfile] = useGetAdminProfileMutation();
-  const token = AdminToken();
-  const [profileData, setProfileData] = useState({
-    name: "",
-    email: "",
-    username: "",
-    createAt: "",
-  });
-
-  const getAdminInfo = async () => {
-    try {
-      const response = await getAdminProfile(token);
-      const { name, email, userName, createdAt } = response.data;
-      setProfileData({ name, email, username: userName, createAt: createdAt });
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const testToken = AdminToken();
+  const { data: adminProfile, refetch: getAdminProfile } =
+    useGetAdminProfileQuery({ testToken });
+  console.log(adminProfile, "adminProfile");
 
   const getData = (item) => {
     const timestamp = item;
@@ -33,12 +19,16 @@ function AdminProfilePage() {
   };
 
   useEffect(() => {
-    if (token) {
-      getAdminInfo();
-    }
-  }, [token]);
+    getAdminProfile({ testToken });
+    console.log(adminProfile);
+  }, []);
 
-  return <AdminProfile profileData={profileData} getData={getData} />;
+  return (
+    <AdminProfile
+      profileData={adminProfile && adminProfile}
+      getData={getData}
+    />
+  );
 }
 
 export default AdminProfilePage;

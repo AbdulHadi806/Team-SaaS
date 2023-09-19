@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 
 const checkAdminAuth = (req, res, next) => {
   const token = req.headers.authorization?.split(" ")[1];
+
   if (!token) {
     return res
       .status(401)
@@ -9,6 +10,7 @@ const checkAdminAuth = (req, res, next) => {
   }
   return jwt.verify(token, "secret_is_a_secret", (err, decoded) => {
     if (err) {
+      console.log(err);
       return res.status(400).json({ status: false, message: "invalid Token" });
     }
     req.user = decoded;

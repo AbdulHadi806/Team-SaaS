@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
-  useGetAdminProfileMutation,
+  useGetAdminProfileQuery,
   useGetUserByTaskQuery,
 } from "../redux/apiCalls/apiSlice";
 import {
@@ -12,12 +12,12 @@ import {
 import Header from "../components/Header";
 import { io } from "socket.io-client";
 function HeaderPage({ role }) {
-  const [profile, setProfile] = useState("");
-  const [getAdminProfile] = useGetAdminProfileMutation();
+  const testToken = UserToken();
+  const { data: adminProfile, refetch: getAdminProfile } =
+    useGetAdminProfileQuery(testToken);
   const [profileDropdown, setProfileDropdown] = useState(false);
   const socket = io("http://localhost:8000");
 
-  const testToken = UserToken();
   const { data: notifications, refetch: getAllUserTasks } =
     useGetUserByTaskQuery(testToken);
   useEffect(() => {
@@ -36,18 +36,9 @@ function HeaderPage({ role }) {
       socket.off("new_Task_Update");
     };
   }, [socket]);
-  const token = AdminToken();
-  const fetchAdminProfile = async () => {
-    try {
-      const response = await getAdminProfile(token);
-      const adminName = response.data.name;
-      setProfile(adminName);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+
   useEffect(() => {
-    fetchAdminProfile();
+    getAdminProfile();
   }, []);
   return (
     <Header
