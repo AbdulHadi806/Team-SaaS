@@ -5,13 +5,12 @@ import { AdminToken, UserToken } from "../../redux/utils/adminAuth";
 function DashboardProtectedroute() {
   const navigate = useNavigate();
   const token = AdminToken();
-  const userToken = UserToken();
 
   useEffect(() => {
-    if (token === null && userToken === null) {
+    if (token === null) {
       navigate("/", { replace: true });
     }
-  }, [token, userToken]);
+  }, [token]);
 
   return <Outlet />;
 }

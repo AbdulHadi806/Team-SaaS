@@ -24,10 +24,10 @@ const Login = (props) => {
         <div>
           <div className="md:w-[600px] p-[60px]  bg-[#fff] rounded ">
             <h2 className="text-center text-[36px] text-blue-600 font-bold mb-2">
-              Get started with Us
+              Let's dive in
             </h2>
             <span className="text-center block mb-6  text-[17px] font-bold">
-              Sign in to continue to WebkitX.
+              Login to continue.
             </span>
             <form className="w-[100%] mb-6" onSubmit={submitHandler}>
               <InputFields

@@ -72,6 +72,10 @@ const updateTasks = async (req, res) => {
     }
     existingTask.status = true;
     await existingTask.save();
+    io.emit(`Task_Done${req.user._id}`, {
+      message: "Task Done",
+      status: true,
+    });
     res
       .status(200)
       .json({ message: "Task updated successfully", status: true });
@@ -86,8 +90,8 @@ const getAllTasks = async (req, res) => {
   try {
     const adminId = req.user._id;
     const getAllTasks = await Task.find({ Created_By: adminId })
-      .skip((page - 1) * limit)
-      .limit(limit);
+      // .skip((page - 1) * limit)
+      // .limit(limit);
     const totalCount = await Task.countDocuments({ Created_By: adminId });
     if (!getAllTasks) {
       return res.status(404).json({ message: "No Task Found", status: false });

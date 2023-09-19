@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsisVertical, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
@@ -21,8 +21,10 @@ function Dashboard(props) {
     isUserModalOpen,
     closeModal,
     closeUserModal,
+    percantageCountHandler,
     testToken,
   } = props;
+
 
   return (
     <>
@@ -65,21 +67,16 @@ function Dashboard(props) {
                 taskRoles.getAllTasks.map((item) => item.assigned_to_role)
               ),
             ].map((role, index) => {
-              // Find the first task with the current role
               const taskWithRole = taskRoles.getAllTasks.find(
                 (item) => item.assigned_to_role === role
               );
-
-              // Check if a task with the current role exists
               if (taskWithRole) {
                 return (
                   <div
-                    key={taskWithRole._id} // Use the unique identifier of the task (assuming it's unique)
-                    className={`w-1/3 ${
-                      colors[index % colors.length]
-                    } rounded-lg p-[30px] ease-in-out duration-300 pb-[40px] hover:scale-[1.05] hover:shadow-[2px_3px_31px_4px_rgb(0,0,0,0.3)]`}
+                    key={taskWithRole._id}
+                    className={`w-1/3 ${colors[index % colors.length]
+                      } rounded-lg p-[30px] ease-in-out duration-300 pb-[40px] hover:scale-[1.05] hover:shadow-[2px_3px_31px_4px_rgb(0,0,0,0.3)]`}
                   >
-                    {" "}
                     <Link to={`/rolesDetail/${taskWithRole.assigned_to_role}`}>
                       <div className="flex items-center justify-between mb-1 ">
                         <div className=" bg-[#fff] mb-3 rounded-full">
@@ -102,11 +99,10 @@ function Dashboard(props) {
                             />
                           </button>
                           <div
-                            className={`${
-                              deletetask[index]
-                                ? "transition ease-in-out delay-150 block w-[80px] opacity-1  bg-white h-[30px] rounded-lg absolute top-[35px] right-0 flex"
-                                : "height-[0px] transition ease-in-out delay-150 hidden"
-                            }`}
+                            className={`${deletetask[index]
+                              ? "transition ease-in-out delay-150 block w-[80px] opacity-1  bg-white h-[30px] rounded-lg absolute top-[35px] right-0 flex"
+                              : "height-[0px] transition ease-in-out delay-150 hidden"
+                              }`}
                           >
                             <div
                               onClick={(e) => {
@@ -138,12 +134,13 @@ function Dashboard(props) {
                       </h3>
                       <div>
                         <span className="text-[#fff] mb-2 inline-block">
-                          10 task-80% complete
+                          {taskRoles.getAllTasks.length} tasks - {percantageCountHandler()}% completed
+
                         </span>
                         <div className="w-full bg-[#9d9d9d] rounded-full h-2.5 dark:bg-gray-700">
                           <div
                             className="bg-[#fff] h-2.5 rounded-full"
-                            style={{ width: "45%" }}
+                            style={{ width: `${percantageCountHandler()}%` }}
                           ></div>
                         </div>
                       </div>

@@ -5,7 +5,6 @@ import {
   useGetUserProfileQuery,
 } from "../redux/apiCalls/apiSlice";
 import {
-  AdminToken,
   LogoutAdminHandler,
   UserToken,
 } from "../redux/utils/adminAuth";
@@ -21,16 +20,13 @@ function HeaderPage({ role }) {
   const { data: userProfile, refetch: getUserProfile } = useGetUserProfileQuery(testToken);
 
   const { data: notifications, refetch: getAllUserTasks } = useGetUserByTaskQuery(testToken);
-  console.log(userProfile)
+  
   useEffect(() => { 
     socket.on("connect", () => {
       console.log("Socket is running at App");
     });
-    socket.on("connect_error", (error) => {
-      console.error("Socket connection error:", error);
-    });
     socket.on(`new_Task_Update_to_${userProfile && userProfile.user._id.toUpperCase()}`, (data) => {
-      console.log(data, "data from userTestDashboard");
+      console.log(data)
       getAllUserTasks();
       console.log(notifications, "notifications");
     });
@@ -41,7 +37,6 @@ function HeaderPage({ role }) {
 
   useEffect(() => {
     getAdminProfile();
-    console.log(userProfile)
   }, []);
   return (
     <Header

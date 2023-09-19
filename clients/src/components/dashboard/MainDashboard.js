@@ -10,7 +10,6 @@ function MainDashboard() {
   const testToken = AdminToken();
   const { data: adminProfile, refetch: getAdminProfile } =
     useGetAdminProfileQuery({ testToken });
-  console.log(adminProfile, "adminProfile");
 
   const adminRole = localStorage.getItem("adminRole");
 

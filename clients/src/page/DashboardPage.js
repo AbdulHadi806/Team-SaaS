@@ -11,8 +11,7 @@ import Dashboard from "../components/dashboard/Dashboard";
 function DashboardPage({ profile }) {
   const testToken = AdminToken();
 
-  const { data: taskRoles, refetch: getTaskRoles } =
-    useGetAllTasksQuery(testToken);
+  const { data: taskRoles, refetch: getTaskRoles } = useGetAllTasksQuery(testToken);
   const [deleteTask] = useDeleteProjectMutation();
 
   const [dateTime, setDateTime] = useState();
@@ -23,11 +22,6 @@ function DashboardPage({ profile }) {
     new Array(taskRoles && taskRoles.getAllTasks.length).fill(false)
   );
 
-  const toggleCard = (index) => {
-    const updatedIndex = new Array(taskRoles.getAllTasks.length).fill(false);
-    updatedIndex[index] = !deletetask[index];
-    setDeletetask(updatedIndex);
-  };
   const deleteTaskHandler = async (id) => {
     try {
       await deleteTask({ assigned_to_role: id, testToken });
@@ -38,14 +32,17 @@ function DashboardPage({ profile }) {
       console.log(error);
     }
   };
+  
   const fetchRoles = async () => {
     await getTaskRoles();
   };
 
-  useEffect(() => {
-    console.log(taskRoles, "taskRoles");
-    fetchRoles();
-  }, []);
+  const toggleCard = (index) => {
+    const updatedIndex = new Array(taskRoles.getAllTasks.length).fill(false);
+    updatedIndex[index] = !deletetask[index];
+    setDeletetask(updatedIndex);
+  };
+
   const openModal = () => {
     setIsModalOpen(true);
   };
@@ -62,14 +59,26 @@ function DashboardPage({ profile }) {
     setIsUserModalOpen(false);
   };
 
+  const percantageCountHandler = () => {
+    const tasks = taskRoles && taskRoles.getAllTasks
+    const Donetasks = tasks.filter(items => {
+      return items.status === true
+    })
+    const percantage = (Donetasks.length / tasks.length) * 100  
+    return Math.ceil(percantage)
+  }  
+
   useEffect(() => {
     const interval = setInterval(() => {
       setDateTime(new Date());
-    }, 1000);
-
-    return () => {
+    }, 1000);    
+    return () => { 
       clearInterval(interval);
     };
+  }, []);
+
+  useEffect(() => {
+    fetchRoles();
   }, []);
 
   const colors = ["bg-[#2F4F4F]", "bg-[#1F2937]", "bg-[#4A5568]"];
@@ -92,6 +101,7 @@ function DashboardPage({ profile }) {
         toggleCard={toggleCard}
         deleteTaskHandler={deleteTaskHandler}
         deletetask={deletetask}
+        percantageCountHandler={percantageCountHandler}
         testToken={testToken}
       />
     </>
