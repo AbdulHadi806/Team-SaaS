@@ -35,7 +35,7 @@ function HeaderPage({ role }) {
       console.log(notifications, "notifications");
     });
     return () => {
-      socket.off(`new_Task_Update_to_${userProfile && userProfile.user._id}`);
+      socket.off(`new_Task_Update_to_${userProfile && userProfile.user._id.toUpperCase()}`);
     };
   }, [socket]);
 
