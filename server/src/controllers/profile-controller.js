@@ -1,11 +1,16 @@
 const Admin = require("../model/adminModal");
+const Task = require("../model/tasksModal");
 const User = require("../model/userModal");
+
 const getAdminInfo = async (req, res) => {
   try {
     const data = await Admin.findById(req.user._id).select(
       "name userName email createdAt"
     );
-    return res.status(200).json(data);
+    const tasksCount = await Task.countDocuments({Created_By: req.user._id})
+    const userCount = await User.countDocuments({created_by: req.user._id})
+    
+    return res.status(200).json({data, tasksCount, userCount});
   } catch (err) {
     return res
       .status(404)

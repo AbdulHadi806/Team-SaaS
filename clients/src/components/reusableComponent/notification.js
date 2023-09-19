@@ -3,13 +3,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect } from "react";
 import { useTaskSeenMutation } from "../../redux/apiCalls/apiSlice";
 import { UserToken } from "../../redux/utils/adminAuth";
-function Notification({ notifications, profileDropdown }) {
+function Notification({ notifications, profileDropdown, notificationDropDown, setNotificationDropDown }) {
+
   const [taskSeen] = useTaskSeenMutation();
   const userToken = UserToken();
   const updateHandler = async (id) => {
     try {
       const res = await taskSeen({ task_id: id, userToken });
-      console.log(res, "ress");
     } catch (err) {
       console.log(err);
     }
@@ -17,26 +17,37 @@ function Notification({ notifications, profileDropdown }) {
 
   return (
     <div className="mx-auto relative">
+      <button onClick={() => {
+            setNotificationDropDown(!notificationDropDown);
+          }}>
       <FontAwesomeIcon icon={faBell} />
+        
+      </button>
       <div>
-        <ul className="bg-white py-1 absolute shadow-lg w-[160px] border border-t-0 top-[41px] right-0 rounded-b-lg">
+        <ul className="bg-white rounded-sm absolute text-start shadow-lg w-[300px] top-[41px] right-0 rounded-b-lg">
           {profileDropdown ? (
-            notifications.getAllTasks.length > 0 ? (
+            notifications && notifications.getAllTasks.length > 0 ? (
               notifications.getAllTasks.map((item, index) => (
                 <li
                   onClick={() => updateHandler(item._id)}
                   key={index}
                   className={`${
                     item.seen
-                      ? "bg-[#000] text-[#fff]"
+                      ? "bg-[#f5f5f5] text-[#660079]"
                       : "bg-[#fff]  text-[#000]"
-                  } border-t py-[5px] px-1 hover:text-[#660079] font-medium`}
+                  } border-t flex cursor-pointer py-2 hover:bg-[#fff4f1] items-center gap-3  px-3 hover:text-[#660079] font-medium`}
                 >
-                  <span>{item.task.slice(0, 15)}</span>
+                  <div>
+                  <input checked={item.seen} id="checked-checkbox" type="checkbox" value="" class="w-4 h-4 text-blue-600 cursor-pointer bg-gray-100 border-gray-300 rounded" />
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-[16px] text-dark">{item.seen? "Task is Seen by you" : "New Task Available"}</span>
+                    <span className="text-[18px] text-dark font-semibold">{item.task.slice(0, 20)}</span>
+                  </div>
                 </li>
               ))
             ) : (
-              <li className="border-t py-[5px] px-1 font-medium">
+              <li className="border-t text-[18px] py-4 px-5 text-dark py-[5px] px-1 font-medium">
                 No task found
               </li>
             )

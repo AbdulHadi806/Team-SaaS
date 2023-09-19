@@ -90,48 +90,50 @@ const RolesDetail = () => {
         <Sidebar />
         <div className="flex-1 flex flex-col md:pl-[240px]">
           <Header />
-          
-              <div className="p-[20px]">
-                <h3 className="text-[27px] pb-[14px] font-bold">
-                  Dashboard-project
-                  <br />
-                  {getRoles &&
+
+          <div className="p-[20px]">
+            <h3 className="text-[27px] pb-[14px] font-bold">
+              Dashboard-project
+              <br />
+              {getRoles &&
                 getRoles.getAllTasksByRole[0].assigned_to_role}
-                </h3>
-                <span className="inline-block text-[20px] font-bold">
-                  CreateAt : {getData(getRoles && getRoles.getAllTasksByRole[0].createdAt)}
-                </span>
-              </div>
+            </h3>
+            <span className="inline-block text-[20px] font-bold">
+              CreateAt : {getData(getRoles && getRoles.getAllTasksByRole[0].createdAt)}
+            </span>
+          </div>
 
           <div className=" flex p-[40px]  gap-[20px]">
-            <div className="w-[175px] p-[30px] bg-[#F0F8FF]  flex-col  items-center justify-center rounded-[4px] text-center  mb-[40px]">
-              <div className=" flex justify-center pb-2">
+            <div className="w-[179px] flex h-[130px] p-[10px] bg-[#F0F8FF] flex-col items-center justify-center rounded-[4px] text-center ">
+              <div>
                 <img
                   src="/assets/task.svg"
                   alt="AdminImage"
-                  className="  w-[80px] h-[80px] color-[#1c274c] mx-auto relative mt-[-60px]"
+                  className="w-[55px] h-[80px] rounded-[80px]  mx-auto relative mt-[-50px]"
                 />
               </div>
-              <div>
-                      <span className="text-[20px] font-bold">
-                        total task:{getRoles && getRoles.getAllTasksByRole.length}
-                      </span>
+              <div className="flex flex-col">
+                <span className="text-[20px] font-bold">
+                  total task:
+                </span>
+                <span className="text-[20px] font-bold"> {getRoles && getRoles.getAllTasksByRole.length}</span>
               </div>
             </div>
 
-            <div className="flex-col w-[100%] ">
-              <div className=" p-[30px] bg-[#F0F8FF]  flex-col  items-center justify-center rounded-[4px] text-center ">
-                <div className=" flex justify-center pb-2">
+            <div className="w-[100%] h-[130px] px-[20px] py-[15px] bg-[#F0F8FF] rounded-[4px] text-center ">
+              <div >
+                <div className=" w-[90px] h-[80%] rounded-[80px]  mx-auto relative mt-[-50px]">
                   <img
                     src="/assets/users.svg"
                     alt="AdminImage"
-                    className="    w-[120px] h-[80px]  mx-auto relative mt-[-60px] "
+                    className="    w-[100%] "
                   />
                 </div>
-                <div>
+                <div className="flex flex-col">
                   <span className="text-[20px] font-bold">
-                    total user :{getUsers && getUsers.users.length}
+                    total user:
                   </span>
+                  <span className="text-[20px] font-bold"> {getUsers && getUsers.users.length}</span>
                 </div>
               </div>
             </div>

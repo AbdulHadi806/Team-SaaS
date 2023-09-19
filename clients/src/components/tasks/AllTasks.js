@@ -4,10 +4,10 @@ function AllTasks(props) {
   return (
     <>
       <h2 className=" text-[30px] font-bold text-[#3E1D47] ps-[40px] pt-[40px] ">
-        Task for today
+        Tasks for today
       </h2>
       <div className="flex flex-col w-[45%] ps-[40px] my-[40px] ">
-        {taskRoles &&
+        {taskRoles && taskRoles.getAllTasks.length > 0? taskRoles &&
           taskRoles.getAllTasks.map((item, index) => (
             <div
               className={`w-[100%] rounded-[10px] shadow-2xl border-l-[8px] hover:transition-all ${
@@ -46,7 +46,7 @@ function AllTasks(props) {
                 
               </div>
             </div>
-          ))}
+          )): <span>No Tasks for Today.</span>}
       </div>
     </>
   );

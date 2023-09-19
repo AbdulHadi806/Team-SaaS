@@ -15,19 +15,19 @@ export const AdminProfile = (props) => {
         <div className=" w-[100%] px-[20px] py-[15px] bg-[#F0F8FF] rounded-[4px]">
           <ul>
             <li className="flex gap-2 text-[18px]">
-              Name : <span className="font-bold">{profileData.name}</span>
+              Name : <span className="font-bold">{profileData && profileData.data.name}</span>
             </li>
             <li className="flex gap-2 text-[18px]">
               Username :{" "}
-              <span className="font-bold">{profileData.userName}</span>{" "}
+              <span className="font-bold">{profileData && profileData.data.userName}</span>{" "}
             </li>
             <li className="flex gap-2 text-[18px]">
-              Email : <span className="font-bold">{profileData.email}</span>
+              Email : <span className="font-bold">{profileData && profileData.data.email}</span>
             </li>
             <li className="flex gap-2 text-[18px]">
               CreateAt :{" "}
               <span className="font-bold">
-                {getData(profileData.createdAt)}
+                {getData(profileData && profileData.data.createdAt)}
               </span>
             </li>
           </ul>
@@ -45,7 +45,7 @@ export const AdminProfile = (props) => {
             <span className="text-[20px] font-bold">Total Task</span>
           </div>
           <div>
-            <span className="text-[20px] font-bold">16</span>
+            <span className="text-[20px] font-bold">{profileData && profileData.tasksCount}</span>
           </div>
         </div>
         <div className="w-[100%] px-[20px] py-[15px] bg-[#F0F8FF] rounded-[4px] text-center ">
@@ -58,7 +58,7 @@ export const AdminProfile = (props) => {
             <span className="text-[20px] font-bold">Total Users</span>
           </div>
           <div>
-            <span className="text-[20px] font-bold">16</span>
+            <span className="text-[20px] font-bold">{profileData && profileData.userCount}</span>
           </div>
         </div>
       </div>

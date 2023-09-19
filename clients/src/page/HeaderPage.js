@@ -17,18 +17,13 @@ function HeaderPage({ role }) {
   const [profileDropdown, setProfileDropdown] = useState(false);
   const socket = io("http://localhost:8000");
 
-  const { data: userProfile, refetch: getUserProfile } = useGetUserProfileQuery(testToken);
+  const { data: userProfile } = useGetUserProfileQuery(testToken);
   const { data: notifications, refetch: getAllUserTasks } = useGetUserByTaskQuery(testToken);
   
   useEffect(() => { 
     socket.on(`new_Task_Update_to_${userProfile && userProfile.user._id.toUpperCase()}`, (data) => {
-      console.log(data)
       getAllUserTasks();
-      console.log(notifications, "notifications");
     });
-    socket.on(`Task_Done_1234`, (data) => {
-      console.log(data)
-    })
     return () => {
       socket.off(`new_Task_Update_to_${userProfile && userProfile.user._id.toUpperCase()}`);
     };

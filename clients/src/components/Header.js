@@ -15,17 +15,13 @@ function Header(props) {
     <div className="shadow px-[20px] flex justify-between items-center xl:px-[40px] py-[20px]  bg-white">
       <h3 className="text-[21px] font-semibold capitalize">{role}</h3>
       <div className="flex items-center gap-4">
-        <button
-          onClick={() => {
-            setNotificationDropDown(!notificationDropDown);
-          }}
-        >
           <Notification
-            // seen={seen}
             notifications={notifications}
             profileDropdown={notificationDropDown}
+            setNotificationDropDown={setNotificationDropDown}
+            notificationDropDown={notificationDropDown}
+            
           />
-        </button>
         <button
           onClick={() => {
             setProfileDropdown(!profileDropdown);

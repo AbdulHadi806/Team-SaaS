@@ -18,12 +18,11 @@ function AdminProfilePage() {
 
   useEffect(() => {
     getAdminProfile({ testToken });
-    console.log(adminProfile);
   }, []);
 
   return (
     <AdminProfile
-      profileData={adminProfile && adminProfile}
+      profileData={adminProfile}
       getData={getData}
     />
   );
