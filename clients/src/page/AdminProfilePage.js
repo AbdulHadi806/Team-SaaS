@@ -4,9 +4,7 @@ import { AdminToken } from "../redux/utils/adminAuth";
 import { AdminProfile } from "../components/user/AdminProfile";
 function AdminProfilePage() {
   const testToken = AdminToken();
-  const { data: adminProfile, refetch: getAdminProfile } =
-    useGetAdminProfileQuery({ testToken });
-  console.log(adminProfile, "adminProfile");
+  const { data: adminProfile, refetch: getAdminProfile } = useGetAdminProfileQuery({ testToken });
 
   const getData = (item) => {
     const timestamp = item;

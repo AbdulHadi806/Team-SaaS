@@ -61,6 +61,7 @@ const loginAdmin = async (req, res) => {
     const user = await Admin.findOne({
       userName: req.body.userName,
     })
+    console.log(user)
     if (!user) {
       return res.status(404).json({ message: "Username or password Incorrect..", status: false });
     }
@@ -74,7 +75,7 @@ const loginAdmin = async (req, res) => {
     if (user && passwordChecker) {
       const token = jwt.sign(
         {
-          user: user.user,
+          userName: user.userName,
           _id: user._id,
         },
         "secret_is_a_secret",

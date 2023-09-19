@@ -46,7 +46,6 @@ const loginUser = async (req, res) => {
         if (user && passwordChecker) {
             const token = jwt.sign({
                 userName: user.userName,
-                password: user.password,
                 _id: user._id
             }, 'secret_is_a_secret_for_user', {
                 expiresIn: '1d'

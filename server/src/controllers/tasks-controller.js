@@ -13,7 +13,6 @@ const addTasks = async (req, res) => {
       assigned_to_role: req.body.assigned_to_role,
     });
     await newTask.save();
-    console.log(req.body.assigned_to);
     const io = socketManager.getIoInstance();
     io.emit(`new_Task_Update_to_${req.body.assigned_to}`, {
       message: "New Task available",
@@ -71,9 +70,10 @@ const updateTasks = async (req, res) => {
       return res.status(404).json({ message: "Task not found", status: false });
     }
     existingTask.status = true;
+    const io = socketManager.getIoInstance();
     await existingTask.save();
-    io.emit(`Task_Done${req.user._id}`, {
-      message: "Task Done",
+    io.emit(`Task_Done_${req.user._id}`, {
+      message: `Task Completed By ${req.user.userName}`,
       status: true,
     });
     res
