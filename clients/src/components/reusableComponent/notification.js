@@ -14,14 +14,25 @@ function Notification({ notifications, profileDropdown, notificationDropDown, se
       console.log(err);
     }
   };
+  const newNotificationHandler = () => {
+    const hasNotifications = notifications && notifications.getAllTasks;
+    const unseenNotifications = hasNotifications
+      ? notifications.getAllTasks.filter((item) => !item.seen)
+      : 0;
+      return unseenNotifications.length
+  }
+  
+
 
   return (
     <div className="mx-auto relative">
-      <button onClick={() => {
+      <button className="relative" onClick={() => {
             setNotificationDropDown(!notificationDropDown);
           }}>
-      <FontAwesomeIcon icon={faBell} />
-        
+      <FontAwesomeIcon icon={faBell} className="text-[22px] text-[#50a3ee]"/>
+      <span className="block bg-[#ea4754] rounded-full px-2 absolute top-[-17px] right-[-16px] text-[#fff]">
+        {newNotificationHandler()}
+      </span>
       </button>
       <div>
         <ul className="bg-white rounded-sm absolute text-start shadow-lg w-[300px] top-[41px] right-0 rounded-b-lg">
