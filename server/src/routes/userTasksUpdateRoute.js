@@ -10,5 +10,5 @@ const updateUserTasksRoute = express.Router();
 updateUserTasksRoute.patch("/update-task", updateTasks);
 updateUserTasksRoute.get("/get-all-user-assigned-task", getAllMyTasks);
 updateUserTasksRoute.get("/my-profile", getUserinfo);
-updateUserTasksRoute.get("/task-seen", taskSeen);
+updateUserTasksRoute.patch("/task-seen", taskSeen);
 module.exports = updateUserTasksRoute;

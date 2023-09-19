@@ -15,8 +15,7 @@ function UserProfilePage() {
   const testToken = UserToken();
   const [getUserProfile] = useGetUserProfileMutation();
 
-  const { data: userRole, refetch: getUserByTask } =
-    useGetUserByTaskQuery(testToken);
+  const { data: userRole } = useGetUserByTaskQuery(testToken);
 
   useEffect(() => {
     fetchUserProfile();

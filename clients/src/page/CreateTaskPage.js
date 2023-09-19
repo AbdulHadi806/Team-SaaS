@@ -15,6 +15,8 @@ function CreateTaskPage({ closeModal }) {
     currentPage,
     tokenTest,
   });
+  const socket = io("http://localhost:8000");
+
   const [isCustomValue, setIsCustomValue] = useState(false);
   const navigate = useNavigate();
   const [task, setTask] = useState({
@@ -22,7 +24,6 @@ function CreateTaskPage({ closeModal }) {
     assigned_to_role: "",
     assigned_to: " ",
   });
-
 
   useEffect(() => {
     getAllUsers({ currentPage, tokenTest });
@@ -36,7 +37,13 @@ function CreateTaskPage({ closeModal }) {
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      const response = await createTask({task, tokenTest});
+      const response = await createTask({ task, tokenTest });
+      socket.emit("new_Task_Update", {
+        message: "New Task available",
+        task: task,
+        status: true,
+        assigned_to: task.assigned_to,
+      });
       closeModal();
       if (response) {
         navigate("/mainDashboard");

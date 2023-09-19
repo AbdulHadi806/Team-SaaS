@@ -67,7 +67,7 @@ export const apiSlice = createApi({
       invalidatesTags: ["Admin"],
     }),
     createTask: builder.mutation({
-      query: ({task, tokenTest}) => ({
+      query: ({ task, tokenTest }) => ({
         url: "tasks",
         method: "POST",
         body: task,
@@ -125,10 +125,10 @@ export const apiSlice = createApi({
       providesTags: ["Tasks", "Admin"],
     }),
     deleteProject: builder.mutation({
-      query: ({assigned_to_role, testToken}) => ({
+      query: ({ assigned_to_role, testToken }) => ({
         url: `tasks/all-tasks/specific-tasks`,
         method: "DELETE",
-        body: {assigned_to_role},
+        body: { assigned_to_role },
         headers: {
           "Content-type": "application/json; charset=UTF-8",
           authorization: `Bearer ${testToken}`,
@@ -219,6 +219,18 @@ export const apiSlice = createApi({
       }),
       invalidatesTags: ["Tasks"],
     }),
+    taskSeen: builder.mutation({
+      query: ({ task_id, userToken }) => ({
+        url: `user-update-tasks/task-seen`,
+        method: "PATCH",
+        body: { task_id },
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+          authorization: `Bearer ${userToken}`,
+        },
+      }),
+      invalidatesTags: ["Tasks"],
+    }),
   }),
 });
 export const {
@@ -239,4 +251,5 @@ export const {
   useLoginUserMutation,
   useGetRolesQuery,
   useGetUserByRoleQuery,
+  useTaskSeenMutation,
 } = apiSlice;
