@@ -16,7 +16,7 @@ function UserProfilePage() {
   const { data: userProfile, refetch: getUserProfile } =
     useGetUserProfileQuery(testToken);
 
-  const { data: userRole } = useGetUserByTaskQuery(testToken);
+  const { data: myTasks } = useGetUserByTaskQuery(testToken);
 
   useEffect(() => {
     getUserProfile();
@@ -48,7 +48,7 @@ function UserProfilePage() {
         formattedTime={formattedTime}
         formattedDateTime={formattedDateTime}
       />
-      <AllTasks taskRoles={userRole} updateTaskHandler={updateTaskHandler} />
+      <AllTasks taskRoles={myTasks} updateTaskHandler={updateTaskHandler} />
     </>
   );
 }
