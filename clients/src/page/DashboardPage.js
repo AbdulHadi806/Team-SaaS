@@ -11,12 +11,15 @@ import Dashboard from "../components/dashboard/Dashboard";
 
 function DashboardPage() {
   const testToken = AdminToken();
-  const { data: profile, refetch: getAdminProfile } = useGetAdminProfileQuery({ testToken });
-  const { data: taskRoles, refetch: getTaskRoles } = useGetAllTasksQuery(testToken);
+  const { data: profile } = useGetAdminProfileQuery({
+    testToken,
+  });
+  const { data: taskRoles, refetch: getTaskRoles } =
+    useGetAllTasksQuery(testToken);
   const [deleteTask] = useDeleteProjectMutation();
-  const [roleDetail, setRoleDetail] = useState(null)
+
   const [dateTime, setDateTime] = useState();
-  const [day, setDay] = useState("");
+  const [day] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isUserModalOpen, setIsUserModalOpen] = useState(false);
   const [deletetask, setDeletetask] = useState(
@@ -33,7 +36,7 @@ function DashboardPage() {
       console.log(error);
     }
   };
-  
+
   const fetchRoles = async () => {
     await getTaskRoles();
   };
@@ -60,31 +63,46 @@ function DashboardPage() {
     setIsUserModalOpen(false);
   };
 
-  const percantageCountHandler = (role) => {
-    const tasks = taskRoles && taskRoles.getAllTasks 
-    const selectedTasks = tasks.filter(item => {
-      return item.assigned_to_role == role
-    })
-    setRoleDetail(selectedTasks)
-    const Donetasks = selectedTasks.filter(item => {
-      return item.status === true
-    })
-    const percantage = (selectedTasks.length / tasks.length) * 100  
-    return Math.ceil(percantage)
-  }  
-
   useEffect(() => {
     const interval = setInterval(() => {
       setDateTime(new Date());
-    }, 1000);    
-    return () => { 
+    }, 1000);
+    return () => {
       clearInterval(interval);
     };
   }, []);
 
   useEffect(() => {
     fetchRoles();
-  }, []);
+  }, [fetchRoles]);
+
+  const getUniqueRolesWithTasks = (tasks) => {
+    return (
+      tasks &&
+      [...new Set(tasks.map((item) => item.assigned_to_role))].map((role) => {
+        const taskWithRole = tasks.find(
+          (item) => item.assigned_to_role === role
+        );
+        return { role, task: taskWithRole };
+      })
+    );
+  };
+  const uniqueRolesWithTasks = getUniqueRolesWithTasks(
+    taskRoles && taskRoles.getAllTasks
+  );
+
+  const percantageCountHandler = (role) => {
+    console.log(role, "role");
+    const tasks = taskRoles && taskRoles.getAllTasks;
+    const selectedTasks = tasks.filter((item) => {
+      return item.assigned_to_role === role;
+    });
+    const Donetasks = selectedTasks.filter((item) => {
+      return item.status === true;
+    });
+    const percantage = (selectedTasks.length / tasks.length) * 100;
+    return Math.ceil(percantage);
+  };
 
   const colors = ["bg-[#70367c]", "bg-[#95cfd5]", "bg-[#fd7e50]"];
   const formattedTime = dateFormat(day, "h:MM:ss TT");
@@ -101,6 +119,7 @@ function DashboardPage() {
         isUserModalOpen={isUserModalOpen}
         closeModal={closeModal}
         openModal={openModal}
+        uniqueRolesWithTasks={uniqueRolesWithTasks}
         openUserModal={openUserModal}
         closeUserModal={closeUserModal}
         toggleCard={toggleCard}
@@ -108,7 +127,6 @@ function DashboardPage() {
         deletetask={deletetask}
         percantageCountHandler={percantageCountHandler}
         testToken={testToken}
-        roleDetail={roleDetail}
       />
     </>
   );
