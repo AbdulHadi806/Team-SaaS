@@ -14,7 +14,7 @@ function DashboardPage() {
   const { data: profile, refetch: getAdminProfile } = useGetAdminProfileQuery({ testToken });
   const { data: taskRoles, refetch: getTaskRoles } = useGetAllTasksQuery(testToken);
   const [deleteTask] = useDeleteProjectMutation();
-
+  const [roleDetail, setRoleDetail] = useState(null)
   const [dateTime, setDateTime] = useState();
   const [day, setDay] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -61,11 +61,11 @@ function DashboardPage() {
   };
 
   const percantageCountHandler = (role) => {
-    
     const tasks = taskRoles && taskRoles.getAllTasks 
     const selectedTasks = tasks.filter(item => {
       return item.assigned_to_role == role
     })
+    setRoleDetail(selectedTasks)
     const Donetasks = selectedTasks.filter(item => {
       return item.status === true
     })
@@ -86,7 +86,7 @@ function DashboardPage() {
     fetchRoles();
   }, []);
 
-  const colors = ["bg-[#2F4F4F]", "bg-[#1F2937]", "bg-[#4A5568]"];
+  const colors = ["bg-[#70367c]", "bg-[#95cfd5]", "bg-[#fd7e50]"];
   const formattedTime = dateFormat(day, "h:MM:ss TT");
   const formattedDateTime = dateFormat(dateTime, "dddd, mmmm dS, yyyy");
   return (
@@ -108,6 +108,7 @@ function DashboardPage() {
         deletetask={deletetask}
         percantageCountHandler={percantageCountHandler}
         testToken={testToken}
+        roleDetail={roleDetail}
       />
     </>
   );

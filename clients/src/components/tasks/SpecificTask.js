@@ -12,7 +12,6 @@ const SpecificTask = () => {
 
   useEffect(() => {
     getTasksByRoles({ token, roles });
-    console.log(getRoles, ":getRoles");
   }, [roles]);
 
   return (

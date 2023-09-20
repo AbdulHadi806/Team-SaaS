@@ -1,18 +1,18 @@
 import React, { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
-import { AdminToken, UserToken } from "../../redux/utils/adminAuth";
+import { AdminToken } from "../../redux/utils/adminAuth";
 
-function DashboardProtectedroute() {
+function AdminProtectedRoute() {
   const navigate = useNavigate();
-  const token = AdminToken();
+  const adminToken = AdminToken();
 
   useEffect(() => {
-    if (token === null) {
+    if (adminToken  === null) {
       navigate("/", { replace: true });
     }
-  }, [token]);
+  }, [adminToken]);
 
   return <Outlet />;
 }
 
-export default DashboardProtectedroute;
+export default AdminProtectedRoute;

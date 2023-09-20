@@ -11,8 +11,6 @@ function MainDashboard() {
   const { data: adminProfile, refetch: getAdminProfile } =
     useGetAdminProfileQuery({ testToken });
 
-  const adminRole = localStorage.getItem("adminRole");
-
   useEffect(() => {
     getAdminProfile({ testToken });
   }, [testToken]);
@@ -22,7 +20,7 @@ function MainDashboard() {
       <div className="flex w-full">
         <Sidebar />
         <div className="flex-1 flex flex-col md:pl-[240px]">
-          <HeaderPage role={adminRole} />
+          <HeaderPage role={"adminRole"} />
           <DashboardPage profile={adminProfile && adminProfile.name} />
           <div className="pb-[40px]">
             <Tabs />{" "}

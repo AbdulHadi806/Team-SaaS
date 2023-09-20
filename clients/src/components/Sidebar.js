@@ -1,10 +1,11 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faDashboard, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faChartArea, faDashboard, faUser } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 const menuItems = [
   { icon: faDashboard, text: "Dashboard", link: "/mainDashboard" },
   { icon: faUser, text: "Users", link: "/mainDashboard" },
+  {icon: faChartArea, text: "Analytics", link: "/Analytics"}
 ];
 
 function Sidebar() {

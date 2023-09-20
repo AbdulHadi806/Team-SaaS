@@ -30,10 +30,7 @@ export const SpecificUser = () => {
   });
 
   useEffect(() => {
-    console.log(getUsers, ":getUsers");
     getUserByRole({ token, roles });
-
-    console.log(getUsers, "getUsers");
   }, [roles]);
 
   const handlePageChange = ({ selected }) => {

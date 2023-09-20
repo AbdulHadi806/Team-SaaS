@@ -22,7 +22,8 @@ function Dashboard(props) {
     closeModal,
     closeUserModal,
     testToken,
-    percantageCountHandler
+    percantageCountHandler,
+    roleDetail
   } = props;
 
 
@@ -130,12 +131,14 @@ function Dashboard(props) {
                       </h3>
                       <div>
                         <span className="text-[#fff] mb-2 inline-block">
-                          {taskRoles.getAllTasks.length} tasks - {percantageCountHandler( taskWithRole.assigned_to_role)}% completed
+                          {taskRoles.getAllTasks.length} tasks - 
+                          {/* {percantageCountHandler( taskWithRole.assigned_to_role)}% */}
+                           completed
                         </span>
                         <div className="w-full bg-[#9d9d9d] rounded-full h-2.5 dark:bg-gray-700">
                           <div
                             className="bg-[#fff] h-2.5 rounded-full"
-                            style={{ width: `${percantageCountHandler( taskWithRole.assigned_to_role)}%` }}
+                            // style={{ width: `${percantageCountHandler( taskWithRole.assigned_to_role)}%` }}
                           ></div>
                         </div>
                       </div>

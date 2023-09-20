@@ -93,12 +93,14 @@ const getAllTasks = async (req, res) => {
       // .skip((page - 1) * limit)
       // .limit(limit);
     const totalCount = await Task.countDocuments({ Created_By: adminId });
+    const completedTasksCount = await Task.countDocuments({Created_By: adminId, status: true})
+    const notCompletedTasksCount = await Task.countDocuments({Created_By: adminId, status: false})
     if (!getAllTasks) {
       return res.status(404).json({ message: "No Task Found", status: false });
     }
     res
       .status(200)
-      .json({ message: "Tasks Found", status: true, getAllTasks, totalCount });
+      .json({ message: "Tasks Found", status: true, getAllTasks, totalCount, completedTasksCount, notCompletedTasksCount });
   } catch (err) {
     res.json(500).json({ message: "Something Went Wrong", status: false });
   }
