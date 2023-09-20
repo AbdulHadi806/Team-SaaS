@@ -5,7 +5,7 @@ import { AdminProfile } from "../components/user/AdminProfile";
 function AdminProfilePage() {
   const testToken = AdminToken();
   const { data: adminProfile, refetch: getAdminProfile } = useGetAdminProfileQuery({ testToken });
-
+  
   const getData = (item) => {
     const timestamp = item;
     const dateObject = new Date(timestamp);
@@ -16,9 +16,7 @@ function AdminProfilePage() {
     return formattedDate;
   };
 
-  useEffect(() => {
-    getAdminProfile({ testToken });
-  }, []);
+  
 
   return (
     <AdminProfile

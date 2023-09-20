@@ -3,14 +3,15 @@ import { useEffect, useState } from "react";
 
 import {
   useDeleteProjectMutation,
+  useGetAdminProfileQuery,
   useGetAllTasksQuery,
 } from "../redux/apiCalls/apiSlice";
 import { AdminToken } from "../redux/utils/adminAuth";
 import Dashboard from "../components/dashboard/Dashboard";
 
-function DashboardPage({ profile }) {
+function DashboardPage() {
   const testToken = AdminToken();
-
+  const { data: profile, refetch: getAdminProfile } = useGetAdminProfileQuery({ testToken });
   const { data: taskRoles, refetch: getTaskRoles } = useGetAllTasksQuery(testToken);
   const [deleteTask] = useDeleteProjectMutation();
 
@@ -59,12 +60,16 @@ function DashboardPage({ profile }) {
     setIsUserModalOpen(false);
   };
 
-  const percantageCountHandler = () => {
-    const tasks = taskRoles && taskRoles.getAllTasks
-    const Donetasks = tasks.filter(items => {
-      return items.status === true
+  const percantageCountHandler = (role) => {
+    
+    const tasks = taskRoles && taskRoles.getAllTasks 
+    const selectedTasks = tasks.filter(item => {
+      return item.assigned_to_role == role
     })
-    const percantage = (Donetasks.length / tasks.length) * 100  
+    const Donetasks = selectedTasks.filter(item => {
+      return item.status === true
+    })
+    const percantage = (selectedTasks.length / tasks.length) * 100  
     return Math.ceil(percantage)
   }  
 
@@ -87,7 +92,7 @@ function DashboardPage({ profile }) {
   return (
     <>
       <Dashboard
-        profile={profile}
+        profile={profile && profile.data.name}
         colors={colors}
         formattedTime={formattedTime}
         formattedDateTime={formattedDateTime}

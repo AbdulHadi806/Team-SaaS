@@ -21,8 +21,8 @@ function Dashboard(props) {
     isUserModalOpen,
     closeModal,
     closeUserModal,
-    percantageCountHandler,
     testToken,
+    percantageCountHandler
   } = props;
 
 
@@ -110,10 +110,6 @@ function Dashboard(props) {
                                 deleteTaskHandler(
                                   taskWithRole.assigned_to_role
                                 );
-                                console.log(
-                                  "id",
-                                  taskWithRole.assigned_to_role
-                                );
                               }}
                               className="flex  block  gap-2 w-full p-2 justify-center items-center
                         cursor-pointer"
@@ -134,13 +130,12 @@ function Dashboard(props) {
                       </h3>
                       <div>
                         <span className="text-[#fff] mb-2 inline-block">
-                          {taskRoles.getAllTasks.length} tasks - {percantageCountHandler()}% completed
-
+                          {taskRoles.getAllTasks.length} tasks - {percantageCountHandler( taskWithRole.assigned_to_role)}% completed
                         </span>
                         <div className="w-full bg-[#9d9d9d] rounded-full h-2.5 dark:bg-gray-700">
                           <div
                             className="bg-[#fff] h-2.5 rounded-full"
-                            style={{ width: `${percantageCountHandler()}%` }}
+                            style={{ width: `${percantageCountHandler( taskWithRole.assigned_to_role)}%` }}
                           ></div>
                         </div>
                       </div>

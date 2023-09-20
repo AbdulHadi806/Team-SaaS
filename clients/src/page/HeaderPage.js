@@ -25,7 +25,7 @@ function HeaderPage({ role }) {
   useEffect(() => { 
     socket.on(`new_Task_Update_to_${userProfile && userProfile.user._id.toUpperCase()}`, (data) => {
       alertify.set("notifier", "position", "top-right");
-          alertify.success(data.message);
+      alertify.success(data.message);
       getAllUserTasks();
     });
     return () => {
