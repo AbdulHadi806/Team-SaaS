@@ -16,6 +16,7 @@ import Pagination from "../reusableComponent/Pagination";
 import { ToolTip } from "../reusableComponent/Tooltip";
 import UpdateModal from "../reusableComponent/UpdateModal";
 import { io } from "socket.io-client";
+import alertify from "alertifyjs";
 
 const UserTable = () => {
   const socket = io("http://localhost:8000");
@@ -43,10 +44,10 @@ const UserTable = () => {
   const isUserQueryStarted = data !== undefined;
 
   useEffect(() => {
-    console.log("Useeffect is runnig")
     socket.on("fetch_user_status", (data) => {
-      console.log("online-user is being emitted", data);
         if(isUserQueryStarted){
+          alertify.set("notifier", "position", "top-right");
+        alertify.success(data.message);
           getAllUsersQuery();
         }
     });

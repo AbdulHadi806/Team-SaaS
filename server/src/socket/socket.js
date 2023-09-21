@@ -17,8 +17,11 @@ function initializeSocket(server) {
             if(userId){
                 try {
                     await User.findByIdAndUpdate(userId, { is_online: true });
+                    const user = await User.findById({_id: userId});
+                    // console.log(user)
                     io.emit(`fetch_user_status`, {
                         is_online: true,
+                        message: `${user.userName} is online`
                     });
                 } catch (err) {
                     console.error('Error updating user activity:', err);
@@ -30,8 +33,10 @@ function initializeSocket(server) {
             if (userId) {
                 try {
                     await User.findByIdAndUpdate(userId, { is_online: false });
+                    const user = await User.findById({_id: userId});
                     io.emit(`fetch_user_status`, {
                         is_online: false,
+                        message: `${user.userName} went offline`
                     });
                 } catch (err) {
                     console.error('Error updating user activity:', err);
