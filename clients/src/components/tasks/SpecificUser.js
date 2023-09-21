@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
   useDeleteUserMutation,
-  useGetRolesQuery,
   useGetUserByRoleQuery,
 } from "../../redux/apiCalls/apiSlice";
 import { useParams } from "react-router-dom";
@@ -11,8 +10,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ToolTip } from "../reusableComponent/Tooltip";
 import ConfirmationModal from "../reusableComponent/ComfirmationModel";
 import Pagination from "../reusableComponent/Pagination";
+import { io } from "socket.io-client";
+import alertify from "alertifyjs";
 
 export const SpecificUser = () => {
+  const socket = io("http://localhost:8000");
   const [showModal, setShowModal] = useState(false);
   const [userToDelete, setUserToDelete] = useState(null);
   const [userid, setId] = useState("");
@@ -20,7 +22,7 @@ export const SpecificUser = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
 
-  const tableHeaderData = ["#", "Username", "Role", "createdAt", "Action"];
+  const tableHeaderData = ["#", "Username", "Role", "Status", "createdAt", "Action"];
   const { roles } = useParams();
   const token = AdminToken();
 
@@ -28,6 +30,22 @@ export const SpecificUser = () => {
     token,
     roles,
   });
+
+  useEffect(() => {
+    socket.on("fetch_user_status", (data) => {
+      console.log("Renders Socket", data)
+      if(data) {
+        alertify.set("notifier", "position", "top-right");
+        alertify.success(data.message);
+      }
+      getUserByRole();
+    });
+    return () => {
+      socket.off(
+        `fetch_user_status`
+      );
+    };
+  }, [socket]);
 
   useEffect(() => {
     getUserByRole({ token, roles });
@@ -75,9 +93,9 @@ export const SpecificUser = () => {
   };
 
   return (
-    <div class="mx-[40px] overflow-x-auto shadow-md sm:rounded-sm mt-[40px]">
-      <table class="w-full">
-        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+    <div className="mx-[40px] overflow-x-auto shadow-md sm:rounded-sm mt-[40px]">
+      <table className="w-full">
+        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr className="bg-gray-800 h-[55px] text-[15px] font-bold text-[#fff] text-center">
             {tableHeaderData.map((item) => {
               return (
@@ -99,6 +117,7 @@ export const SpecificUser = () => {
                   {item.userName}
                 </td>
                 <td class="px-6 py-4">{item.role}</td>
+                <td className="px-6 py-4">{item.is_online ? <div><img className="mx-auto" src="/assets/Online.png" alt="online" /></div> : <div><img className="mx-auto" src="/assets/offline.png" alt="offline" /></div>}</td>
                 <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                   {getData(item.updatedAt)}{" "}
                   <span className="text-[12px] font-medium">

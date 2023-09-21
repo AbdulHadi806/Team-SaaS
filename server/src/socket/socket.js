@@ -12,13 +12,13 @@ function initializeSocket(server) {
 
     io.on('connection', (socket) => {
         let userId; 
+
         socket.on('online-user', async (onlineUserId) => {
             userId = onlineUserId;
             if(userId){
                 try {
                     await User.findByIdAndUpdate(userId, { is_online: true });
                     const user = await User.findById({_id: userId});
-                    // console.log(user)
                     io.emit(`fetch_user_status`, {
                         is_online: true,
                         message: `${user.userName} is online`

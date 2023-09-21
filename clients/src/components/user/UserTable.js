@@ -45,11 +45,11 @@ const UserTable = () => {
 
   useEffect(() => {
     socket.on("fetch_user_status", (data) => {
-        if(isUserQueryStarted){
-          alertify.set("notifier", "position", "top-right");
+      if (isUserQueryStarted) {
+        alertify.set("notifier", "position", "top-right");
         alertify.success(data.message);
-          getAllUsersQuery();
-        }
+        getAllUsersQuery();
+      }
     });
     return () => {
       socket.off(
@@ -122,13 +122,13 @@ const UserTable = () => {
   return (
     <>
       {data && data.users.length > 0 ? (
-        <div class="mx-[40px] overflow-x-auto shadow-md sm:rounded-sm mt-[40px]">
-          <table class="w-full">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <div className="mx-[40px] overflow-x-auto shadow-md sm:rounded-sm mt-[40px]">
+          <table className="w-full">
+            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr className="bg-gray-800 h-[55px] text-[15px] font-bold text-[#fff] text-center">
                 {tableHeaderData.map((item) => {
                   return (
-                    <th scope="col" class="px-6 capitalize py-3">
+                    <th scope="col" className="px-6 capitalize py-3">
                       {item}
                     </th>
                   );
@@ -146,7 +146,7 @@ const UserTable = () => {
                       {item.userName}
                     </td>
                     <td className="px-6 py-4">{item.role}</td>
-                    <td className="px-6 py-4">{item.is_online ? <div><img  className="mx-auto" src="/assets/Online.png" alt="online" /></div> : <div><img className="mx-auto" src="/assets/offline.png" alt="offline" /></div>}</td>
+                    <td className="px-6 py-4">{item.is_online ? <div><img className="mx-auto" src="/assets/Online.png" alt="online" /></div> : <div><img className="mx-auto" src="/assets/offline.png" alt="offline" /></div>}</td>
                     <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                       {getData(item.updatedAt)}{" "}
                       <span className="text-[12px] font-medium">

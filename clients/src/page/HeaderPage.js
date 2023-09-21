@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import {
-  useGetAllUsersQuery,
   useGetUserByTaskQuery,
   useGetUserProfileQuery,
 } from "../redux/apiCalls/apiSlice";
-import { AdminToken, LogoutAdminHandler, UserToken } from "../redux/utils/adminAuth";
+import { LogoutAdminHandler, UserToken } from "../redux/utils/adminAuth";
 import alertify from "alertifyjs";
 import "alertifyjs/build/css/alertify.css";
 import Header from "../components/Header";

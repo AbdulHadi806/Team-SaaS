@@ -49,7 +49,7 @@ function Notification({ notifications, profileDropdown, notificationDropDown, se
                   } border-t flex cursor-pointer py-2 hover:bg-[#fff4f1] items-center gap-3  px-3 hover:text-[#660079] font-medium`}
                 >
                   <div>
-                  <input checked={item.seen} id="checked-checkbox" type="checkbox" value="" class="w-4 h-4 text-blue-600 cursor-pointer bg-gray-100 border-gray-300 rounded" />
+                  <input checked={item.seen} id="checked-checkbox" type="checkbox" value="" className="w-4 h-4 text-blue-600 cursor-pointer bg-gray-100 border-gray-300 rounded" />
                   </div>
                   <div className="flex flex-col">
                     <span className="text-[16px] text-dark">{item.seen? "Task is Seen by you" : "New Task Available"}</span>
