@@ -25,9 +25,9 @@ function CreateTaskPage({ closeModal }) {
     assigned_to: " ",
   });
 
-  useEffect(() => {
-    getAllUsers({ currentPage, tokenTest });
-  }, []);
+  // useEffect(() => {
+  //   getAllUsers({ currentPage, tokenTest });
+  // }, []);
   const [createTask] = useCreateTaskMutation();
 
   const handleChange = (e) => {

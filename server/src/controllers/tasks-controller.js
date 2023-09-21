@@ -101,7 +101,6 @@ const getAllTasks = async (req, res) => {
       Created_By: adminId,
       status: false,
     });
-    console.log(notCompletedTasksCount, "notCompletedTasksCount");
     if (!getAllTasks) {
       return res.status(404).json({ message: "No Task Found", status: false });
     }

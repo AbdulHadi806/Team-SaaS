@@ -1,6 +1,7 @@
 const socketIo = require('socket.io');
+const User = require('../model/userModal');
 
-let io; 
+let io;
 
 function initializeSocket(server) {
     io = socketIo(server, {
@@ -10,9 +11,32 @@ function initializeSocket(server) {
     });
 
     io.on('connection', (socket) => {
-        console.log('A user connected');
-        socket.on('disconnect', () => {
-            console.log('A user disconnected');
+        let userId; 
+        socket.on('online-user', async (onlineUserId) => {
+            userId = onlineUserId;
+            if(userId){
+                try {
+                    await User.findByIdAndUpdate(userId, { is_online: true });
+                    io.emit(`fetch_user_status`, {
+                        is_online: true,
+                    });
+                } catch (err) {
+                    console.error('Error updating user activity:', err);
+                }
+            }
+        });
+
+        socket.on('disconnect', async () => {
+            if (userId) {
+                try {
+                    await User.findByIdAndUpdate(userId, { is_online: false });
+                    io.emit(`fetch_user_status`, {
+                        is_online: false,
+                    });
+                } catch (err) {
+                    console.error('Error updating user activity:', err);
+                }
+            }
         });
     });
 

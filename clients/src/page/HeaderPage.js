@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import {
+  useGetAllUsersQuery,
   useGetUserByTaskQuery,
   useGetUserProfileQuery,
 } from "../redux/apiCalls/apiSlice";
-import { LogoutAdminHandler, UserToken } from "../redux/utils/adminAuth";
+import { AdminToken, LogoutAdminHandler, UserToken } from "../redux/utils/adminAuth";
 import alertify from "alertifyjs";
 import "alertifyjs/build/css/alertify.css";
 import Header from "../components/Header";
@@ -11,15 +12,12 @@ import { io } from "socket.io-client";
 
 function HeaderPage({ role }) {
   const testToken = UserToken();
-
   const [profileDropdown, setProfileDropdown] = useState(false);
   const socket = io("http://localhost:8000");
 
   const { data: userProfile } = useGetUserProfileQuery(testToken);
-  console.log(userProfile, "usere");
   const { data: notifications, refetch: getAllUserTasks } =
     useGetUserByTaskQuery(testToken);
-
   useEffect(() => {
     socket.on(
       `new_Task_Update_to_${userProfile && userProfile.user._id.toUpperCase()}`,
@@ -29,6 +27,7 @@ function HeaderPage({ role }) {
         getAllUserTasks();
       }
     );
+    socket.emit("online-user", userProfile && userProfile.user._id);
     return () => {
       socket.off(
         `new_Task_Update_to_${

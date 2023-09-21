@@ -10,6 +10,10 @@ const usersSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    is_online: {
+        type: Boolean,
+        default: false
+    },
     role: {
         type: String,
         required: true,

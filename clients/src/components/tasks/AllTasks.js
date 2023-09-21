@@ -4,9 +4,6 @@ import { PieChart, Pie, Cell, Tooltip } from "recharts";
 function AllTasks(props) {
   const { taskRoles, updateTaskHandler } = props;
 
-  useEffect(() => {
-    console.log(taskRoles, "taskRoles");
-  }, []);
   const data = [
     {
       name: "Completed Tasks",

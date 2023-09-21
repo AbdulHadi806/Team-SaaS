@@ -74,7 +74,7 @@ function DashboardPage() {
 
   useEffect(() => {
     fetchRoles();
-  }, [fetchRoles]);
+  }, []);
 
   const getUniqueRolesWithTasks = (tasks) => {
     return (

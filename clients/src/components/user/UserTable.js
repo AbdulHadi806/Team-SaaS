@@ -15,8 +15,10 @@ import {
 import Pagination from "../reusableComponent/Pagination";
 import { ToolTip } from "../reusableComponent/Tooltip";
 import UpdateModal from "../reusableComponent/UpdateModal";
+import { io } from "socket.io-client";
 
 const UserTable = () => {
+  const socket = io("http://localhost:8000");
   // const [getAllUsers, { data }] = useGetAllUsersMutation();
   const [deleteUser] = useDeleteUserMutation();
   const [showModal, setShowModal] = useState(false);
@@ -37,6 +39,25 @@ const UserTable = () => {
       setTotalCount(count);
     }
   };
+
+  const isUserQueryStarted = data !== undefined;
+
+  useEffect(() => {
+    console.log("Useeffect is runnig")
+    socket.on("fetch_user_status", (data) => {
+      console.log("online-user is being emitted", data);
+        if(isUserQueryStarted){
+          getAllUsersQuery();
+        }
+    });
+    return () => {
+      socket.off(
+        `fetch_user_status`
+      );
+    };
+
+  }, [socket]);
+
   useEffect(() => {
     getAllUsersQuery({ currentPage, tokenTest });
     getAllUsersHandler();
@@ -96,7 +117,7 @@ const UserTable = () => {
     setEditTask({ ...editTask, [e.target.name]: e.target.value });
   };
 
-  const tableHeaderData = ["#", "Username", "Role", "createdAt", "Action"];
+  const tableHeaderData = ["#", "Username", "Role", "Status", "createdAt", "Action"];
   return (
     <>
       {data && data.users.length > 0 ? (
@@ -116,22 +137,23 @@ const UserTable = () => {
             <tbody>
               {data &&
                 data.users.map((item, index) => (
-                  <tr class="bg-white border-b bg-white dark:border-gray-700  text-[18px] text-bold  hover:bg-[#edeaea]  text-center">
-                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
+                  <tr className="bg-white border-b bg-white dark:border-gray-700  text-[18px] text-bold  hover:bg-[#edeaea]  text-center">
+                    <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                       {index + 1}
                     </td>
-                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-gray">
+                    <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap text-gray">
                       {item.userName}
                     </td>
-                    <td class="px-6 py-4">{item.role}</td>
-                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
+                    <td className="px-6 py-4">{item.role}</td>
+                    <td className="px-6 py-4">{item.is_online ? <div><img  className="mx-auto" src="/assets/Online.png" alt="online" /></div> : <div><img className="mx-auto" src="/assets/offline.png" alt="offline" /></div>}</td>
+                    <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap ">
                       {getData(item.updatedAt)}{" "}
                       <span className="text-[12px] font-medium">
                         {getTime(item.updatedAt)}
                       </span>
                     </td>
 
-                    <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white  flex gap-2 justify-center item-center text-center text-[20px]">
+                    <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white  flex gap-2 justify-center item-center text-center text-[20px]">
                       <button>
                         {" "}
                         <ToolTip content="Update">
