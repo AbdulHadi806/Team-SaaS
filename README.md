@@ -1,4 +1,4 @@
-# Management System
+# Management System (created: 8/25/2023)
 
 ## About the Project
 This project is a small Proof of Concept (POC) developed by me and my team during our learning phase. It was designed to address the challenges faced by clients in managing their freelancers. The project was created using the MERN (MongoDB, Express.js, React.js, Node.js) stack, reflecting our journey of learning and experimentation.
